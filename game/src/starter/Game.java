@@ -20,10 +20,13 @@ import ecs.items.WorldItemBuilder;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
+import graphic.PainterConfig;
 import graphic.hud.PauseMenu;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
+
+import graphic.hud.ScreenImage;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -57,6 +60,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     protected LevelAPI levelAPI;
     /** Generates the level */
     protected IGenerator generator;
+
+    private ScreenImage inventoryWindow;
 
     private boolean doSetup = true;
     private static boolean paused = false;
@@ -123,6 +128,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
+        ScreenImage im = new ScreenImage("hud/inventoryHud/Rahmen.png",new Point(0,0));
+        painter.draw(new Point(0,0),"hud/inventoryHud/Rahmen.png",new PainterConfig("hud/inventoryHud/Rahmen.png"));
         createSystems();
     }
 

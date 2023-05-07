@@ -12,7 +12,7 @@ import tools.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class OnUseTeleport implements IOnUse {
+public class TeleportPlayerOnUse implements IOnUse {
     @Override
     public void onUse(Entity e, ItemData item) {
         InventoryComponent ic = (InventoryComponent) e.getComponent(InventoryComponent.class).get();
