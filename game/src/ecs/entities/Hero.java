@@ -40,6 +40,7 @@ public class Hero extends Entity {
         PlayableComponent pc = new PlayableComponent(this);
         setupFireballSkill();
         setupHealthComponent();
+        setupInventoryComponent();
         pc.setSkillSlot1(firstSkill);
     }
 
@@ -73,6 +74,10 @@ public class Hero extends Entity {
         Animation getDieAnimation = AnimationBuilder.buildAnimation(pathToDieAnim);
         HealthComponent hc = new HealthComponent(this,100,(IOnDeathFunction) Game::removeEntity,getHitAnimation,getDieAnimation);
 
+    }
+
+    private void setupInventoryComponent() {
+        InventoryComponent ic = new InventoryComponent(this,4);
     }
 
     public void onHit(HitboxComponent hb) {

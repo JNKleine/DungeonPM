@@ -15,6 +15,8 @@ import controller.SystemController;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.*;
+import ecs.items.ItemDataGenerator;
+import ecs.items.WorldItemBuilder;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -139,6 +141,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         EntitySpawnRateSetter entitySpawner = new EntitySpawnRateSetter();
         entities.clear();
         entitiesToAdd.clear();
+        ItemDataGenerator ig = new ItemDataGenerator();
+        addEntity(WorldItemBuilder.buildWorldItem(ig.generateItemData()));
         addEntityList(entitySpawner.getListOfMonsterToSpawnVariableProbability());
         if(currentLevelNumber <= 10) {
             addEntityList(entitySpawner.spawnGraveAndGhost(10));
