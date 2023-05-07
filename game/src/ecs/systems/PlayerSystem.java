@@ -38,7 +38,14 @@ public class PlayerSystem extends ECS_System {
         else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_LEFT.get()))
             ksd.vc.setCurrentXVelocity(-1 * ksd.vc.getXVelocity());
 
-        if (Gdx.input.isKeyPressed(KeyboardConfig.SPACE.get()))
+        if (Gdx.input.isKeyPressed(KeyboardConfig.SPACE.get())) {
+            /*if () {
+
+            } else {
+
+            }
+             */
+        }
 
         if (Gdx.input.isKeyPressed(KeyboardConfig.INTERACT_WORLD.get()))
             InteractionTool.interactWithClosestInteractable(ksd.e);
