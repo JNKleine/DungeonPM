@@ -1,0 +1,62 @@
+# IDE generated files #
+######################
+.vscode/
+.idea/
+*.iml
+.project
+.metadata
+.settings/
+.externalToolBuilders/
+.classpath
+
+
+# Temporary files #
+###################
+*~
+*.swp
+*.tmp
+*.bak
+.DS_Store
+._*
+
+
+# Temporary directory #
+#######################
+tmp/
+temp/
+
+# Logging #
+###########
+*.log
+logs/
+
+
+# JAVA, Scala #
+###############
+*.class
+*.jar
+hs_err_pid*
+replay_pid*
+*.hprof
+**/build/
+**/bin/
+**/out/
+**/target/
+**/reports/
+.gradle/
+# don't ignore any gradle wrapper files
+!gradle/
+
+
+# Packages #
+############
+*.dmg
+*.iso
+*.rar
+*.zip
+*.tgz
+*.tar.gz
+
+# Game Generated Files #
+########################
+dungeon_config.json
