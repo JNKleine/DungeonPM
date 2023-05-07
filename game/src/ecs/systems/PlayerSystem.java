@@ -32,6 +32,9 @@ public class PlayerSystem extends ECS_System {
         else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_LEFT.get()))
             ksd.vc.setCurrentXVelocity(-1 * ksd.vc.getXVelocity());
 
+        if (Gdx.input.isKeyPressed(KeyboardConfig.SPACE.get()))
+            System.out.println("Test in Playersystem Z36");
+
         if (Gdx.input.isKeyPressed(KeyboardConfig.INTERACT_WORLD.get()))
             InteractionTool.interactWithClosestInteractable(ksd.e);
 
