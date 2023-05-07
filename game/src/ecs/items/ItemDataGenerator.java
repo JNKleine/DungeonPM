@@ -1,6 +1,7 @@
 package ecs.items;
 
 import ecs.items.item.Damagestone;
+import ecs.items.item.PotionOfHealing;
 import ecs.items.item.Telestone;
 import graphic.Animation;
 import java.util.List;
@@ -13,7 +14,8 @@ public class ItemDataGenerator {
     private List<ItemData> templates =
             List.of(
                     new Telestone(),
-                    new Damagestone()
+                    new Damagestone(),
+                    new PotionOfHealing()
             );
     private Random rand = new Random();
 
