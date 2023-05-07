@@ -1,4 +1,4 @@
-package ecs.Sword;
+package ecs.items.item;
 
 import ecs.damage.Damage;
 import ecs.damage.DamageType;

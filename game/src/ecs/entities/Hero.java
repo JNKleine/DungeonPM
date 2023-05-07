@@ -1,7 +1,7 @@
 package ecs.entities;
 
 import dslToGame.AnimationBuilder;
-import ecs.Sword.Sword;
+import ecs.items.item.Sword;
 import ecs.components.*;
 import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
