@@ -1,6 +1,7 @@
 package ecs.entities;
 
 import dslToGame.AnimationBuilder;
+import ecs.Sword.Sword;
 import ecs.components.*;
 import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
@@ -42,6 +43,7 @@ public class Hero extends Entity {
         setupHealthComponent();
         setupInventoryComponent();
         pc.setSkillSlot1(firstSkill);
+        Sword sword = new Sword(this);
     }
 
     private void setupVelocityComponent() {
