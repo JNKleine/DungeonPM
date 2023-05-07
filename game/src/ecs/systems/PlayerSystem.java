@@ -2,12 +2,18 @@ package ecs.systems;
 
 import com.badlogic.gdx.Gdx;
 import configuration.KeyboardConfig;
+import ecs.components.AnimationComponent;
 import ecs.components.MissingComponentException;
 import ecs.components.PlayableComponent;
 import ecs.components.VelocityComponent;
 import ecs.entities.Entity;
+import ecs.entities.Hero;
 import ecs.tools.interaction.InteractionTool;
+import graphic.Animation;
 import starter.Game;
+
+import java.util.Collections;
+import java.util.Optional;
 
 /** Used to control the player */
 public class PlayerSystem extends ECS_System {
@@ -33,7 +39,6 @@ public class PlayerSystem extends ECS_System {
             ksd.vc.setCurrentXVelocity(-1 * ksd.vc.getXVelocity());
 
         if (Gdx.input.isKeyPressed(KeyboardConfig.SPACE.get()))
-            System.out.println("Test in Playersystem Z36");
 
         if (Gdx.input.isKeyPressed(KeyboardConfig.INTERACT_WORLD.get()))
             InteractionTool.interactWithClosestInteractable(ksd.e);
