@@ -71,10 +71,10 @@ public class SwordOnUse implements IOnUse {
         for ( Entity e : entities) {
             PositionComponent posOfEntity = (PositionComponent) e.getComponent(PositionComponent.class).get();
             Point pointOfEntity = posOfEntity.getPosition();
-            boolean checkRight = heroPoint.toCoordinate().x+this.hitRange <= pointOfEntity.toCoordinate().x;
-            boolean checkLeft = heroPoint.toCoordinate().x-this.hitRange >= pointOfEntity.toCoordinate().x;
-            boolean checkUpper = heroPoint.toCoordinate().y+this.hitRange <= pointOfEntity.toCoordinate().y;
-            boolean checkDown = heroPoint.toCoordinate().y-this.hitRange >= pointOfEntity.toCoordinate().y;
+            boolean checkRight = (heroPoint.toCoordinate().x >= pointOfEntity.toCoordinate().x-this.hitRange && heroPoint.toCoordinate().y == pointOfEntity.toCoordinate().y);
+            boolean checkLeft = (heroPoint.toCoordinate().x <= pointOfEntity.toCoordinate().x+this.hitRange && heroPoint.toCoordinate().y == pointOfEntity.toCoordinate().y);
+            boolean checkUpper = (heroPoint.toCoordinate().y >= pointOfEntity.toCoordinate().y-this.hitRange && heroPoint.toCoordinate().x == pointOfEntity.toCoordinate().x);
+            boolean checkDown = (heroPoint.toCoordinate().y <= pointOfEntity.toCoordinate().y+this.hitRange && heroPoint.toCoordinate().x == pointOfEntity.toCoordinate().x);
             boolean checkUpperRight = (checkRight && checkUpper);
             boolean checkUpperLeft = (checkLeft && checkUpper);
             boolean checkDownRight = (checkRight && checkDown);
