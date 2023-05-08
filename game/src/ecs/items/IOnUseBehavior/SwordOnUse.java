@@ -34,6 +34,7 @@ public class SwordOnUse implements IOnUse {
         this.hero = (Hero) e;
         ArrayList<Entity> entities = getEntitiesToHit();
         for(Entity entity: entities) {
+            System.out.println("Test1 37");
             HealthComponent hc = (HealthComponent) entity.getComponent(HealthComponent.class).get();
             hc.receiveHit(new Damage(damage, DamageType.PHYSICAL,e));
         }
