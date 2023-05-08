@@ -2,11 +2,10 @@ package ecs.systems;
 
 import com.badlogic.gdx.Gdx;
 import configuration.KeyboardConfig;
-import ecs.components.MissingComponentException;
-import ecs.components.PlayableComponent;
-import ecs.components.VelocityComponent;
+import ecs.components.*;
 import ecs.entities.Entity;
-import ecs.items.IOnUseBehavior.SwordOnUse;
+import ecs.entities.Faction;
+import ecs.entities.Hero;
 import ecs.tools.interaction.InteractionTool;
 import starter.Game;
 
@@ -47,13 +46,27 @@ public class PlayerSystem extends ECS_System {
         }
 
         if (Gdx.input.isKeyPressed(KeyboardConfig.SPACE.get())) {
-            new SwordOnUse().getFloorTilesToHit();
+           Hero curHero = (Hero)Game.getHero().get();
+                    InventoryComponent ic = (InventoryComponent)curHero.getComponent(InventoryComponent.class).get();
+                    if(ic.getCurMainItem() != null)
+                    ic.getCurMainItem().triggerUse(curHero);
             /*if () {
 
             } else {
 
             }
              */
+        }
+        if(Gdx.input.isKeyPressed(KeyboardConfig.DROP_ITEM.get())) {
+            for(Entity e: Game.getEntities()) {
+                if(e.getFaction().equals(Faction.PLAYER)) {
+                    InventoryComponent ic = (InventoryComponent)e.getComponent(InventoryComponent.class).get();
+                    if(ic.getCurMainItem() != null) {
+                        PositionComponent pc = (PositionComponent) e.getComponent(PositionComponent.class).get();
+                        ic.getCurMainItem().triggerDrop(e, pc.getPosition());
+                    }
+                }
+            }
         }
 
         if (Gdx.input.isKeyPressed(KeyboardConfig.INTERACT_WORLD.get()))

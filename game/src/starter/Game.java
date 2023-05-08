@@ -22,6 +22,7 @@ import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
 import graphic.PainterConfig;
+import graphic.hud.InventoryMenu;
 import graphic.hud.PauseMenu;
 import java.io.IOException;
 import java.util.*;
@@ -62,7 +63,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     /** Generates the level */
     protected IGenerator generator;
 
-    private ScreenImage inventoryWindow;
 
     private boolean doSetup = true;
     private static boolean paused = false;
@@ -81,6 +81,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 /** Get the value, in which level the hero is */
     public static int currentLevelNumber = 0;
     private static PauseMenu<Actor> pauseMenu;
+    private static InventoryMenu<Actor> inventory;
     private static Entity hero;
 
     private Logger gameLogger;
@@ -125,12 +126,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         systems = new SystemController();
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
+        inventory = new InventoryMenu<>();
         controller.add(pauseMenu);
+        controller.add(inventory);
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
-        ScreenImage im = new ScreenImage("hud/inventoryHud/Rahmen.png",new Point(0,0));
-        painter.draw(new Point(0,0),"hud/inventoryHud/Rahmen.png",new PainterConfig("hud/inventoryHud/Rahmen.png"));
         createSystems();
     }
 
@@ -140,6 +141,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
+        if(Gdx.input.isKeyJustPressed(Input.Keys.I)) callInventory();
     }
 
     @Override
@@ -219,6 +221,17 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (pauseMenu != null) {
             if (paused) pauseMenu.showMenu();
             else pauseMenu.hideMenu();
+        }
+    }
+
+    public static void callInventory() {
+        paused = !paused;
+        if(systems != null) {
+            systems.forEach(ECS_System::toggleRun);
+        }
+        if(inventory != null) {
+            if(paused) {inventory.createItemsInInventory(); inventory.showMenu();}
+            else {inventory.removeInventory(); inventory.hideMenu();}
         }
     }
 

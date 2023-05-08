@@ -17,16 +17,15 @@ import java.util.Optional;
 import java.util.Set;
 
 public class Sword extends ItemData {
-    private Damage damage;
 
-    public Sword(Hero hero){
+
+    public Sword(){
         super(ItemType.Active, AnimationBuilder.buildAnimation("items/sword/swordInventoryAnimation"),
             AnimationBuilder.buildAnimation("items/sword/swordWorldAnimation"),"Sword",
-            "Sword to Hit and kill Monsters",
+            "Sword to hit and kill Monsters",
             new DeletingItemInWorld(),
             new DeleteOnDrop(),
             new SwordOnUse(),
             new DamageModifier());
-        this.damage = new Damage(10,DamageType.PHYSICAL, hero);
     }
 }

@@ -17,5 +17,6 @@ public class HealPlayerOnUse implements IOnUse {
         hc.setCurrentHealthpoints(hc.getCurrentHealthpoints()+hp);
         InventoryComponent ic = (InventoryComponent) e.getComponent(InventoryComponent.class).get();
         ic.removeItem(item);
+        ic.setCurMainItem(null);
     }
 }

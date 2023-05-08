@@ -17,6 +17,7 @@ public class TeleportPlayerOnUse implements IOnUse {
     public void onUse(Entity e, ItemData item) {
         InventoryComponent ic = (InventoryComponent) e.getComponent(InventoryComponent.class).get();
         ic.removeItem(item);
+        ic.setCurMainItem(null);
         PositionComponent pc = (PositionComponent)e.getComponent(PositionComponent.class).get();
         pc.setPosition(getRandomAccesiblePoint());
     }

@@ -11,6 +11,8 @@ import logging.CustomLogLevel;
 public class InventoryComponent extends Component {
 
     private List<ItemData> inventory;
+
+    private ItemData curMainItem;
     private int maxSize;
     private final Logger inventoryLogger = Logger.getLogger(this.getClass().getName());
 
@@ -89,4 +91,13 @@ public class InventoryComponent extends Component {
     public List<ItemData> getItems() {
         return new ArrayList<>(inventory);
     }
+
+    public void setCurMainItem(ItemData item) {
+        curMainItem = item;
+    }
+
+    public ItemData getCurMainItem(){
+        return curMainItem;
+    }
+
 }

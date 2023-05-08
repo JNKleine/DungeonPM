@@ -43,7 +43,6 @@ public class Hero extends Entity {
         setupHealthComponent();
         setupInventoryComponent();
         pc.setSkillSlot1(firstSkill);
-        Sword sword = new Sword(this);
     }
 
     private void setupVelocityComponent() {
@@ -79,7 +78,9 @@ public class Hero extends Entity {
     }
 
     private void setupInventoryComponent() {
+
         InventoryComponent ic = new InventoryComponent(this,4);
+        ic.addItem(new Sword());
     }
 
     public void onHit(HitboxComponent hb) {

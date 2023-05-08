@@ -16,13 +16,14 @@ public abstract class DamageFoeMagicOnUse implements IOnUse {
     public void onUse(Entity e, ItemData item) {
         Set<Entity>  entities = Game.getEntities();
         for(Entity en : entities) {
-            HealthComponent hc = (HealthComponent)en.getComponent(HealthComponent.class).get();
             if(en.getFaction().equals(Faction.FOE)) {
+                HealthComponent hc = (HealthComponent)en.getComponent(HealthComponent.class).get();
                 hc.receiveHit(new Damage(getDamageAmount(),DamageType.MAGIC,e));
             }
         }
         InventoryComponent ic = (InventoryComponent) e.getComponent(InventoryComponent.class).get();
         ic.removeItem(item);
+        ic.setCurMainItem(null);
     }
 
     public abstract int getDamageAmount();

@@ -11,5 +11,6 @@ public class DeleteOnDrop implements IOnDrop {
     public void onDrop(Entity user, ItemData which, Point position) {
         InventoryComponent ic = (InventoryComponent)user.getComponent(InventoryComponent.class).get();
         ic.removeItem(which);
+        ic.setCurMainItem(null);
     }
 }

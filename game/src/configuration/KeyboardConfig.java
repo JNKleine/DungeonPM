@@ -19,9 +19,11 @@ public class KeyboardConfig {
     public static final ConfigKey<Integer> INTERACT_WORLD =
             new ConfigKey<>(new String[] {"interact", "world"}, new ConfigIntValue(Input.Keys.E));
     public static final ConfigKey<Integer> FIRST_SKILL =
-            new ConfigKey<>(new String[] {"skill", "first"}, new ConfigIntValue(Input.Keys.Q));
+            new ConfigKey<>(new String[] {"skill", "first"}, new ConfigIntValue(Input.Keys.Z));
     public static final ConfigKey<Integer> SECOND_SKILL =
             new ConfigKey<>(new String[] {"skill", "second"}, new ConfigIntValue(Input.Keys.R));
     public static final ConfigKey<Integer> SPACE =
-            new ConfigKey<>(new String[] {"attack", "hit"}, new ConfigIntValue(Input.Keys.SPACE));
+            new ConfigKey<>(new String[] {"interact", "use"}, new ConfigIntValue(Input.Keys.SPACE));
+    public static final ConfigKey<Integer> DROP_ITEM =
+        new ConfigKey<>(new String[] {"interact", "drop"}, new ConfigIntValue(Input.Keys.Q));
 }
