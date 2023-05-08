@@ -47,6 +47,7 @@ public class SwordOnUse implements IOnUse {
             if (e.getFaction() == Faction.FOE)
                 listOfEntities.add(e);
         }
+
         // Hit nach links
         if (PlayerSystem.getKey() == 0) {
              entsToHit = hitInDirection(0,listOfEntities);
@@ -70,9 +71,11 @@ public class SwordOnUse implements IOnUse {
             PositionComponent posOfEntity = (PositionComponent) e.getComponent(PositionComponent.class).get();
             Point pointOfEntity = posOfEntity.getPosition();
             boolean checkRight = heroPoint.toCoordinate().x+this.hitRange <= pointOfEntity.toCoordinate().x;
-            boolean checkLeft = heroPoint.toCoordinate().x-this.hitRange <= pointOfEntity.toCoordinate().x;
-            boolean checkUpper = heroPoint.toCoordinate().y-this.hitRange >= pointOfEntity.toCoordinate().y;
-            boolean checkDown = heroPoint.toCoordinate().y+this.hitRange <= pointOfEntity.toCoordinate().y;
+
+            boolean checkLeft = heroPoint.toCoordinate().x-this.hitRange >= pointOfEntity.toCoordinate().x;
+            boolean checkUpper = heroPoint.toCoordinate().y+this.hitRange <= pointOfEntity.toCoordinate().y;
+            boolean checkDown = heroPoint.toCoordinate().y-this.hitRange >= pointOfEntity.toCoordinate().y;
+
             boolean checkUpperRight = (checkRight && checkUpper);
             boolean checkUpperLeft = (checkLeft && checkUpper);
             boolean checkDownRight = (checkRight && checkDown);
