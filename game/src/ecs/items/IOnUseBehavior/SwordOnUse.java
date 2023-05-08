@@ -1,6 +1,9 @@
 package ecs.items.IOnUseBehavior;
 
+import ecs.components.HealthComponent;
 import ecs.components.PositionComponent;
+import ecs.damage.Damage;
+import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import ecs.entities.Faction;
 import ecs.entities.Hero;
@@ -19,69 +22,76 @@ public class SwordOnUse implements IOnUse {
     private Hero hero;
 
     private int hitRange;
+    private int damage;
 
-    public SwordOnUse(int hitRange) {
+    public SwordOnUse(int hitRange, int damage) {
         this.hitRange = hitRange;
+        this.damage = damage;
     }
 
     @Override
     public void onUse(Entity e, ItemData item) {
         this.hero = (Hero) e;
         ArrayList<Entity> entities = getEntitiesToHit();
+        for(Entity entity: entities) {
+            System.out.println("Test1 37");
+            HealthComponent hc = (HealthComponent) entity.getComponent(HealthComponent.class).get();
+            hc.receiveHit(new Damage(damage, DamageType.PHYSICAL,e));
+        }
     }
 
     private ArrayList<Entity> getEntitiesToHit() {
         Set<Entity> entities = Game.getEntities();
-        ArrayList<Entity> ents = new ArrayList<>();
+        ArrayList<Entity> listOfEntities = new ArrayList<>();
         ArrayList<Entity> entsToHit = new ArrayList<>();
-        for (Entity ente : entities) {
-            if (ente.getFaction() == Faction.FOE)
-                ents.add(ente);
+        for (Entity e : entities) {
+            if (e.getFaction() == Faction.FOE)
+                listOfEntities.add(e);
         }
         PlayerSystem lastKeyStroke = new PlayerSystem();
         // Hit nach links
         if (lastKeyStroke.getKey() == 0) {
-             entsToHit = hitInDirection(0,ents);
+             entsToHit = hitInDirection(0,listOfEntities);
             // Hit nach oben
         } else if (lastKeyStroke.getKey() == 1) {
-            entsToHit = hitInDirection(1,ents);
+            entsToHit = hitInDirection(1,listOfEntities);
             // Hit nach rechts
         } else if (lastKeyStroke.getKey() == 2) {
-            entsToHit = hitInDirection(2,ents);
+            entsToHit = hitInDirection(2,listOfEntities);
             // Hit nach unten
         } else if (lastKeyStroke.getKey() == 3) {
-            entsToHit = hitInDirection(3,ents);
+            entsToHit = hitInDirection(3,listOfEntities);
         }
         return entsToHit;
     }
     private ArrayList<Entity> hitInDirection(int key, ArrayList<Entity> entities) {
         PositionComponent pos = (PositionComponent) hero.getComponent(PositionComponent.class).get();
         Point heroPoint = pos.getPosition();
-        ArrayList<Entity> entsToHit = new ArrayList<>();
-        for ( Entity ente : entities) {
-            PositionComponent posOfEnte = (PositionComponent) ente.getComponent(PositionComponent.class).get();
-            Point pointOfEnte = posOfEnte.getPosition();
-            boolean checkRight = heroPoint.toCoordinate().x+this.hitRange <= pointOfEnte.toCoordinate().x;
-            boolean checkLeft = heroPoint.toCoordinate().x-this.hitRange <= pointOfEnte.toCoordinate().x;
-            boolean checkUpper = heroPoint.toCoordinate().y-this.hitRange <= pointOfEnte.toCoordinate().y;
-            boolean checkDown = heroPoint.toCoordinate().y+this.hitRange <= pointOfEnte.toCoordinate().y;
+        ArrayList<Entity> entitiesToHit = new ArrayList<>();
+        for ( Entity e : entities) {
+            PositionComponent posOfEntity = (PositionComponent) e.getComponent(PositionComponent.class).get();
+            Point pointOfEntity = posOfEntity.getPosition();
+            boolean checkRight = heroPoint.toCoordinate().x+this.hitRange <= pointOfEntity.toCoordinate().x;
+            boolean checkLeft = heroPoint.toCoordinate().x-this.hitRange <= pointOfEntity.toCoordinate().x;
+            boolean checkUpper = heroPoint.toCoordinate().y-this.hitRange <= pointOfEntity.toCoordinate().y;
+            boolean checkDown = heroPoint.toCoordinate().y+this.hitRange <= pointOfEntity.toCoordinate().y;
             boolean checkUpperRight = (checkRight && checkUpper);
             boolean checkUpperLeft = (checkLeft && checkUpper);
             boolean checkDownRight = (checkRight && checkDown);
             boolean checkDownLeft = (checkLeft && checkDown);
              if ( key == 0 && ( checkLeft || checkUpperLeft || checkDownLeft)) {
-                 entsToHit.add(ente);
+                 entitiesToHit.add(e);
              }
               else if ( key == 1 && ( checkUpper || checkUpperLeft || checkUpperRight )) {
-                 entsToHit.add(ente);
+                 entitiesToHit.add(e);
              }
               else if ( key == 2 && ( checkRight || checkUpperRight || checkDownRight)) {
-                 entsToHit.add(ente);
+                 entitiesToHit.add(e);
              }
               else if ( key == 3 && ( checkDown || checkDownLeft || checkDownRight)) {
-                 entsToHit.add(ente);
+                 entitiesToHit.add(e);
              }
         }
-        return entsToHit;
+        return entitiesToHit;
     }
 }

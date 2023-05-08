@@ -25,7 +25,7 @@ public class Sword extends ItemData {
             "Sword to hit and kill Monsters",
             new DeletingItemInWorld(),
             new DeleteOnDrop(),
-            new SwordOnUse(1),
+            new SwordOnUse(1,10),
             new DamageModifier());
     }
 }
