@@ -18,6 +18,11 @@ import java.util.HashMap;
 
 public class InventoryMenu <T extends Actor> extends ScreenController<T>  {
 
+    private HashMap<String,ItemData> buttons = new HashMap<>();
+    private ArrayList<T> currentInventory = new ArrayList<>();
+
+    InventoryComponent ic;
+
     public TextButtonListener tb = new TextButtonListener() {
         @Override
         public void clicked( InputEvent event, float x, float y) {
@@ -29,38 +34,46 @@ public class InventoryMenu <T extends Actor> extends ScreenController<T>  {
         }
     };
 
-    private HashMap<String,ItemData> buttons = new HashMap<>();
-    private ArrayList<T> currentInventory = new ArrayList<>();
     public InventoryMenu() {
         this(new SpriteBatch());
     }
 
     public InventoryMenu(SpriteBatch batch) {
         super(batch);
-        createInventoryHUD(4);
-        hideMenu();
     }
 
-    private void createInventoryHUD(int size) {
-        for(int i = 0; i < size; i++) {
+
+    public void createInventory() {
+        createInventoryHUD();
+        createItemsInInventory();
+    }
+    private void createInventoryHUD() {
+        Hero curHero = (Hero)Game.getHero().get();
+        ic = (InventoryComponent)curHero.getComponent(InventoryComponent.class).get();
+        for(int i = 0; i < ic.maxSize; i++) {
+            int xPos = i%4;
+            int yPos = i/4;
             ScreenImage img = new ScreenImage("hud/inventoryHud/Rahmen.png",new Point(0,0));
             img.setPosition(
-                ((Constants.WINDOW_WIDTH) / 2.6f - img.getWidth()+i*64),
-                (Constants.WINDOW_HEIGHT) / 1.5f + img.getHeight(),
+                ((Constants.WINDOW_WIDTH) / 2.6f - img.getWidth()+xPos*64),
+                ((Constants.WINDOW_HEIGHT) / 1.5f + img.getHeight()-yPos*64),
                 Align.center | Align.bottom);
             add((T)img);
+            currentInventory.add((T)img);
         }
     }
 
-    public void createItemsInInventory() {
+    private void createItemsInInventory() {
         Hero curHero =(Hero) Game.getHero().get();
         InventoryComponent ic = (InventoryComponent) curHero.getComponent(InventoryComponent.class).get();
         ArrayList<ItemData> items = (ArrayList)ic.getItems();
         for(int i = 0; i < items.size(); i++) {
+            int xPos = i%4;
+            int yPos = i/4;
             ScreenImage img = new ScreenImage(items.get(i).getInventoryTexture().getNextAnimationTexturePath(),new Point(0,0));
             img.setPosition(
-                ((Constants.WINDOW_WIDTH) / 2.6f - img.getWidth()+i*64),
-                (Constants.WINDOW_HEIGHT) / 1.5f + img.getHeight(),
+                ((Constants.WINDOW_WIDTH) / 2.6f - img.getWidth()+xPos*64),
+                ((Constants.WINDOW_HEIGHT) / 1.5f + img.getHeight()-yPos*64),
                 Align.center | Align.bottom);
             add((T)img);
 

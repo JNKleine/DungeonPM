@@ -5,6 +5,8 @@ import ecs.items.ItemData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import ecs.items.ItemType;
 import logging.CustomLogLevel;
 
 /** Allows an Entity to carry Items */
@@ -13,19 +15,27 @@ public class InventoryComponent extends Component {
     private List<ItemData> inventory;
 
     private ItemData curMainItem;
-    private int maxSize;
+    public int maxSize;
+    public int extraSpaceBackPack;
+    public int defaultSpace;
+
+    public boolean backpackIsCollected = false;
+
+    public static ItemType backpackItemTypeStorage;
     private final Logger inventoryLogger = Logger.getLogger(this.getClass().getName());
 
     /**
      * creates a new InventoryComponent
      *
      * @param entity the Entity where this Component should be added to
-     * @param maxSize the maximal size of the inventory
+     * @param curMaxSize the maximal size of the inventory
      */
-    public InventoryComponent(Entity entity, int maxSize) {
+    public InventoryComponent(Entity entity, int curMaxSpace) {
         super(entity);
         inventory = new ArrayList<>(maxSize);
-        this.maxSize = maxSize;
+        maxSize = curMaxSpace;
+        defaultSpace = maxSize;
+        extraSpaceBackPack = 0;
     }
 
     /**
@@ -36,7 +46,8 @@ public class InventoryComponent extends Component {
      * @return true if the item was added, otherwise false
      */
     public boolean addItem(ItemData itemData) {
-        if (inventory.size() >= maxSize) return false;
+        if ((inventory.size() >= defaultSpace && !itemData.getItemType().equals(backpackItemTypeStorage)) ||
+            inventory.size() >= maxSize) return false;
         inventoryLogger.log(
                 CustomLogLevel.DEBUG,
                 "Item '"
@@ -45,6 +56,19 @@ public class InventoryComponent extends Component {
                         + entity.getClass().getSimpleName()
                         + "'.");
         return inventory.add(itemData);
+    }
+
+    public void addBackpack(int size, ItemType type) {
+        extraSpaceBackPack = size;
+        maxSize = defaultSpace+extraSpaceBackPack;
+        backpackItemTypeStorage = type;
+        backpackIsCollected = true;
+    }
+
+    public void removeBackpack() {
+        extraSpaceBackPack = 0;
+        maxSize = defaultSpace;
+        backpackIsCollected = false;
     }
 
     /**
@@ -84,6 +108,10 @@ public class InventoryComponent extends Component {
     public int getMaxSize() {
         return maxSize;
     }
+
+    public int getDefaultSize() {return defaultSpace;}
+
+    public int getBackpackSize() {return extraSpaceBackPack;}
 
     /**
      * @return a copy of the inventory

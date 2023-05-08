@@ -230,7 +230,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             systems.forEach(ECS_System::toggleRun);
         }
         if(inventory != null) {
-            if(paused) {inventory.createItemsInInventory(); inventory.showMenu();}
+            if(paused) {inventory.createInventory(); inventory.showMenu();}
             else {inventory.removeInventory(); inventory.hideMenu();}
         }
     }
