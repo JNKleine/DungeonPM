@@ -12,7 +12,7 @@ public class PotionOfHealing extends ItemData {
     public PotionOfHealing() {
         super(ItemType.Active, AnimationBuilder.buildAnimation("items/potionOfHealing/potionOfHealingInventoryAnimation"),
             AnimationBuilder.buildAnimation("items/potionOfHealing/potionOfHealingWorldAnimation"),"Potion of Healing",
-            "drink this, you will recieve 20 HP (trust me)",
+            "drink this, you will receive 20 HP (trust me)",
             new DeletingItemInWorld(),
             new DeleteOnDrop(),
             new HealPlayerOnUse(20),

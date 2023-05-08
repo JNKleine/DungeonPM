@@ -1,5 +1,6 @@
 package ecs.items;
 
+import ecs.items.item.Backpack;
 import ecs.items.item.Damagestone;
 import ecs.items.item.PotionOfHealing;
 import ecs.items.item.Telestone;
@@ -15,7 +16,8 @@ public class ItemDataGenerator {
             List.of(
                     new Telestone(),
                     new Damagestone(),
-                    new PotionOfHealing()
+                    new PotionOfHealing(),
+                    new Backpack(4,ItemType.Active)
             );
     private Random rand = new Random();
 
@@ -23,6 +25,11 @@ public class ItemDataGenerator {
      * @return a new randomItemData
      */
     public ItemData generateItemData() {
-        return templates.get(rand.nextInt(templates.size()));
+        Random rd = new Random();
+        if(rd.nextInt(0,100) <= 30) {
+            return templates.get(rand.nextInt(templates.size()));
+        } else {
+            return null;
+        }
     }
 }
