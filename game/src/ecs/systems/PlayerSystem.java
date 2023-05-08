@@ -2,22 +2,22 @@ package ecs.systems;
 
 import com.badlogic.gdx.Gdx;
 import configuration.KeyboardConfig;
-import ecs.components.AnimationComponent;
 import ecs.components.MissingComponentException;
 import ecs.components.PlayableComponent;
 import ecs.components.VelocityComponent;
 import ecs.entities.Entity;
-import ecs.entities.Hero;
+import ecs.items.IOnUseBehavior.SwordOnUse;
 import ecs.tools.interaction.InteractionTool;
-import graphic.Animation;
 import starter.Game;
 
-import java.util.Collections;
-import java.util.Optional;
 
 /** Used to control the player */
 public class PlayerSystem extends ECS_System {
 
+    /**
+     * Use for SwordOnUse, key = 0 is left, key = 1 is up, key = 2 is right, key = 3 is down.
+     */
+    private static int key;
     private record KSData(Entity e, PlayableComponent pc, VelocityComponent vc) {}
 
     @Override
@@ -29,16 +29,25 @@ public class PlayerSystem extends ECS_System {
     }
 
     private void checkKeystroke(KSData ksd) {
-        if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_UP.get()))
+        if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_UP.get())) {
             ksd.vc.setCurrentYVelocity(1 * ksd.vc.getYVelocity());
-        else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_DOWN.get()))
+            key = 1;
+        }
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_DOWN.get())) {
             ksd.vc.setCurrentYVelocity(-1 * ksd.vc.getYVelocity());
-        else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_RIGHT.get()))
+            key = 3;
+        }
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_RIGHT.get())) {
             ksd.vc.setCurrentXVelocity(1 * ksd.vc.getXVelocity());
-        else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_LEFT.get()))
+            key = 2;
+        }
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_LEFT.get())) {
             ksd.vc.setCurrentXVelocity(-1 * ksd.vc.getXVelocity());
+            key = 0;
+        }
 
         if (Gdx.input.isKeyPressed(KeyboardConfig.SPACE.get())) {
+            new SwordOnUse().getFloorTilesToHit();
             /*if () {
 
             } else {
@@ -71,4 +80,6 @@ public class PlayerSystem extends ECS_System {
     private static MissingComponentException missingVC() {
         return new MissingComponentException("VelocityComponent");
     }
+
+    public static int getKey() { return key;}
 }
