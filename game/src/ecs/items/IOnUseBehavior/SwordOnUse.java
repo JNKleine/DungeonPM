@@ -18,6 +18,12 @@ public class SwordOnUse implements IOnUse {
 
     private Hero hero;
 
+    private int hitRange;
+
+    public SwordOnUse(int hitRange) {
+        this.hitRange = hitRange;
+    }
+
     @Override
     public void onUse(Entity e, ItemData item) {
         this.hero = (Hero) e;
@@ -35,22 +41,18 @@ public class SwordOnUse implements IOnUse {
         PlayerSystem lastKeyStroke = new PlayerSystem();
         // Hit nach links
         if (lastKeyStroke.getKey() == 0) {
-            System.out.println("hit left funzt");
              entsToHit = hitInDirection(0,ents);
             // Hit nach oben
         } else if (lastKeyStroke.getKey() == 1) {
-            System.out.println("hit oben funzt");
             entsToHit = hitInDirection(1,ents);
             // Hit nach rechts
         } else if (lastKeyStroke.getKey() == 2) {
-            System.out.println("hit rechts funzt");
             entsToHit = hitInDirection(2,ents);
             // Hit nach unten
         } else if (lastKeyStroke.getKey() == 3) {
-            System.out.println("hit unten funzt");
             entsToHit = hitInDirection(3,ents);
         }
-        return ents;
+        return entsToHit;
     }
     private ArrayList<Entity> hitInDirection(int key, ArrayList<Entity> entities) {
         Hero hero = (Hero) Game.getHero().get();
@@ -60,24 +62,28 @@ public class SwordOnUse implements IOnUse {
         for ( Entity ente : entities) {
             PositionComponent posOfEnte = (PositionComponent) ente.getComponent(PositionComponent.class).get();
             Point pointOfEnte = posOfEnte.getPosition();
-            boolean checkRight = heroPoint.x+1 == pointOfEnte.x;
-            boolean checkLeft = heroPoint.x-1 == pointOfEnte.x;
-            boolean checkUpper = heroPoint.y-1 == pointOfEnte.y;
-            boolean checkDown = heroPoint.y+1 == pointOfEnte.y;
+            boolean checkRight = heroPoint.toCoordinate().x+this.hitRange <= pointOfEnte.toCoordinate().x;
+            boolean checkLeft = heroPoint.toCoordinate().x-this.hitRange <= pointOfEnte.toCoordinate().x;
+            boolean checkUpper = heroPoint.toCoordinate().y-this.hitRange <= pointOfEnte.toCoordinate().y;
+            boolean checkDown = heroPoint.toCoordinate().y+this.hitRange <= pointOfEnte.toCoordinate().y;
             boolean checkUpperRight = (checkRight && checkUpper);
             boolean checkUpperLeft = (checkLeft && checkUpper);
             boolean checkDownRight = (checkRight && checkDown);
             boolean checkDownLeft = (checkLeft && checkDown);
+            System.out.println(checkLeft + " : " + checkUpperLeft +  " : " + checkDownLeft + " test in Swordonuse Z 73"
+            + checkUpper + " : " + checkDown);
              if ( key == 0 && ( checkLeft || checkUpperLeft || checkDownLeft)) {
                  entsToHit.add(ente);
-                 System.out.println("hit left funzt2");
              }
-              else if ( key == 1 && ( checkUpper || checkUpperLeft || checkUpperRight ))
+              else if ( key == 1 && ( checkUpper || checkUpperLeft || checkUpperRight )) {
                  entsToHit.add(ente);
-              else if ( key == 2 && ( checkRight || checkUpperRight || checkDownRight))
-                  entsToHit.add(ente);
-              else if ( key == 3 && ( checkDown || checkDownLeft || checkDownRight))
-                  entsToHit.add(ente);
+             }
+              else if ( key == 2 && ( checkRight || checkUpperRight || checkDownRight)) {
+                 entsToHit.add(ente);
+             }
+              else if ( key == 3 && ( checkDown || checkDownLeft || checkDownRight)) {
+                 entsToHit.add(ente);
+             }
         }
         return entsToHit;
     }
