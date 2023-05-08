@@ -48,18 +48,18 @@ public class SwordOnUse implements IOnUse {
             if (e.getFaction() == Faction.FOE)
                 listOfEntities.add(e);
         }
-        PlayerSystem lastKeyStroke = new PlayerSystem();
+
         // Hit nach links
-        if (lastKeyStroke.getKey() == 0) {
+        if (PlayerSystem.getKey() == 0) {
              entsToHit = hitInDirection(0,listOfEntities);
             // Hit nach oben
-        } else if (lastKeyStroke.getKey() == 1) {
+        } else if (PlayerSystem.getKey() == 1) {
             entsToHit = hitInDirection(1,listOfEntities);
             // Hit nach rechts
-        } else if (lastKeyStroke.getKey() == 2) {
+        } else if (PlayerSystem.getKey() == 2) {
             entsToHit = hitInDirection(2,listOfEntities);
             // Hit nach unten
-        } else if (lastKeyStroke.getKey() == 3) {
+        } else if (PlayerSystem.getKey() == 3) {
             entsToHit = hitInDirection(3,listOfEntities);
         }
         return entsToHit;
@@ -72,9 +72,9 @@ public class SwordOnUse implements IOnUse {
             PositionComponent posOfEntity = (PositionComponent) e.getComponent(PositionComponent.class).get();
             Point pointOfEntity = posOfEntity.getPosition();
             boolean checkRight = heroPoint.toCoordinate().x+this.hitRange <= pointOfEntity.toCoordinate().x;
-            boolean checkLeft = heroPoint.toCoordinate().x-this.hitRange <= pointOfEntity.toCoordinate().x;
-            boolean checkUpper = heroPoint.toCoordinate().y-this.hitRange <= pointOfEntity.toCoordinate().y;
-            boolean checkDown = heroPoint.toCoordinate().y+this.hitRange <= pointOfEntity.toCoordinate().y;
+            boolean checkLeft = heroPoint.toCoordinate().x-this.hitRange >= pointOfEntity.toCoordinate().x;
+            boolean checkUpper = heroPoint.toCoordinate().y+this.hitRange <= pointOfEntity.toCoordinate().y;
+            boolean checkDown = heroPoint.toCoordinate().y-this.hitRange >= pointOfEntity.toCoordinate().y;
             boolean checkUpperRight = (checkRight && checkUpper);
             boolean checkUpperLeft = (checkLeft && checkUpper);
             boolean checkDownRight = (checkRight && checkDown);
