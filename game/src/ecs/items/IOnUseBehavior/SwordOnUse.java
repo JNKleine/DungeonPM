@@ -55,7 +55,6 @@ public class SwordOnUse implements IOnUse {
         return entsToHit;
     }
     private ArrayList<Entity> hitInDirection(int key, ArrayList<Entity> entities) {
-        Hero hero = (Hero) Game.getHero().get();
         PositionComponent pos = (PositionComponent) hero.getComponent(PositionComponent.class).get();
         Point heroPoint = pos.getPosition();
         ArrayList<Entity> entsToHit = new ArrayList<>();
@@ -70,8 +69,6 @@ public class SwordOnUse implements IOnUse {
             boolean checkUpperLeft = (checkLeft && checkUpper);
             boolean checkDownRight = (checkRight && checkDown);
             boolean checkDownLeft = (checkLeft && checkDown);
-            System.out.println(checkLeft + " : " + checkUpperLeft +  " : " + checkDownLeft + " test in Swordonuse Z 73"
-            + checkUpper + " : " + checkDown);
              if ( key == 0 && ( checkLeft || checkUpperLeft || checkDownLeft)) {
                  entsToHit.add(ente);
              }
