@@ -17,7 +17,7 @@ public class Backpack extends ItemData {
         super(ItemType.Backpack, AnimationBuilder.buildAnimation("items/backpack/backpackInventoryAnimation"),
             AnimationBuilder.buildAnimation("items/backpack/backpackWorldAnimation"),"Backpack",
             "This Backpack grants you 4 new possibilities to store items from type active",
-            new BackpackOnCollect(),
+            new BackpackOnCollect(size),
             new BackpackOnDrop(),
             new NothingOnUse(),
             new DamageModifier());

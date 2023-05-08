@@ -9,7 +9,10 @@ import ecs.items.ItemType;
 import starter.Game;
 
 public class BackpackOnCollect implements IOnCollect {
-
+private int size = 0;
+    public BackpackOnCollect(int size) {
+        this.size = size;
+    }
 
     public void onCollect(Entity worldItemEntity, Entity whoCollides) {
         if(whoCollides.getFaction().equals(Faction.PLAYER)) {
@@ -18,8 +21,9 @@ public class BackpackOnCollect implements IOnCollect {
                 ic.addItem((worldItemEntity.getComponent(ItemComponent.class).
                     map(ItemComponent.class::cast).get().getItemData()));
                 Game.removeEntity(worldItemEntity);
-                ic.addBackpack(4, ItemType.Active);
+                ic.addBackpack(size, ItemType.Active);
             }
         }
     }
+
 }
