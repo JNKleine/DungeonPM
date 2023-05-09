@@ -11,6 +11,9 @@ import ecs.items.ItemData;
 import starter.Game;
 import java.util.Set;
 
+/**
+ * To be used for the damagestone to make damage on all enemy entitites in the level
+ */
 public abstract class DamageFoeMagicOnUse implements IOnUse {
     @Override
     public void onUse(Entity e, ItemData item) {

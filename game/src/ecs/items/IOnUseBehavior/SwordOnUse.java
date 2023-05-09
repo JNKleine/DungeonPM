@@ -19,11 +19,26 @@ import java.util.Set;
 
 public class SwordOnUse implements IOnUse {
 
+    /**
+     * Entity that uses the sowrd
+     */
     private Hero hero;
 
+    /**
+     * hitRange to hit enemy entities in range
+     */
     private int hitRange;
+    /**
+     * initial damage used for the current "normal" sword
+     */
     private int damage;
 
+    /**
+     * Creates a new Sword with the given hitRange and damage
+     *
+     * @param hitRange
+     * @param damage
+     */
     public SwordOnUse(int hitRange, int damage) {
         this.hitRange = hitRange;
         this.damage = damage;
@@ -39,6 +54,9 @@ public class SwordOnUse implements IOnUse {
         }
     }
 
+    /*
+        Method to sort out friendly enemies and give the direction key for the hit to the hitInDirection method
+     */
     private ArrayList<Entity> getEntitiesToHit() {
         Set<Entity> entities = Game.getEntities();
         ArrayList<Entity> listOfEntities = new ArrayList<>();
@@ -47,22 +65,25 @@ public class SwordOnUse implements IOnUse {
             if (e.getFaction() == Faction.FOE)
                 listOfEntities.add(e);
         }
-
-        // Hit nach links
+        // Hit left
         if (PlayerSystem.getKey() == 0) {
              entsToHit = hitInDirection(0,listOfEntities);
-            // Hit nach oben
+            // Hit up
         } else if (PlayerSystem.getKey() == 1) {
             entsToHit = hitInDirection(1,listOfEntities);
-            // Hit nach rechts
+            // Hit right
         } else if (PlayerSystem.getKey() == 2) {
             entsToHit = hitInDirection(2,listOfEntities);
-            // Hit nach unten
+            // Hit down
         } else if (PlayerSystem.getKey() == 3) {
             entsToHit = hitInDirection(3,listOfEntities);
         }
         return entsToHit;
     }
+
+    /*
+    Method to get all entitiies that are in the hitRange of the Hero
+     */
     private ArrayList<Entity> hitInDirection(int key, ArrayList<Entity> entities) {
         PositionComponent pos = (PositionComponent) hero.getComponent(PositionComponent.class).get();
         Point heroPoint = pos.getPosition();

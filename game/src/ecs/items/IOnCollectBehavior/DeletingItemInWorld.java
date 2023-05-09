@@ -7,6 +7,9 @@ import ecs.entities.Faction;
 import ecs.items.IOnCollect;
 import starter.Game;
 
+/**
+ * Deletes an item from the world after picking it up
+ */
 public class DeletingItemInWorld implements IOnCollect {
     @Override
     public void onCollect(Entity worldItemEntity, Entity whoCollides) {

@@ -6,8 +6,15 @@ import ecs.entities.Entity;
 import ecs.items.IOnUse;
 import ecs.items.ItemData;
 
+/**
+ * Heals a player after using a heal potion
+ */
 public class HealPlayerOnUse implements IOnUse {
     private int hp = 0;
+
+    /**
+     * @param amountRegenerateHP to specify the amount to heal
+     */
     public HealPlayerOnUse(int amountRegenerateHP) {
       hp = amountRegenerateHP;
     }
