@@ -28,24 +28,33 @@ public class PlayerSystem extends ECS_System {
     }
 
     private void checkKeystroke(KSData ksd) {
-        if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_UP.get())) {
-            ksd.vc.setCurrentYVelocity(1 * ksd.vc.getYVelocity());
+        if (Gdx.input.isKeyPressed(KeyboardConfig.LOOK_UP.get())) {
             key = 1;
         }
-        else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_DOWN.get())) {
-            ksd.vc.setCurrentYVelocity(-1 * ksd.vc.getYVelocity());
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.LOOK_DOWN.get())) {
             key = 3;
         }
-        else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_RIGHT.get())) {
-            ksd.vc.setCurrentXVelocity(1 * ksd.vc.getXVelocity());
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.LOOK_RIGHT.get())) {
             key = 2;
         }
-        else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_LEFT.get())) {
-            ksd.vc.setCurrentXVelocity(-1 * ksd.vc.getXVelocity());
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.LOOK_LEFT.get())) {
             key = 0;
         }
 
-        if (Gdx.input.isKeyPressed(KeyboardConfig.SPACE.get())) {
+        if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_UP.get())) {
+            ksd.vc.setCurrentYVelocity(1 * ksd.vc.getYVelocity());
+        }
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_DOWN.get())) {
+            ksd.vc.setCurrentYVelocity(-1 * ksd.vc.getYVelocity());
+        }
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_RIGHT.get())) {
+            ksd.vc.setCurrentXVelocity(1 * ksd.vc.getXVelocity());
+        }
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_LEFT.get())) {
+            ksd.vc.setCurrentXVelocity(-1 * ksd.vc.getXVelocity());
+        }
+
+        if (Gdx.input.isKeyJustPressed(KeyboardConfig.SPACE.get())) {
            Hero curHero = (Hero)Game.getHero().get();
                     InventoryComponent ic = (InventoryComponent)curHero.getComponent(InventoryComponent.class).get();
                     if(ic.getCurMainItem() != null)

@@ -26,4 +26,12 @@ public class KeyboardConfig {
             new ConfigKey<>(new String[] {"interact", "use"}, new ConfigIntValue(Input.Keys.SPACE));
     public static final ConfigKey<Integer> DROP_ITEM =
         new ConfigKey<>(new String[] {"interact", "drop"}, new ConfigIntValue(Input.Keys.Q));
+    public static final ConfigKey<Integer> LOOK_UP =
+        new ConfigKey<>(new String[] {"look", "up"}, new ConfigIntValue(Input.Keys.UP));
+    public static final ConfigKey<Integer> LOOK_LEFT =
+        new ConfigKey<>(new String[] {"look", "left"}, new ConfigIntValue(Input.Keys.LEFT));
+    public static final ConfigKey<Integer> LOOK_DOWN =
+        new ConfigKey<>(new String[] {"look", "down"}, new ConfigIntValue(Input.Keys.DOWN));
+    public static final ConfigKey<Integer> LOOK_RIGHT =
+        new ConfigKey<>(new String[] {"look", "right"}, new ConfigIntValue(Input.Keys.RIGHT));
 }
