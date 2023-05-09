@@ -21,14 +21,13 @@ import ecs.items.WorldItemBuilder;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
-import graphic.PainterConfig;
+import graphic.hud.DialogueMenu;
 import graphic.hud.InventoryMenu;
 import graphic.hud.PauseMenu;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
-import graphic.hud.ScreenImage;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -67,6 +66,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private boolean doSetup = true;
     private static boolean paused = false;
 
+    private static boolean dialogueIsOn = false;
+
     /** All entities that are currently active in the dungeon */
     private static final Set<Entity> entities = new HashSet<>();
     /** All entities to be removed from the dungeon in the next frame */
@@ -81,6 +82,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 /** Get the value, in which level the hero is */
     public static int currentLevelNumber = 0;
     private static PauseMenu<Actor> pauseMenu;
+
+    private static DialogueMenu<Actor> dialogueMenu;
     private static InventoryMenu<Actor> inventory;
     private static Entity hero;
 
@@ -126,8 +129,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         systems = new SystemController();
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
+        dialogueMenu = new DialogueMenu<>();
         inventory = new InventoryMenu<>();
         controller.add(pauseMenu);
+        controller.add(dialogueMenu);
         controller.add(inventory);
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
@@ -214,26 +219,57 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     /** Toggle between pause and run */
     public static void togglePause() {
-        paused = !paused;
-        if (systems != null) {
-            systems.forEach(ECS_System::toggleRun);
-        }
-        if (pauseMenu != null) {
-            if (paused) pauseMenu.showMenu();
-            else pauseMenu.hideMenu();
+
+            paused = !paused;
+            if (systems != null) {
+                systems.forEach(ECS_System::toggleRun);
+            }
+            if (pauseMenu != null) {
+                if (paused) {
+                    pauseMenu.showMenu();
+                } else {
+                    pauseMenu.hideMenu();
+                }
+            }
+
+    }
+
+    /**Call the inventoryHUD and show it**/
+    public static void callInventory() {
+
+            paused = !paused;
+            if (systems != null) {
+                systems.forEach(ECS_System::toggleRun);
+            }
+            if (inventory != null) {
+                if (paused) {
+                    inventory.createInventory();
+                    inventory.showMenu();
+                } else {
+                    inventory.removeInventory();
+                    inventory.hideMenu();
+
+            }
         }
     }
 
-    public static void callInventory() {
-        paused = !paused;
-        if(systems != null) {
-            systems.forEach(ECS_System::toggleRun);
-        }
-        if(inventory != null) {
-            if(paused) {inventory.createInventory(); inventory.showMenu();}
-            else {inventory.removeInventory(); inventory.hideMenu();}
+    /**Call the DialogueHUD and show it**/
+    public static void callDialogue() {
+         dialogueIsOn = !dialogueIsOn;
+
+
+        if (dialogueMenu != null) {
+            if (!dialogueIsOn) {
+                dialogueMenu.createDialogueMenu();
+                dialogueMenu.showMenu();
+            } else {
+                dialogueMenu.removeDialogueMenu();
+                dialogueMenu.hideMenu();
+            }
+
         }
     }
+
 
     private void addItem() {
         ItemDataGenerator ig = new ItemDataGenerator();

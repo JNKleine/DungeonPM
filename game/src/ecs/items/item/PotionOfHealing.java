@@ -8,7 +8,14 @@ import ecs.items.IOnUseBehavior.HealPlayerOnUse;
 import ecs.items.ItemData;
 import ecs.items.ItemType;
 
+/**
+ * Item from type PotionOfHealing
+ * **/
 public class PotionOfHealing extends ItemData {
+
+    /**
+     * Create a PotionOfHealing with specified properties (20HP for user)
+     * **/
     public PotionOfHealing() {
         super(ItemType.Active, AnimationBuilder.buildAnimation("items/potionOfHealing/potionOfHealingInventoryAnimation"),
             AnimationBuilder.buildAnimation("items/potionOfHealing/potionOfHealingWorldAnimation"),"Potion of Healing",

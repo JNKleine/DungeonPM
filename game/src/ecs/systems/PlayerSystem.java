@@ -72,7 +72,7 @@ public class PlayerSystem extends ECS_System {
             }
         }
 
-        if (Gdx.input.isKeyPressed(KeyboardConfig.INTERACT_WORLD.get()))
+        if (Gdx.input.isKeyJustPressed(KeyboardConfig.INTERACT_WORLD.get()))
             InteractionTool.interactWithClosestInteractable(ksd.e);
 
         // check skills

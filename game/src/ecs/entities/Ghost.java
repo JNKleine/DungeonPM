@@ -21,6 +21,8 @@ import java.util.Random;
  */
 public class Ghost extends Monster {
 
+    public static String name = "Gilbert";
+
     /**Creates an object from type ghost
      *
      *<p>Within this constructor, all defined and required values
@@ -32,6 +34,7 @@ public class Ghost extends Monster {
         super(0.1f, 0.1f, 0, 0, 0.9f, 1, "npc/ghost/idleRight",
             "npc/ghost/idleLeft", "npc/ghost/runRight", "npc/ghost/runLeft", Faction.NEUTRAL);
         addHitBox();
+        addInteractionComponent();
         Random random = new Random();
         if(random.nextInt(0,2) == 0 || Game.currentLevelNumber == 10) {
             addAIComponent();
@@ -39,6 +42,11 @@ public class Ghost extends Monster {
             alternativeAIComponent();
         }
     }
+
+    private void addInteractionComponent() {
+        new InteractionComponent(this,1f,true,new OpenDialogueOnInteraction());
+    }
+
     //add HitBoxComponent
     private void addHitBox() {
         new HitboxComponent(

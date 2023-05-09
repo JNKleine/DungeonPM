@@ -15,12 +15,19 @@ public class InventoryComponent extends Component {
     private List<ItemData> inventory;
 
     private ItemData curMainItem;
+    /**Size from backpack and regular inventory**/
     public int maxSize;
+
+    /**Size from backpack**/
     public int extraSpaceBackPack;
+
+    /**Size from inventory**/
     public int defaultSpace;
 
+/**Determines if a backpack has already been picked up**/
     public boolean backpackIsCollected = false;
 
+    /**Determines, what Items can be stored at the current backpack**/
     public static ItemType backpackItemTypeStorage;
     private final Logger inventoryLogger = Logger.getLogger(this.getClass().getName());
 
@@ -28,7 +35,7 @@ public class InventoryComponent extends Component {
      * creates a new InventoryComponent
      *
      * @param entity the Entity where this Component should be added to
-     * @param curMaxSize the maximal size of the inventory
+     * @param curMaxSpace the maximal size of the inventory
      */
     public InventoryComponent(Entity entity, int curMaxSpace) {
         super(entity);
@@ -40,7 +47,7 @@ public class InventoryComponent extends Component {
 
     /**
      * Adding an Element to the Inventory does not allow adding more items than the size of the
-     * Inventory.
+     * Inventory (regular Inventory+backpack).
      *
      * @param itemData the item which should be added
      * @return true if the item was added, otherwise false
@@ -58,6 +65,11 @@ public class InventoryComponent extends Component {
         return inventory.add(itemData);
     }
 
+    /**
+     When a backpack is picked up, the properties of the backpack are set
+     @param size: size from the backpack
+     @param type: ItemType which can be stored in backpack
+     **/
     public void addBackpack(int size, ItemType type) {
         extraSpaceBackPack = size;
         maxSize = defaultSpace+extraSpaceBackPack;
@@ -65,6 +77,9 @@ public class InventoryComponent extends Component {
         backpackIsCollected = true;
     }
 
+    /**
+     When a backpack is removed, the properties of the backpack are set to default
+     **/
     public void removeBackpack() {
         extraSpaceBackPack = 0;
         maxSize = defaultSpace;
@@ -103,14 +118,20 @@ public class InventoryComponent extends Component {
     }
 
     /**
-     * @return the size of the inventory
+     * @return the size of the inventory (inventory+backpack)
      */
     public int getMaxSize() {
         return maxSize;
     }
 
+    /**
+     * @return the size of the regular inventory
+     */
     public int getDefaultSize() {return defaultSpace;}
 
+    /**
+     * @return the size of the backpack
+     */
     public int getBackpackSize() {return extraSpaceBackPack;}
 
     /**
@@ -120,10 +141,12 @@ public class InventoryComponent extends Component {
         return new ArrayList<>(inventory);
     }
 
+    /** Set the current main item (the item, which is currently in use) **/
     public void setCurMainItem(ItemData item) {
         curMainItem = item;
     }
 
+    /** Get the current main item (the item, which is currently in use) **/
     public ItemData getCurMainItem(){
         return curMainItem;
     }

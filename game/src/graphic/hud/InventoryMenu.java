@@ -15,14 +15,21 @@ import tools.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * To create the ItemHUD with the current items stored in the hero's inventory
+ *
+ */
 public class InventoryMenu <T extends Actor> extends ScreenController<T>  {
 
+    //All button Names with their linked Item
     private HashMap<String,ItemData> buttons = new HashMap<>();
+    //List of current Items
     private ArrayList<T> currentInventory = new ArrayList<>();
 
-    InventoryComponent ic;
+    //InventoryComponent from Hero
+    private InventoryComponent ic;
 
+    /**ButtonListener for the InventoryMenu**/
     public TextButtonListener tb = new TextButtonListener() {
         @Override
         public void clicked( InputEvent event, float x, float y) {
@@ -34,6 +41,7 @@ public class InventoryMenu <T extends Actor> extends ScreenController<T>  {
         }
     };
 
+    /** Constructor creates an InventoryMenu with Spritebatch**/
     public InventoryMenu() {
         this(new SpriteBatch());
     }
@@ -43,6 +51,9 @@ public class InventoryMenu <T extends Actor> extends ScreenController<T>  {
     }
 
 
+    /**
+     * Create Inventory
+     * **/
     public void createInventory() {
         createInventoryHUD();
         createItemsInInventory();
@@ -88,6 +99,7 @@ public class InventoryMenu <T extends Actor> extends ScreenController<T>  {
         }
     }
 
+    /**Remove all elements from the inventory **/
     public void removeInventory() {
        for(int i = 0; i < currentInventory.size(); i++) {
            remove(currentInventory.get(i));

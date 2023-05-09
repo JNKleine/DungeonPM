@@ -8,7 +8,13 @@ import ecs.items.IOnUseBehavior.DamageFoeMagicOnUse;
 import ecs.items.ItemData;
 import ecs.items.ItemType;
 
+/**
+ * Item from type Damagestone
+ * **/
 public class Damagestone extends ItemData {
+    /**
+     * Create a PotionOfHealing with specified properties (All Foes -> Damage 5 HP)
+     * **/
     public Damagestone() {
         super(ItemType.Active, AnimationBuilder.buildAnimation("items/damagestone/damagestoneInventoryAnimation"),
             AnimationBuilder.buildAnimation("items/damagestone/damagestoneWorldAnimation"),"Damagestone",

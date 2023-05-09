@@ -26,6 +26,7 @@ public class Gravestone extends Entity {
     public Gravestone() {
         super(0,Faction.NEUTRAL);
         addPositionComponent();
+        addInteractionComponent();
         addAnimationComponent();
         addHitboxComponent();
     }
@@ -33,6 +34,10 @@ public class Gravestone extends Entity {
     //add PositionComponent
     private void addPositionComponent() {
         new PositionComponent(this);
+    }
+
+    private void addInteractionComponent() {
+        new InteractionComponent(this,2,false,new OpenDialogueOnInteraction());
     }
 
     //add HitBoxComponent
