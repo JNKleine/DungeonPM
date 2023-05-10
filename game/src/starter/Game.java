@@ -5,6 +5,7 @@ import static logging.LoggerConfig.initBaseLogger;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -61,6 +62,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     protected LevelAPI levelAPI;
     /** Generates the level */
     protected IGenerator generator;
+    public static InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
 
     private boolean doSetup = true;
@@ -134,17 +136,15 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         systems = new SystemController();
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
-        //Hier die folgend Codezeilen einfach tauschen (also die Codezeile 140 in die Zeile 139 verschieben
-        //und die Zeile 139 in 140 verschieben um die volle Funktinalität des DialogueHUD zu betrachten):
         dialogueMenu = new DialogueMenu<>();
         inventory = new InventoryMenu<>();
-        //--------------------------------
         controller.add(pauseMenu);
         controller.add(inventory);
         controller.add(dialogueMenu);
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
+        Gdx.input.setInputProcessor(inputMultiplexer);
         createSystems();
     }
 
