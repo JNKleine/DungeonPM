@@ -3,6 +3,7 @@ package ecs.items.IOnUseBehavior;
 import ecs.components.AnimationComponent;
 import ecs.components.HealthComponent;
 import ecs.components.PositionComponent;
+import ecs.components.VelocityComponent;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import ecs.entities.Entity;
@@ -56,6 +57,9 @@ public class SwordOnUse implements IOnUse {
         for (Entity entity : entities) {
             HealthComponent hc = (HealthComponent) entity.getComponent(HealthComponent.class).get();
             hc.receiveHit(new Damage(damage, DamageType.PHYSICAL, e));
+            VelocityComponent vp = (VelocityComponent) entity.getComponent(VelocityComponent.class).get();
+            vp.setCurrentXVelocity(0f);
+            vp.setCurrentXVelocity(0f);
         }
         AnimationComponent ac = (AnimationComponent) this.hero.getComponent(AnimationComponent.class).get();
         if (PlayerSystem.getKey() == 0)
