@@ -106,8 +106,8 @@ public class SwordOnUse implements IOnUse {
             Point pointOfEntity = posOfEntity.getPosition();
             boolean checkRight = (heroPoint.toCoordinate().x >= pointOfEntity.toCoordinate().x - this.hitRange && heroPoint.toCoordinate().y == pointOfEntity.toCoordinate().y);
             boolean checkLeft = (heroPoint.toCoordinate().x <= pointOfEntity.toCoordinate().x + this.hitRange && heroPoint.toCoordinate().y == pointOfEntity.toCoordinate().y);
-            boolean checkUpper = (heroPoint.toCoordinate().y >= pointOfEntity.toCoordinate().y - this.hitRange && heroPoint.toCoordinate().x == pointOfEntity.toCoordinate().x);
-            boolean checkDown = (heroPoint.toCoordinate().y <= pointOfEntity.toCoordinate().y + this.hitRange && heroPoint.toCoordinate().x == pointOfEntity.toCoordinate().x);
+            boolean checkUpper = (heroPoint.toCoordinate().y <= pointOfEntity.toCoordinate().y - this.hitRange && heroPoint.toCoordinate().x == pointOfEntity.toCoordinate().x);
+            boolean checkDown = (heroPoint.toCoordinate().y >= pointOfEntity.toCoordinate().y + this.hitRange && heroPoint.toCoordinate().x == pointOfEntity.toCoordinate().x);
             boolean checkUpperRight = (checkRight && checkUpper);
             boolean checkUpperLeft = (checkLeft && checkUpper);
             boolean checkDownRight = (checkRight && checkDown);
