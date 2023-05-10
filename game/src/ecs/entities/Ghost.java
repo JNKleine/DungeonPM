@@ -10,6 +10,7 @@ import ecs.components.ai.transition.RangeTransition;
 import starter.Game;
 
 import java.util.Random;
+import java.util.regex.Pattern;
 
 /**
  * The Ghost is a NPC (non player character).
@@ -46,7 +47,7 @@ public class Ghost extends Monster {
     }
 
     private void addInteractionComponent() {
-        new InteractionComponent(this, 1f, true, new OpenDialogueOnInteraction());
+        new InteractionComponent(this, 1f, true, new OpenDialogueOnInteraction(this,"How can I help you?"));
     }
 
     //add HitBoxComponent
@@ -86,9 +87,29 @@ public class Ghost extends Monster {
     }
 
     private String getRandomName() {
-        String[] randomNames = {"Gilbert, Hans, Peter, Joe, Sabine, Lena, Paul, Erik, Frank"};
+        String[] randomNames = {"Gilbert, Hans, Peter, Joe, Jones, Lena, Paul, Erik, Francis"};
         Random rdm = new Random();
         return randomNames[rdm.nextInt(randomNames.length)];
+    }
+
+    @Override
+    public String getAnswer(String text) {
+        if(text.toLowerCase().contains("your") && text.toLowerCase().contains("name")) {
+            return "My Name is"+name;
+
+        }
+        else if(text.toLowerCase().contains("How") &&text.toLowerCase().contains("deep")) {
+            return "We are at Dungeon level "+Game.currentLevel+"!";
+        }
+        else if(text.matches("[0-9]+")) {
+            return "I don't know, what to do with all this numbers, sorry!";
+        }
+        else if(text.matches("[A-Za-z]+")) {
+            return "I don't understand these words, I last spoke hundreds of years ago";
+        }
+        else {
+            return "I cant understand you!";
+        }
     }
 }
 

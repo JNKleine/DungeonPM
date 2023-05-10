@@ -89,4 +89,8 @@ public class Entity {
      * @param hb HitboxComponent from the other entity
      * */
     public void onHit(HitboxComponent hb) {};
+
+    public String getAnswer(String text) {
+        return "";
+    }
 }

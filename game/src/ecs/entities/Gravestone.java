@@ -37,7 +37,7 @@ public class Gravestone extends Entity {
     }
 
     private void addInteractionComponent() {
-        new InteractionComponent(this,2,false,new OpenDialogueOnInteraction());
+
     }
 
     //add HitBoxComponent

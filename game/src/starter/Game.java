@@ -259,7 +259,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * Call the DialogueHUD and show it
      **/
     public static void callDialogue(String stringText) {
-       // dialogueIsOn = !dialogueIsOn;
 
 
         if (dialogueMenu != null) {

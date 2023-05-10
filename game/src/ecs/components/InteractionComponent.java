@@ -55,4 +55,5 @@ public class InteractionComponent extends Component {
     public float getRadius() {
         return radius;
     }
+
 }
