@@ -132,27 +132,27 @@ public class SwordOnUse implements IOnUse {
     private Animation fillArrListForAnimation(int key) {
         ArrayList<String> animationList = new ArrayList<>();
         if (PlayerSystem.getKey() == 0) {
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToLeft\\knight_sword_rightToLeft_01.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToLeft\\knight_sword_rightToLeft_02.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToLeft\\knight_sword_rightToLeft_03.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToLeft\\knight_sword_rightToLeft_04.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToLeft\\knight_sword_rightToLeft_05.png");
+            animationList.add("character\\knight\\hitToLeft\\knight_sword_rightToLeft_01.png");
+            animationList.add("character\\knight\\hitToLeft\\knight_sword_rightToLeft_02.png");
+            animationList.add("character\\knight\\hitToLeft\\knight_sword_rightToLeft_03.png");
+            animationList.add("character\\knight\\hitToLeft\\knight_sword_rightToLeft_04.png");
+            animationList.add("character\\knight\\hitToLeft\\knight_sword_rightToLeft_05.png");
         } else if ( PlayerSystem.getKey() == 1) {
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToUp\\knight_sword_downToUp_01.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToUp\\knight_sword_downToUp_02.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToUp\\knight_sword_downToUp_03.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToUp\\knight_sword_downToUp_04.png");
+            animationList.add("character\\knight\\hitToUp\\knight_sword_downToUp_01.png");
+            animationList.add("character\\knight\\hitToUp\\knight_sword_downToUp_02.png");
+            animationList.add("character\\knight\\hitToUp\\knight_sword_downToUp_03.png");
+            animationList.add("character\\knight\\hitToUp\\knight_sword_downToUp_04.png");
         } else if ( PlayerSystem.getKey() == 2){
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToRight\\knight_sword_leftToRight_01.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToRight\\knight_sword_leftToRight_02.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToRight\\knight_sword_leftToRight_03.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToRight\\knight_sword_leftToRight_04.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToRight\\knight_sword_leftToRight_05.png");
+            animationList.add("character\\knight\\hitToRight\\knight_sword_leftToRight_01.png");
+            animationList.add("character\\knight\\hitToRight\\knight_sword_leftToRight_02.png");
+            animationList.add("character\\knight\\hitToRight\\knight_sword_leftToRight_03.png");
+            animationList.add("character\\knight\\hitToRight\\knight_sword_leftToRight_04.png");
+            animationList.add("character\\knight\\hitToRight\\knight_sword_leftToRight_05.png");
         } else if ( PlayerSystem.getKey() == 3) {
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToDown\\knight_sword_upToDown_01.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToDown\\knight_sword_upToDown_02.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToDown\\knight_sword_upToDown_03.png");
-            animationList.add("C:\\Users\\p\\OneDrive\\Dokumente\\GitHub\\DungeonPM\\game\\assets\\character\\knight\\hitToDown\\knight_sword_upToDown_04.png");
+            animationList.add("character\\knight\\hitToDown\\knight_sword_upToDown_01.png");
+            animationList.add("character\\knight\\hitToDown\\knight_sword_upToDown_02.png");
+            animationList.add("character\\knight\\hitToDown\\knight_sword_upToDown_03.png");
+            animationList.add("character\\knight\\hitToDown\\knight_sword_upToDown_04.png");
         }
         Animation hitAnimation = new Animation(animationList, 3, false);
         return hitAnimation;
