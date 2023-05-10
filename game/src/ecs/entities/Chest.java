@@ -51,7 +51,6 @@ public class Chest extends Entity {
         new PositionComponent(this, position);
         InventoryComponent ic = new InventoryComponent(this, itemData.size());
         itemData.forEach(ic::addItem);
-        new InteractionComponent(this, defaultInteractionRadius, false, this::dropItems);
         AnimationComponent ac =
             new AnimationComponent(
                 this,
