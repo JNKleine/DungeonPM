@@ -1,6 +1,5 @@
 package ecs.items.IOnUseBehavior;
 
-import dslToGame.AnimationBuilder;
 import ecs.components.AnimationComponent;
 import ecs.components.HealthComponent;
 import ecs.components.PositionComponent;
@@ -20,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Set;
 
 
+/**
+ * Does the complete hit of the hero to an entity
+ */
 public class SwordOnUse implements IOnUse {
 
     /**
@@ -35,10 +37,6 @@ public class SwordOnUse implements IOnUse {
      * initial damage used for the current "normal" sword
      */
     private int damage;
-
-    private final String PATHTOHITTOLEFT = "knight/hitToLeft";
-
-    private final String PATHTOHITTORIGHT = "knight/hitToRight";
 
     /**
      * Creates a new Sword with the given hitRange and damage
@@ -60,15 +58,14 @@ public class SwordOnUse implements IOnUse {
             hc.receiveHit(new Damage(damage, DamageType.PHYSICAL, e));
         }
         AnimationComponent ac = (AnimationComponent) this.hero.getComponent(AnimationComponent.class).get();
-        if (PlayerSystem.getKey() == 0) {
+        if (PlayerSystem.getKey() == 0)
             ac.setCurrentAnimation(fillArrListForAnimation(0));
-        } else if (PlayerSystem.getKey() == 1) {
+        else if (PlayerSystem.getKey() == 1)
             ac.setCurrentAnimation(fillArrListForAnimation(1));
-        } else if (PlayerSystem.getKey() == 2) {
+        else if (PlayerSystem.getKey() == 2)
             ac.setCurrentAnimation(fillArrListForAnimation(2));
-        } else if (PlayerSystem.getKey() == 3) {
+        else if (PlayerSystem.getKey() == 3)
             ac.setCurrentAnimation(fillArrListForAnimation(3));
-        }
     }
 
     /*
@@ -83,18 +80,17 @@ public class SwordOnUse implements IOnUse {
                 listOfEntities.add(e);
         }
         // Hit left
-        if (PlayerSystem.getKey() == 0) {
+        if (PlayerSystem.getKey() == 0)
             entsToHit = hitInDirection(0, listOfEntities);
             // Hit up
-        } else if (PlayerSystem.getKey() == 1) {
+        else if (PlayerSystem.getKey() == 1)
             entsToHit = hitInDirection(1, listOfEntities);
             // Hit right
-        } else if (PlayerSystem.getKey() == 2) {
+        else if (PlayerSystem.getKey() == 2)
             entsToHit = hitInDirection(2, listOfEntities);
             // Hit down
-        } else if (PlayerSystem.getKey() == 3) {
+        else if (PlayerSystem.getKey() == 3)
             entsToHit = hitInDirection(3, listOfEntities);
-        }
         return entsToHit;
     }
 
@@ -116,15 +112,14 @@ public class SwordOnUse implements IOnUse {
             boolean checkUpperLeft = (checkLeft && checkUpper);
             boolean checkDownRight = (checkRight && checkDown);
             boolean checkDownLeft = (checkLeft && checkDown);
-            if (key == 0 && (checkLeft || checkUpperLeft || checkDownLeft)) {
+            if (key == 0 && (checkLeft || checkUpperLeft || checkDownLeft))
                 entitiesToHit.add(e);
-            } else if (key == 1 && (checkUpper || checkUpperLeft || checkUpperRight)) {
+            else if (key == 1 && (checkUpper || checkUpperLeft || checkUpperRight))
                 entitiesToHit.add(e);
-            } else if (key == 2 && (checkRight || checkUpperRight || checkDownRight)) {
+            else if (key == 2 && (checkRight || checkUpperRight || checkDownRight))
                 entitiesToHit.add(e);
-            } else if (key == 3 && (checkDown || checkDownLeft || checkDownRight)) {
+            else if (key == 3 && (checkDown || checkDownLeft || checkDownRight))
                 entitiesToHit.add(e);
-            }
         }
         return entitiesToHit;
     }
@@ -137,18 +132,18 @@ public class SwordOnUse implements IOnUse {
             animationList.add("character\\knight\\hitToLeft\\knight_sword_rightToLeft_03.png");
             animationList.add("character\\knight\\hitToLeft\\knight_sword_rightToLeft_04.png");
             animationList.add("character\\knight\\hitToLeft\\knight_sword_rightToLeft_05.png");
-        } else if ( PlayerSystem.getKey() == 1) {
+        } else if (PlayerSystem.getKey() == 1) {
             animationList.add("character\\knight\\hitToUp\\knight_sword_downToUp_01.png");
             animationList.add("character\\knight\\hitToUp\\knight_sword_downToUp_02.png");
             animationList.add("character\\knight\\hitToUp\\knight_sword_downToUp_03.png");
             animationList.add("character\\knight\\hitToUp\\knight_sword_downToUp_04.png");
-        } else if ( PlayerSystem.getKey() == 2){
+        } else if (PlayerSystem.getKey() == 2) {
             animationList.add("character\\knight\\hitToRight\\knight_sword_leftToRight_01.png");
             animationList.add("character\\knight\\hitToRight\\knight_sword_leftToRight_02.png");
             animationList.add("character\\knight\\hitToRight\\knight_sword_leftToRight_03.png");
             animationList.add("character\\knight\\hitToRight\\knight_sword_leftToRight_04.png");
             animationList.add("character\\knight\\hitToRight\\knight_sword_leftToRight_05.png");
-        } else if ( PlayerSystem.getKey() == 3) {
+        } else if (PlayerSystem.getKey() == 3) {
             animationList.add("character\\knight\\hitToDown\\knight_sword_upToDown_01.png");
             animationList.add("character\\knight\\hitToDown\\knight_sword_upToDown_02.png");
             animationList.add("character\\knight\\hitToDown\\knight_sword_upToDown_03.png");
