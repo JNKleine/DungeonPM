@@ -90,6 +90,15 @@ public class Entity {
      * */
     public void onHit(HitboxComponent hb) {};
 
+    /**
+     * Is useful for entities, with InteractionComponent
+     * and for building OnInteractionBehavior
+     *
+     * <p>Here, depending on the parameters passed,
+     * it should be decided what is said in the DialogHUD or which functions are activated based on
+     * the input of the player.</p>
+     * @param text Entered input from the player in the dialogHUD
+     * **/
     public String getAnswer(String text) {
         return "";
     }

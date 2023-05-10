@@ -10,7 +10,6 @@ import ecs.components.ai.transition.RangeTransition;
 import starter.Game;
 
 import java.util.Random;
-import java.util.regex.Pattern;
 
 /**
  * The Ghost is a NPC (non player character).
@@ -46,7 +45,8 @@ public class Ghost extends Monster {
     }
 
     private void addInteractionComponent() {
-        new InteractionComponent(this, 1f, true, new OpenDialogueOnInteraction(this,"How can I help you?"));
+        new InteractionComponent(this, 1f, true, new OpenDialogueOnInteraction(
+            this,"Hello there",true));
     }
 
     //add HitBoxComponent
@@ -96,36 +96,36 @@ public class Ghost extends Monster {
 
     @Override
     public String getAnswer(String text) {
-        if(text.toLowerCase().contains("your") && text.toLowerCase().contains("name")) {
-            return "My Name is"+name;
+        if (text.toLowerCase().contains("your") && text.toLowerCase().contains("name")) {
+            return "My Name is " + name;
 
+        } else if (text.toLowerCase().contains("how") && text.toLowerCase().contains("deep")) {
+            return "We are at Dungeon level " + Game.currentLevelNumber + "!";
+        } else if(text.toLowerCase().contains("help") && text.toLowerCase().contains("you")) {
+            return "How you can help me? It would be awfully\nkind if you could take me to my grave!";
         }
-        else if(text.toLowerCase().contains("How") &&text.toLowerCase().contains("deep")) {
-            return "We are at Dungeon level "+Game.currentLevel+"!";
-        }
-        else if(text.matches("[0-9]+")) {
-            return "I don't know, what to do with all this numbers, sorry!";
-        }
-        else if(text.matches("[A-Za-z]+")) {
-            return "I don't understand these words, I last spoke hundreds of years ago";
-        }
-        else {
+        else if (text.matches("[0-9]+")) {
+            return "I don't know, what to do with\n all this numbers, sorry!";
+        } else if (text.matches("[A-Za-z ]+")) {
+            return "I don't understand these words,\nI last spoke hundreds of years ago";
+        } else {
             return "I cant understand you!";
         }
+    }
 
     private static String[]  fillNames(){
-        String[] randonNames = new String[10];
-        randonNames[0] = "Gilbert";
-        randonNames[1] = "Hans";
-        randonNames[2] = "Peter";
-        randonNames[3] = "Joe";
-        randonNames[4] = "David";
-        randonNames[5] = "Paul";
-        randonNames[6] = "Erik";
-        randonNames[7] = "Franz";
-        randonNames[8] = "Max";
-        randonNames[9] = "Achim";
-        return randonNames;
+        String[] randomNames = new String[10];
+        randomNames[0] = "Gilbert";
+        randomNames[1] = "Hans";
+        randomNames[2] = "Peter";
+        randomNames[3] = "Joe";
+        randomNames[4] = "David";
+        randomNames[5] = "Paul";
+        randomNames[6] = "Erik";
+        randomNames[7] = "Franz";
+        randomNames[8] = "Max";
+        randomNames[9] = "Achim";
+        return randomNames;
 
     }
 }

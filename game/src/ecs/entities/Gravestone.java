@@ -37,7 +37,10 @@ public class Gravestone extends Entity {
     }
 
     private void addInteractionComponent() {
-
+        new InteractionComponent(this,3,false,
+            new OpenDialogueOnInteraction(
+                this,"What is the Name of this Graves owner?",
+                false));
     }
 
     //add HitBoxComponent
@@ -53,29 +56,20 @@ public class Gravestone extends Entity {
         new AnimationComponent(this,idle,idle);
     }
 
-    /**
-     * Determine what should happen when this entity collides with another
-     *
-     * @param hb HitBoxComponent from other entity
-     * */
     @Override
+    public String getAnswer(String text) {
+        Hero player = (Hero)Game.getHero().get();
+        HealthComponent hc = (HealthComponent)player.getComponent(HealthComponent.class).get();
+        if(text.equalsIgnoreCase(Ghost.name.toLowerCase())) {
+           hc.setCurrentHealthpoints(hc.getMaximalHealthpoints());
+            return "This name is known to me, may the undead world\ngive you strength. " +
+                "May the owner of this tomb\nrest forever." +
+                "\nYou gain 20HP!";
 
-    public void onHit(HitboxComponent hb) {
-        Entity e = hb.getEntity();
-        if(e.getFaction().equals(Faction.PLAYER)) {
-        Random random = new Random();
-        int value = random.nextInt(0,2);
-        HealthComponent hc = (HealthComponent) e.getComponent(HealthComponent.class).get();
-            if(value == 0) {
-                hc.setCurrentHealthpoints(hc.getMaximalHealthpoints());
-                System.out.println("You have luck!");
-            }
-            else {
-                hc.receiveHit(new Damage(5,DamageType.MAGIC,this));
-                System.out.println("You were punished!");
-            }
-            removeComponent(HitboxComponent.class);
+        }
+        else {
+            hc.receiveHit(new Damage(30,DamageType.MAGIC,this));
+            return "Oh no! such a name is not known to me!\nYour lifeblood is cursed!\n30 Damage added";
         }
     }
-
 }

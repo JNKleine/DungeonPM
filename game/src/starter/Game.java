@@ -134,10 +134,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         systems = new SystemController();
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
-        // inventory = new InventoryMenu<>();
+        //Hier die folgend Codezeilen einfach tauschen (also die Codezeile 140 in die Zeile 139 verschieben
+        //und die Zeile 139 in 140 verschieben um die volle Funktinalität des DialogueHUD zu betrachten):
         dialogueMenu = new DialogueMenu<>();
+        inventory = new InventoryMenu<>();
+        //--------------------------------
         controller.add(pauseMenu);
-        //controller.add(inventory);
+        controller.add(inventory);
         controller.add(dialogueMenu);
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
@@ -150,8 +153,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         setCameraFocus();
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P) && inventoryIsOn == false && dialogueIsOn == false) togglePause();
-        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && isPaused == false && dialogueIsOn == false) callInventory();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P) && !inventoryIsOn && !dialogueIsOn) togglePause();
+        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn) callInventory();
     }
 
     @Override
@@ -261,12 +264,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     /**
      * Call the DialogueHUD and show it
      **/
-    public static void callDialogue(String stringText) {
-
+    public static void callDialogue(String stringText,boolean inputTextAfterFirstShownIsOn) {
 
         if (dialogueMenu != null) {
             if (!dialogueIsOn) {
-                dialogueMenu.createDialogueMenu(stringText);
+                dialogueMenu.createDialogueMenu(stringText,inputTextAfterFirstShownIsOn);
                 dialogueMenu.showMenu();
             } else {
                 dialogueMenu.removeDialogueMenu();

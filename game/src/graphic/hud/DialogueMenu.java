@@ -19,13 +19,15 @@ public class DialogueMenu  <T extends Actor> extends ScreenController<T> {
     private ScreenInput sI;
     private String userText;
 
+    /**This boolean can be used, to reset the sayButton. The SayButton is the Button for
+     * sending a message in the DialogHUD**/
     public static boolean sayIsClicked = false;
 
     TextButtonListener tb = new TextButtonListener() {
         @Override
         public void clicked(InputEvent event, float x, float y) {
             if(event.getListenerActor().getName().equals("leaveButton")) {
-                DialogueSystem.callDialogueHUD("");
+                DialogueSystem.callDialogueHUD("",true);
             }
             else if(event.getListenerActor().getName().equals("sayButton")) {
                 if(sI != null) {
@@ -47,8 +49,12 @@ public class DialogueMenu  <T extends Actor> extends ScreenController<T> {
 
     /**
      * Creates the HUD for the dialog
+     * @param answerFromEntity The text to put inside the dialog box
+     *                       (what the entity being interacted with is saying right now)
+     * @param textInputIsVisible If true, the input field and the button for sending
+     *                          the message will be displayed in the dialog window. If false, then no
      * **/
-    public void createDialogueMenu(String answerFromEntity){
+    public void createDialogueMenu(String answerFromEntity,boolean textInputIsVisible){
         TextButton.TextButtonStyle curFont = new TextButtonStyleBuilder(FontBuilder.DEFAULT_FONT)
             .setFontColor(Color.GRAY).build();
 
@@ -66,9 +72,9 @@ public class DialogueMenu  <T extends Actor> extends ScreenController<T> {
                 .setFontcolor(Color.GRAY)
                 .build());
         answerText.setPosition(
-            ((Constants.WINDOW_WIDTH) / 1.5f - answerText.getWidth()),
-            ((Constants.WINDOW_HEIGHT) / 1.63f + answerText.getHeight()),
-            Align.topLeft | Align.topLeft);
+            ((Constants.WINDOW_WIDTH) / 2.88f - img.getWidth()),
+            ((Constants.WINDOW_HEIGHT) / 1.6f + img.getHeight()),
+            Align.left | Align.topLeft);
         add((T)answerText);
         ScreenButton sb = new ScreenButton("Leave Dialogue",new Point(0,0),tb,curFont);
         sb.setName("leaveButton");
@@ -78,20 +84,22 @@ public class DialogueMenu  <T extends Actor> extends ScreenController<T> {
             Align.center | Align.bottom);
         add((T)sb);
 
-        ScreenButton say = new ScreenButton("click to say:",new Point(0,0),tb,curFont);
-        say.setName("sayButton");
-        say.setPosition(
-            ((Constants.WINDOW_WIDTH) / 1.72f - say.getWidth()),
-            ((Constants.WINDOW_HEIGHT) / 2.8f + say.getHeight()),
-            Align.center | Align.bottom);
-        add((T)say);
+        if(textInputIsVisible) {
+            ScreenButton say = new ScreenButton("click to say:", new Point(0, 0), tb, curFont);
+            say.setName("sayButton");
+            say.setPosition(
+                ((Constants.WINDOW_WIDTH) / 1.72f - say.getWidth()),
+                ((Constants.WINDOW_HEIGHT) / 2.8f + say.getHeight()),
+                Align.center | Align.bottom);
+            add((T) say);
 
-        sI = new ScreenInput("Write something here",new Point(0,0));
-        sI.setPosition(
-            ((Constants.WINDOW_WIDTH) / 1.1f - sI.getWidth()),
-            ((Constants.WINDOW_HEIGHT) / 2.8f + sI.getHeight()),
-            Align.center | Align.bottom);
-        add((T)sI);
+            sI = new ScreenInput("Write something here", new Point(0, 0));
+            sI.setPosition(
+                ((Constants.WINDOW_WIDTH) / 1.1f - sI.getWidth()),
+                ((Constants.WINDOW_HEIGHT) / 2.8f + sI.getHeight()),
+                Align.center | Align.bottom);
+            add((T) sI);
+        }
     }
 
     /**
