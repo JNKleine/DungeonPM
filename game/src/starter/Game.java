@@ -134,11 +134,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         systems = new SystemController();
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
-        inventory = new InventoryMenu<>();
-        //dialogueMenu = new DialogueMenu<>();
+        // inventory = new InventoryMenu<>();
+        dialogueMenu = new DialogueMenu<>();
         controller.add(pauseMenu);
-        controller.add(inventory);
-        //controller.add(dialogueMenu);
+        //controller.add(inventory);
+        controller.add(dialogueMenu);
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
@@ -151,8 +151,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         System.out.println("test in game 153 " + paused);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P) && inventoryIsOn == false) togglePause();
-        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && isPaused == false) callInventory();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P) && inventoryIsOn == false && dialogueIsOn == false) togglePause();
+        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && isPaused == false && dialogueIsOn == false) callInventory();
     }
 
     @Override
@@ -263,7 +263,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * Call the DialogueHUD and show it
      **/
     public static void callDialogue(String stringText) {
-       // dialogueIsOn = !dialogueIsOn;
 
 
         if (dialogueMenu != null) {
