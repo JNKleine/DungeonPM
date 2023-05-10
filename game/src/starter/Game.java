@@ -150,7 +150,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         setCameraFocus();
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
-        System.out.println("test in game 153 " + paused);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P) && inventoryIsOn == false && dialogueIsOn == false) togglePause();
         if(Gdx.input.isKeyJustPressed(Input.Keys.I) && isPaused == false && dialogueIsOn == false) callInventory();
     }
