@@ -66,7 +66,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private boolean doSetup = true;
     private static boolean paused = false;
 
-    private static boolean dialogueIsOn = false;
+    public static boolean dialogueIsOn = false;
+
 
     /** All entities that are currently active in the dungeon */
     private static final Set<Entity> entities = new HashSet<>();
@@ -83,8 +84,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static int currentLevelNumber = 0;
     private static PauseMenu<Actor> pauseMenu;
 
-    private static DialogueMenu<Actor> dialogueMenu;
     private static InventoryMenu<Actor> inventory;
+
+    public static DialogueMenu<Actor> dialogueMenu;
     private static Entity hero;
 
     private Logger gameLogger;
@@ -129,11 +131,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         systems = new SystemController();
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
+        //inventory = new InventoryMenu<>();
         dialogueMenu = new DialogueMenu<>();
-        inventory = new InventoryMenu<>();
         controller.add(pauseMenu);
+        //controller.add(inventory);
         controller.add(dialogueMenu);
-        controller.add(inventory);
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
@@ -253,22 +255,26 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-    /**Call the DialogueHUD and show it**/
-    public static void callDialogue() {
-         dialogueIsOn = !dialogueIsOn;
+    /**
+     * Call the DialogueHUD and show it
+     **/
+    public static void callDialogue(String stringText) {
+       // dialogueIsOn = !dialogueIsOn;
 
 
         if (dialogueMenu != null) {
             if (!dialogueIsOn) {
-                dialogueMenu.createDialogueMenu();
+                dialogueMenu.createDialogueMenu(stringText);
                 dialogueMenu.showMenu();
             } else {
                 dialogueMenu.removeDialogueMenu();
                 dialogueMenu.hideMenu();
             }
+            dialogueIsOn = !dialogueIsOn;
 
         }
     }
+
 
 
     private void addItem() {
@@ -372,5 +378,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new XPSystem();
         new SkillSystem();
         new ProjectileSystem();
+        new DialogueSystem();
     }
 }

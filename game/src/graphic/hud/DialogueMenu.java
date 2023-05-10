@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import controller.ScreenController;
-import starter.Game;
+import ecs.systems.DialogueSystem;
 import tools.Constants;
 import tools.Point;
 
@@ -19,14 +19,17 @@ public class DialogueMenu  <T extends Actor> extends ScreenController<T> {
     private ScreenInput sI;
     private String userText;
 
+    public static boolean sayIsClicked = false;
+
     TextButtonListener tb = new TextButtonListener() {
         @Override
         public void clicked(InputEvent event, float x, float y) {
             if(event.getListenerActor().getName().equals("leaveButton")) {
-                Game.callDialogue();
+                DialogueSystem.callDialogueHUD("");
             }
             else if(event.getListenerActor().getName().equals("sayButton")) {
                 if(sI != null) {
+                    sayIsClicked = true;
                     userText = sI.getText();
                 }
             }
@@ -45,7 +48,7 @@ public class DialogueMenu  <T extends Actor> extends ScreenController<T> {
     /**
      * Creates the HUD for the dialog
      * **/
-    public void createDialogueMenu(){
+    public void createDialogueMenu(String answerFromEntity){
         TextButton.TextButtonStyle curFont = new TextButtonStyleBuilder(FontBuilder.DEFAULT_FONT)
             .setFontColor(Color.GRAY).build();
 
@@ -57,6 +60,16 @@ public class DialogueMenu  <T extends Actor> extends ScreenController<T> {
             ((Constants.WINDOW_HEIGHT) / 3f + img.getHeight()),
             Align.center | Align.bottom);
         add((T)img);
+
+        ScreenText answerText = new ScreenText(answerFromEntity,new Point(0,0),1f,
+            new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                .setFontcolor(Color.GRAY)
+                .build());
+        answerText.setPosition(
+            ((Constants.WINDOW_WIDTH) / 1.5f - answerText.getWidth()),
+            ((Constants.WINDOW_HEIGHT) / 1.63f + answerText.getHeight()),
+            Align.topLeft | Align.topLeft);
+        add((T)answerText);
         ScreenButton sb = new ScreenButton("Leave Dialogue",new Point(0,0),tb,curFont);
         sb.setName("leaveButton");
         sb.setPosition(

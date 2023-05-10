@@ -1,6 +1,7 @@
 package ecs.components;
 
 import ecs.entities.Entity;
+import ecs.systems.DialogueSystem;
 import starter.Game;
 
 /**
@@ -10,7 +11,7 @@ import starter.Game;
 public class OpenDialogueOnInteraction implements IInteraction{
     @Override
     public void onInteraction(Entity entity) {
-        Game.callDialogue();
+        DialogueSystem.callDialogueHUD("How can I help you?");
         }
     }
 
