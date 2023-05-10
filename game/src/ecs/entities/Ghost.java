@@ -21,6 +21,9 @@ import java.util.Random;
  */
 public class Ghost extends Monster {
 
+    /**
+     * Generates a random name for the ghost
+     */
     public static final String name = getRandomName();
 
     /**
