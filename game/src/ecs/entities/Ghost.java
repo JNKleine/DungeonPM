@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  */
 public class Ghost extends Monster {
 
-    public static String name;
+    public static final String name = getRandomName();
 
     /**
      * Creates an object from type ghost
@@ -43,7 +43,6 @@ public class Ghost extends Monster {
         } else {
             alternativeAIComponent();
         }
-        this.name = getRandomName();
     }
 
     private void addInteractionComponent() {
@@ -86,11 +85,14 @@ public class Ghost extends Monster {
     public void onHit(HitboxComponent hb) {
     }
 
-    private String getRandomName() {
-        String[] randomNames = {"Gilbert, Hans, Peter, Joe, Jones, Lena, Paul, Erik, Francis"};
+
+    private static String getRandomName() {
+        String[] randomNames = fillNames();
         Random rdm = new Random();
+        System.out.println(randomNames[rdm.nextInt(randomNames.length)]);
         return randomNames[rdm.nextInt(randomNames.length)];
     }
+
 
     @Override
     public String getAnswer(String text) {
@@ -110,6 +112,21 @@ public class Ghost extends Monster {
         else {
             return "I cant understand you!";
         }
+
+    private static String[]  fillNames(){
+        String[] randonNames = new String[10];
+        randonNames[0] = "Gilbert";
+        randonNames[1] = "Hans";
+        randonNames[2] = "Peter";
+        randonNames[3] = "Joe";
+        randonNames[4] = "David";
+        randonNames[5] = "Paul";
+        randonNames[6] = "Erik";
+        randonNames[7] = "Franz";
+        randonNames[8] = "Max";
+        randonNames[9] = "Achim";
+        return randonNames;
+
     }
 }
 

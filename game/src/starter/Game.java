@@ -64,10 +64,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
 
     private boolean doSetup = true;
-    private static boolean paused = false;
+    public static boolean paused = false;
 
     public static boolean dialogueIsOn = false;
 
+    public static boolean isPaused = false;
+
+    public static boolean inventoryIsOn = false;
 
     /** All entities that are currently active in the dungeon */
     private static final Set<Entity> entities = new HashSet<>();
@@ -131,7 +134,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         systems = new SystemController();
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
-        //inventory = new InventoryMenu<>();
+        // inventory = new InventoryMenu<>();
         dialogueMenu = new DialogueMenu<>();
         controller.add(pauseMenu);
         //controller.add(inventory);
@@ -147,8 +150,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         setCameraFocus();
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
-        if(Gdx.input.isKeyJustPressed(Input.Keys.I)) callInventory();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P) && inventoryIsOn == false && dialogueIsOn == false) togglePause();
+        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && isPaused == false && dialogueIsOn == false) callInventory();
     }
 
     @Override
@@ -221,7 +224,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     /** Toggle between pause and run */
     public static void togglePause() {
-
+            isPaused = !isPaused;
             paused = !paused;
             if (systems != null) {
                 systems.forEach(ECS_System::toggleRun);
@@ -238,7 +241,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     /**Call the inventoryHUD and show it**/
     public static void callInventory() {
-
+            inventoryIsOn = !inventoryIsOn;
             paused = !paused;
             if (systems != null) {
                 systems.forEach(ECS_System::toggleRun);
