@@ -55,7 +55,7 @@ public class PlayerSystem extends ECS_System {
                 if (ic.getCurMainItem() != null)
                     ic.getCurMainItem().triggerUse(curHero);
             }
-            if (Gdx.input.isKeyPressed(KeyboardConfig.DROP_ITEM.get())) {
+            if (Gdx.input.isKeyJustPressed(KeyboardConfig.DROP_ITEM.get())) {
                 for (Entity e : Game.getEntities()) {
                     if (e.getFaction().equals(Faction.PLAYER)) {
                         InventoryComponent ic = (InventoryComponent) e.getComponent(InventoryComponent.class).get();

@@ -146,6 +146,11 @@ public class InventoryComponent extends Component {
         curMainItem = item;
     }
 
+    public void setCurMainItemToFirstItemInInventory() {
+        if(inventory.size() > 0)
+            curMainItem = getItems().get(0);
+    }
+
     /** Get the current main item (the item, which is currently in use) **/
     public ItemData getCurMainItem(){
         return curMainItem;

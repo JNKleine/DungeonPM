@@ -13,6 +13,7 @@ import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
+import ecs.components.HealthComponent;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.*;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
+import graphic.hud.PlayerHUD;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -53,7 +55,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     protected SpriteBatch batch;
 
     /** Contains all Controller of the Dungeon */
-    protected List<AbstractController<?>> controller;
+    public static List<AbstractController<?>> controller;
 
     public static DungeonCamera camera;
     /** Draws objects */
@@ -92,6 +94,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static InventoryMenu<Actor> inventory;
 
     public static DialogueMenu<Actor> dialogueMenu;
+
+    public static PlayerHUD<Actor> playerHUD;
     private static Entity hero;
 
     private Logger gameLogger;
@@ -138,9 +142,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         pauseMenu = new PauseMenu<>();
         dialogueMenu = new DialogueMenu<>();
         inventory = new InventoryMenu<>();
+        playerHUD = new PlayerHUD<>();
         controller.add(pauseMenu);
         controller.add(inventory);
         controller.add(dialogueMenu);
+        controller.add(playerHUD);
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
@@ -383,5 +389,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new SkillSystem();
         new ProjectileSystem();
         new DialogueSystem();
+        new PlayerHUDSystem();
     }
 }
