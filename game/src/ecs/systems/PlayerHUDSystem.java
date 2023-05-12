@@ -1,10 +1,8 @@
 package ecs.systems;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import ecs.components.HealthComponent;
 import ecs.components.InventoryComponent;
 import ecs.items.ItemData;
-import graphic.hud.PlayerHUD;
 import starter.Game;
 
 public class PlayerHUDSystem extends ECS_System{
@@ -21,6 +19,9 @@ public class PlayerHUDSystem extends ECS_System{
     }
     @Override
     public void update() {
+        if(heroHC.getCurrentHealthpoints() <= 0) {
+            Game.gameOverHUD.showMenu();
+        }
         if(heroIC.getCurMainItem() == null && curItem != null) {
             heroIC.setCurMainItemToFirstItemInInventory();
         }

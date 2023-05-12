@@ -23,14 +23,12 @@ import ecs.items.WorldItemBuilder;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
-import graphic.hud.DialogueMenu;
-import graphic.hud.InventoryMenu;
-import graphic.hud.PauseMenu;
+import graphic.hud.*;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
-import graphic.hud.PlayerHUD;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -95,6 +93,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static DialogueMenu<Actor> dialogueMenu;
 
+    public static GameOverHUD<Actor> gameOverHUD;
+
     public static PlayerHUD<Actor> playerHUD;
     private static Entity hero;
 
@@ -139,6 +139,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         gameLogger = Logger.getLogger(this.getClass().getName());
         systems = new SystemController();
         controller.add(systems);
+        gameOverHUD = new GameOverHUD<>();
         pauseMenu = new PauseMenu<>();
         dialogueMenu = new DialogueMenu<>();
         inventory = new InventoryMenu<>();
@@ -147,6 +148,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(inventory);
         controller.add(dialogueMenu);
         controller.add(playerHUD);
+        controller.add(gameOverHUD);
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
