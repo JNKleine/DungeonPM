@@ -4,7 +4,6 @@ import ecs.items.item.Backpack;
 import ecs.items.item.Damagestone;
 import ecs.items.item.PotionOfHealing;
 import ecs.items.item.Telestone;
-import graphic.Animation;
 import java.util.List;
 import java.util.Random;
 
@@ -14,10 +13,10 @@ public class ItemDataGenerator {
 
     private List<ItemData> templates =
             List.of(
-                    new Telestone(),
-                    new Damagestone(),
-                    new PotionOfHealing(),
-                    new Backpack(4,ItemType.Active)
+                    new Telestone().getItemData(),
+                    new Damagestone().getItemData(),
+                    new PotionOfHealing().getItemData(),
+                    new Backpack(4,ItemType.Active).getItemData()
             );
     private Random rand = new Random();
 
