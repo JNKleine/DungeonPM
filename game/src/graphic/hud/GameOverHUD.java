@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Align;
 import controller.ScreenController;
+// import starter.LibgdxSetup;
 import tools.Constants;
 import tools.Point;
 
@@ -19,9 +20,13 @@ public class GameOverHUD <T extends Actor> extends ScreenController<T> {
             }
             else if(event.getListenerActor().getName().equals("leaveButton")) {
                 System.out.println("Leave the Game");
+                // starter.LibgdxSetup.dispose();
+                com.badlogic.gdx.Gdx.app.exit();
+                // System.exit(0);
             }
         }
     };
+
     /**
      * Creates a Screencontroller with a ScalingViewport which stretches the ScreenElements on
      * resize
