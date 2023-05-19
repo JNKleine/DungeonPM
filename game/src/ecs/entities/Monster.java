@@ -5,7 +5,11 @@ import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
+import ecs.items.item.Coin;
 import graphic.Animation;
+
+import java.util.Random;
+
 /**
  * Monster represents the superclass of all monsters. Every monster shall inherit from this class
  *
@@ -64,10 +68,15 @@ import graphic.Animation;
         this.pathToIdleLeft = pathToIdleLeft;
         this.pathToRunRight = pathToRunRight;
         this.pathToRunLeft = pathToRunLeft;
-
         addPositionComponent();
         addAnimationComponent();
         addVelocityComponent();
+        addInventoryComponent();
+    }
+    // add InventoryComponent
+    private void addInventoryComponent(){
+        InventoryComponent inv = new InventoryComponent(this, 1);
+        addCoin();
     }
 
     //add PositionComponent
@@ -86,6 +95,18 @@ import graphic.Animation;
         Animation moveRight = AnimationBuilder.buildAnimation(this.pathToRunRight);
         Animation moveLeft = AnimationBuilder.buildAnimation(this.pathToRunLeft);
         new VelocityComponent(this, xSpeed,ySpeed,moveLeft,moveRight);
+    }
+
+    private void addCoin() {
+        java.util.Random rdm = new Random();
+        int rdmNm = rdm.nextInt(11);
+        if ( rdmNm < 6) {
+            Coin coin = new Coin(1, "items/coins/coinI", "items/coins/coinI");
+        } else if (rdmNm >= 6 && rdmNm <= 9 ) {
+            Coin coin = new Coin(5,"items/coins/coinV","items/coins/coinV");
+        } else {
+            Coin coin = new Coin(10,"items/coins/coinX","items/coins/coinX");
+        }
     }
 
     /**
