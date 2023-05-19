@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Align;
 import controller.ScreenController;
-// import starter.LibgdxSetup;
+import starter.Game;
 import tools.Constants;
 import tools.Point;
 
@@ -15,17 +15,21 @@ public class GameOverHUD <T extends Actor> extends ScreenController<T> {
     TextButtonListener tb = new TextButtonListener() {
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            if(event.getListenerActor().getName().equals("restartButton")) {
+            if (event.getListenerActor().getName().equals("restartButton")) {
                 System.out.println("Restart the Game");
-            }
-            else if(event.getListenerActor().getName().equals("leaveButton")) {
+                restart();
+            } else if (event.getListenerActor().getName().equals("leaveButton")) {
                 System.out.println("Leave the Game");
-                // starter.LibgdxSetup.dispose();
                 com.badlogic.gdx.Gdx.app.exit();
-                // System.exit(0);
             }
         }
     };
+
+    public void restart() {
+        removeGameOverMenu();
+        Game game = new Game();
+        game.restart();
+    }
 
     /**
      * Creates a Screencontroller with a ScalingViewport which stretches the ScreenElements on
@@ -88,5 +92,12 @@ public class GameOverHUD <T extends Actor> extends ScreenController<T> {
     /** hides the Menu */
     public void hideMenu() {
         this.forEach((Actor s) -> s.setVisible(false));
+    }
+
+    /**
+     * Deletes the GameOverHud
+     * **/
+    public void removeGameOverMenu() {
+        this.forEach((Actor s) -> s.remove());
     }
 }

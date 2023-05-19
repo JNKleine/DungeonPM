@@ -3,10 +3,7 @@ package starter;
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static logging.LoggerConfig.initBaseLogger;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import configuration.Configuration;
@@ -392,5 +389,15 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new ProjectileSystem();
         new DialogueSystem();
         new PlayerHUDSystem();
+    }
+
+    /**
+     * Restarts the Game.
+     * Called when clicking the restart-Button when the game is over (-> GameOverHUD).
+     */
+    public void restart() {
+        currentLevelNumber = 0;
+        levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
+        hero = new Hero();
     }
 }
