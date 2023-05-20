@@ -26,9 +26,11 @@ public class GameOverHUD <T extends Actor> extends ScreenController<T> {
     };
 
     public void restart() {
-        removeGameOverMenu();
         Game game = new Game();
         game.restart();
+        //hideMenu();
+        //removeGameOverMenu();
+        //new GameOverHUD<>();
     }
 
     /**

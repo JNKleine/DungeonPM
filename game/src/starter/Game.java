@@ -11,6 +11,7 @@ import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
 import ecs.components.HealthComponent;
+import ecs.components.InventoryComponent;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.*;
@@ -399,5 +400,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         currentLevelNumber = 0;
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         hero = new Hero();
+        new PlayerHUDSystem();
+
+        //gameOverHUD.hideMenu();
+
+        //gameOverHUD.removeGameOverMenu();
+        //controller.remove(gameOverHUD);
+        //gameOverHUD = new GameOverHUD<>();
+        //controller.add(gameOverHUD);
     }
 }
