@@ -93,6 +93,10 @@ public class HealthSystem extends ECS_System {
         // Entity appears to be dead, so let's clean up the mess
         hsd.hc.triggerOnDeath();
         hsd.ac.setCurrentAnimation(hsd.hc.getDieAnimation());
+        // Drops coin before entity gets removed from the game
+        if ( hsd.hc.getCurrentHealthpoints() <= 0 ) {
+
+        }
         // TODO: Before removing the entity, check if the animation is finished (Issue #246)
         Game.removeEntity(hsd.hc.getEntity());
 
