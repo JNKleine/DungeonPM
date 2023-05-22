@@ -24,7 +24,8 @@ public class Ghost extends Monster {
     /**
      * Generates a random name for the ghost
      */
-    public static final String name = getRandomName();
+    //public static final String name = getRandomName();
+    public static String name = getRandomName();        //  NEW
 
     /**
      * Creates an object from type ghost
@@ -92,8 +93,15 @@ public class Ghost extends Monster {
     private static String getRandomName() {
         String[] randomNames = fillNames();
         Random rdm = new Random();
-        System.out.println(randomNames[rdm.nextInt(randomNames.length)]);
+        //System.out.println(randomNames[rdm.nextInt(randomNames.length)]);
         return randomNames[rdm.nextInt(randomNames.length)];
+    }
+
+
+    // NEW
+    /** Change the name of the ghost */
+    public static void changeName() {
+        name = getRandomName();
     }
 
 

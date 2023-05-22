@@ -403,7 +403,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         hero = new Hero();
         new PlayerHUDSystem();
-        //System.out.println(Ghost.name);
+        Ghost.changeName();
+        System.out.println(Ghost.name);
 
         // gameOverHUD.hideMenu();
 
