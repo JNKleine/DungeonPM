@@ -400,7 +400,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     public void restart() {
         currentLevelNumber = 1;
-        levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         hero = new Hero();
         new PlayerHUDSystem();
         Ghost.changeName();
