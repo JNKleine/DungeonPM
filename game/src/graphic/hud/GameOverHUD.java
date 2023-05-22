@@ -95,11 +95,4 @@ public class GameOverHUD <T extends Actor> extends ScreenController<T> {
     public void hideMenu() {
         this.forEach((Actor s) -> s.setVisible(false));
     }
-
-    /**
-     * Deletes the GameOverHud
-     * **/
-    public void removeGameOverMenu() {
-        this.forEach((Actor s) -> s.remove());
-    }
 }

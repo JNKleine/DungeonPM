@@ -17,6 +17,7 @@ import ecs.components.PositionComponent;
 import ecs.entities.*;
 import ecs.items.ItemData;
 import ecs.items.ItemDataGenerator;
+
 import ecs.items.WorldItemBuilder;
 import ecs.systems.*;
 import graphic.DungeonCamera;
@@ -56,6 +57,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static DungeonCamera camera;
     /** Draws objects */
     protected Painter painter;
+
 
     protected LevelAPI levelAPI;
     /** Generates the level */
@@ -397,12 +399,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * Called when clicking the restart-Button when the game is over (-> GameOverHUD).
      */
     public void restart() {
-        currentLevelNumber = 0;
+        currentLevelNumber = 1;
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         hero = new Hero();
         new PlayerHUDSystem();
+        //System.out.println(Ghost.name);
 
-        //gameOverHUD.hideMenu();
+        // gameOverHUD.hideMenu();
 
         //gameOverHUD.removeGameOverMenu();
         //controller.remove(gameOverHUD);
