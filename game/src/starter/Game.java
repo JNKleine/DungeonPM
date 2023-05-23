@@ -89,7 +89,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static int currentLevelNumber = 0;
     private static PauseMenu<Actor> pauseMenu;
 
-    private static InventoryMenu<Actor> inventory;
+    public static InventoryMenu<Actor> inventory;
 
     public static DialogueMenu<Actor> dialogueMenu;
 
@@ -162,7 +162,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P) && !inventoryIsOn && !dialogueIsOn) togglePause();
-        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn) callInventory();
+        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn) callInventory(getHero().get());
     }
 
     @Override
@@ -174,6 +174,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         entitiesToAdd.clear();
         addItem();
         addEntityList(entitySpawner.getListOfMonsterToSpawnVariableProbability());
+        addEntity(entitySpawner.spawnShop());
         if(currentLevelNumber <= 10) {
             addEntityList(entitySpawner.spawnGraveAndGhost(10));
         }
@@ -251,7 +252,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     /**Call the inventoryHUD and show it**/
-    public static void callInventory() {
+    public static void callInventory(Entity e) {
             inventoryIsOn = !inventoryIsOn;
             paused = !paused;
             if (systems != null) {
@@ -259,7 +260,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             }
             if (inventory != null) {
                 if (paused) {
-                    inventory.createInventory();
+                    inventory.createInventory(e);
                     inventory.showMenu();
                 } else {
                     inventory.removeInventory();
