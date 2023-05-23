@@ -116,7 +116,6 @@ public class ItemData {
      */
     public void triggerDrop(Entity e, Point position) {
         if (getOnDrop() != null) getOnDrop().onDrop(e, this, position);
-        System.out.println(getOnDrop().getClass() + " test in itemdata z119");
     }
 
     /**

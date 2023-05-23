@@ -19,10 +19,7 @@ public class DropLoot implements IOnDeathFunction {
     @Override
     public void onDeath(Entity entity) {
         InventoryComponent inv = (InventoryComponent) entity.getComponent(InventoryComponent.class).get();
-        System.out.println(inv.getCurMainItem().getItemName() + " test in droploot 21");
         Components dlc = prepareComponent(entity);
-        System.out.println(dlc.ic.getCurMainItem() + " test in droploot 24");
-        System.out.println(dlc.ic.getItems().get(0) + " test in droploot 25");
         dlc.ic.getItems().stream().map(x -> new DLData(entity, dlc, x)).forEach(this::dropItem);
     }
 
