@@ -2,6 +2,7 @@ package ecs.components;
 
 import ecs.entities.Entity;
 import ecs.systems.DialogueSystem;
+import starter.Game;
 
 /**
  * Determines what should happen when the player

@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Align;
 import controller.ScreenController;
 import ecs.components.InventoryComponent;
+import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.items.ItemData;
 import starter.Game;
@@ -21,6 +22,7 @@ import java.util.HashMap;
  */
 public class InventoryMenu <T extends Actor> extends ScreenController<T>  {
 
+    private Entity curEntity;
     //All button Names with their linked Item
     private HashMap<String,ItemData> buttons = new HashMap<>();
     //List of current Items
@@ -33,10 +35,9 @@ public class InventoryMenu <T extends Actor> extends ScreenController<T>  {
     public TextButtonListener tb = new TextButtonListener() {
         @Override
         public void clicked( InputEvent event, float x, float y) {
-                Hero curHero = (Hero)Game.getHero().get();
                 ItemData id = buttons.get(event.getListenerActor().getName());
                 System.out.println(id.getDescription());
-                InventoryComponent ic = (InventoryComponent) curHero.getComponent(InventoryComponent.class).get();
+                InventoryComponent ic = (InventoryComponent) curEntity.getComponent(InventoryComponent.class).get();
                 ic.setCurMainItem(id);
         }
     };
@@ -54,13 +55,13 @@ public class InventoryMenu <T extends Actor> extends ScreenController<T>  {
     /**
      * Create Inventory
      * **/
-    public void createInventory() {
+    public void createInventory(Entity e) {
+        curEntity = e;
         createInventoryHUD();
         createItemsInInventory();
     }
     private void createInventoryHUD() {
-        Hero curHero = (Hero)Game.getHero().get();
-        ic = (InventoryComponent)curHero.getComponent(InventoryComponent.class).get();
+        ic = (InventoryComponent)curEntity.getComponent(InventoryComponent.class).get();
         for(int i = 0; i < ic.maxSize; i++) {
             int xPos = i%4;
             int yPos = i/4;
@@ -75,8 +76,7 @@ public class InventoryMenu <T extends Actor> extends ScreenController<T>  {
     }
 
     private void createItemsInInventory() {
-        Hero curHero =(Hero) Game.getHero().get();
-        InventoryComponent ic = (InventoryComponent) curHero.getComponent(InventoryComponent.class).get();
+        InventoryComponent ic = (InventoryComponent) curEntity.getComponent(InventoryComponent.class).get();
         ArrayList<ItemData> items = (ArrayList)ic.getItems();
         for(int i = 0; i < items.size(); i++) {
             int xPos = i%4;
