@@ -111,6 +111,7 @@ import java.util.Random;
         }
         InventoryComponent inv = (InventoryComponent) this.getComponent(InventoryComponent.class).get();
         inv.addItem(coin.getItemData());
+        inv.setCurMainItem(coin.getItemData());
     }
 
     /**

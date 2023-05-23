@@ -13,9 +13,7 @@ import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
-import ecs.components.HealthComponent;
-import ecs.components.MissingComponentException;
-import ecs.components.PositionComponent;
+import ecs.components.*;
 import ecs.entities.*;
 import ecs.items.ItemData;
 import ecs.items.ItemDataGenerator;
@@ -323,6 +321,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     public static void removeEntity(Entity entity) {
         entitiesToRemove.add(entity);
+        try {InventoryComponent inv = (InventoryComponent) entity.getComponent(InventoryComponent.class).get();
+            DropLoot drop = new DropLoot();
+            if ( inv.getCurMainItem() != null)
+                drop.onDeath(entity);}
+        catch ( NoSuchElementException e ) {
+        }
     }
 
     /**

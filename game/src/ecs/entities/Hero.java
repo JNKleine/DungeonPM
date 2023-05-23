@@ -32,6 +32,8 @@ public class Hero extends Entity {
     private  final String pathToDieAnim = "knight/onDieAnimation";
     private Skill firstSkill;
 
+    private int money;
+
     /** Entity with Components */
     public Hero() {
         super(0,Faction.PLAYER);
@@ -91,5 +93,17 @@ public class Hero extends Entity {
                 DamageType.PHYSICAL, this));
         }
 
+    }
+
+    public void increaseMoney(int value) {
+        this.money+=value;
+    }
+
+    public void decreaseMoney(int value) {
+        this.money-=value;
+    }
+
+    public int getMoney() {
+        return this.money;
     }
 }

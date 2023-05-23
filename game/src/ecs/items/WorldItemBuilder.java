@@ -34,6 +34,18 @@ public class WorldItemBuilder {
         return droppedItem;
     }
 
+    public void buildWorldItemAtPosition(ItemData itemData, Point point) {
+        Entity droppedItem = new Entity();
+        new PositionComponent(droppedItem,point);
+        new AnimationComponent(droppedItem, itemData.getWorldTexture());
+        new ItemComponent(droppedItem, itemData);
+        HitboxComponent component = new HitboxComponent(droppedItem);
+        component.setiCollideEnter(
+            (a, b, direction) -> {
+                itemData.triggerCollect(a, b);
+            });
+    }
+
     private static Point getRandomAccesiblePoint() {
         ArrayList<FloorTile> ft = (ArrayList) Game.currentLevel.getFloorTiles();
         Random rd = new Random();
