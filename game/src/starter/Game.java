@@ -432,7 +432,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         HealthComponent hc = (HealthComponent) hero.getComponent(HealthComponent.class).get();
         hc.setCurrentHealthpoints(hc.getMaximalHealthpoints());
         gameOverHUD.hideMenu();
-        placeOnLevelStart(hero);
         InventoryComponent inv = (InventoryComponent) hero.getComponent(InventoryComponent.class).get();
         List<ItemData> items = inv.getItems();
         for (int i = 0; i < items.size(); i++) {
@@ -443,5 +442,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             else if (!items.get(i).getItemName().equals("Sword"))
                 inv.removeItem(items.get(i));
         }
+        placeOnLevelStart(hero);
     }
 }
