@@ -402,8 +402,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         currentLevelNumber = 1;
         hero = new Hero();
         new PlayerHUDSystem();
-        Ghost.changeName();
-        System.out.println(Ghost.name);
+        Ghost.setName();
+        System.out.println(Ghost.getName());
 
         // gameOverHUD.hideMenu();
 

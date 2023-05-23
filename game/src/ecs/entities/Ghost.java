@@ -24,8 +24,7 @@ public class Ghost extends Monster {
     /**
      * Generates a random name for the ghost
      */
-    //public static final String name = getRandomName();
-    public static String name = getRandomName();        //  NEW
+    private static String name = getRandomName();
 
     /**
      * Creates an object from type ghost
@@ -97,12 +96,12 @@ public class Ghost extends Monster {
         return randomNames[rdm.nextInt(randomNames.length)];
     }
 
-
-    // NEW
     /** Change the name of the ghost */
-    public static void changeName() {
+    public static void setName() {
         name = getRandomName();
     }
+
+    public static String getName() { return name; }
 
 
     @Override

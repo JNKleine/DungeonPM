@@ -60,7 +60,7 @@ public class Gravestone extends Entity {
     public String getAnswer(String text) {
         Hero player = (Hero)Game.getHero().get();
         HealthComponent hc = (HealthComponent)player.getComponent(HealthComponent.class).get();
-        if(text.equalsIgnoreCase(Ghost.name.toLowerCase())) {
+        if(text.equalsIgnoreCase(Ghost.getName().toLowerCase())) {
            hc.setCurrentHealthpoints(hc.getMaximalHealthpoints());
             return "This name is known to me, may the undead world\ngive you strength. " +
                 "May the owner of this tomb\nrest forever." +
