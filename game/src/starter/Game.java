@@ -18,6 +18,7 @@ import ecs.entities.*;
 import ecs.items.ItemData;
 import ecs.items.ItemDataGenerator;
 
+import ecs.items.ItemType;
 import ecs.items.WorldItemBuilder;
 import ecs.systems.*;
 import graphic.DungeonCamera;
@@ -40,7 +41,9 @@ import level.tools.LevelSize;
 import tools.Constants;
 import tools.Point;
 
-/** The heart of the framework. From here all strings are pulled. */
+/**
+ * The heart of the framework. From here all strings are pulled.
+ */
 public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private final LevelSize LEVELSIZE = LevelSize.SMALL;
@@ -51,16 +54,22 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     protected SpriteBatch batch;
 
-    /** Contains all Controller of the Dungeon */
+    /**
+     * Contains all Controller of the Dungeon
+     */
     public static List<AbstractController<?>> controller;
 
     public static DungeonCamera camera;
-    /** Draws objects */
+    /**
+     * Draws objects
+     */
     protected Painter painter;
 
 
     protected LevelAPI levelAPI;
-    /** Generates the level */
+    /**
+     * Generates the level
+     */
     protected IGenerator generator;
     public static InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
@@ -74,18 +83,28 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static boolean inventoryIsOn = false;
 
-    /** All entities that are currently active in the dungeon */
+    /**
+     * All entities that are currently active in the dungeon
+     */
     private static final Set<Entity> entities = new HashSet<>();
-    /** All entities to be removed from the dungeon in the next frame */
+    /**
+     * All entities to be removed from the dungeon in the next frame
+     */
     private static final Set<Entity> entitiesToRemove = new HashSet<>();
-    /** All entities to be added from the dungeon in the next frame */
+    /**
+     * All entities to be added from the dungeon in the next frame
+     */
     private static final Set<Entity> entitiesToAdd = new HashSet<>();
 
-    /** List of all Systems in the ECS */
+    /**
+     * List of all Systems in the ECS
+     */
     public static SystemController systems;
 
     public static ILevel currentLevel;
-/** Get the value, in which level the hero is */
+    /**
+     * Get the value, in which level the hero is
+     */
     public static int currentLevelNumber = 0;
     private static PauseMenu<Actor> pauseMenu;
 
@@ -127,7 +146,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         camera.update();
     }
 
-    /** Called once at the beginning of the game. */
+    /**
+     * Called once at the beginning of the game.
+     */
     protected void setup() {
         doSetup = false;
         controller = new ArrayList<>();
@@ -156,13 +177,15 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         createSystems();
     }
 
-    /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
+    /**
+     * Called at the beginning of each frame. Before the controllers call <code>update</code>.
+     */
     protected void frame() {
         setCameraFocus();
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P) && !inventoryIsOn && !dialogueIsOn) togglePause();
-        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn) callInventory();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn) callInventory();
     }
 
     @Override
@@ -174,7 +197,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         entitiesToAdd.clear();
         addItem();
         addEntityList(entitySpawner.getListOfMonsterToSpawnVariableProbability());
-        if(currentLevelNumber <= 10) {
+        if (currentLevelNumber <= 10) {
             addEntityList(entitySpawner.spawnGraveAndGhost(10));
         }
         getHero().ifPresent(this::placeOnLevelStart);
@@ -196,14 +219,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private void setCameraFocus() {
         if (getHero().isPresent()) {
             PositionComponent pc =
-                    (PositionComponent)
-                            getHero()
-                                    .get()
-                                    .getComponent(PositionComponent.class)
-                                    .orElseThrow(
-                                            () ->
-                                                    new MissingComponentException(
-                                                            "PositionComponent"));
+                (PositionComponent)
+                    getHero()
+                        .get()
+                        .getComponent(PositionComponent.class)
+                        .orElseThrow(
+                            () ->
+                                new MissingComponentException(
+                                    "PositionComponent"));
             camera.setFocusPoint(pc.getPosition());
 
         } else camera.setFocusPoint(new Point(0, 0));
@@ -215,10 +238,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private boolean isOnEndTile(Entity entity) {
         PositionComponent pc =
-                (PositionComponent)
-                        entity.getComponent(PositionComponent.class)
-                                .orElseThrow(
-                                        () -> new MissingComponentException("PositionComponent"));
+            (PositionComponent)
+                entity.getComponent(PositionComponent.class)
+                    .orElseThrow(
+                        () -> new MissingComponentException("PositionComponent"));
         Tile currentTile = currentLevel.getTileAt(pc.getPosition().toCoordinate());
         return currentTile.equals(currentLevel.getEndTile());
     }
@@ -226,44 +249,48 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private void placeOnLevelStart(Entity hero) {
         entities.add(hero);
         PositionComponent pc =
-                (PositionComponent)
-                        hero.getComponent(PositionComponent.class)
-                                .orElseThrow(
-                                        () -> new MissingComponentException("PositionComponent"));
+            (PositionComponent)
+                hero.getComponent(PositionComponent.class)
+                    .orElseThrow(
+                        () -> new MissingComponentException("PositionComponent"));
         pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
     }
 
-    /** Toggle between pause and run */
+    /**
+     * Toggle between pause and run
+     */
     public static void togglePause() {
-            isPaused = !isPaused;
-            paused = !paused;
-            if (systems != null) {
-                systems.forEach(ECS_System::toggleRun);
+        isPaused = !isPaused;
+        paused = !paused;
+        if (systems != null) {
+            systems.forEach(ECS_System::toggleRun);
+        }
+        if (pauseMenu != null) {
+            if (paused) {
+                pauseMenu.showMenu();
+            } else {
+                pauseMenu.hideMenu();
             }
-            if (pauseMenu != null) {
-                if (paused) {
-                    pauseMenu.showMenu();
-                } else {
-                    pauseMenu.hideMenu();
-                }
-            }
+        }
 
     }
 
-    /**Call the inventoryHUD and show it**/
+    /**
+     * Call the inventoryHUD and show it
+     **/
     public static void callInventory() {
-            inventoryIsOn = !inventoryIsOn;
-            paused = !paused;
-            if (systems != null) {
-                systems.forEach(ECS_System::toggleRun);
-            }
-            if (inventory != null) {
-                if (paused) {
-                    inventory.createInventory();
-                    inventory.showMenu();
-                } else {
-                    inventory.removeInventory();
-                    inventory.hideMenu();
+        inventoryIsOn = !inventoryIsOn;
+        paused = !paused;
+        if (systems != null) {
+            systems.forEach(ECS_System::toggleRun);
+        }
+        if (inventory != null) {
+            if (paused) {
+                inventory.createInventory();
+                inventory.showMenu();
+            } else {
+                inventory.removeInventory();
+                inventory.hideMenu();
 
             }
         }
@@ -272,11 +299,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     /**
      * Call the DialogueHUD and show it
      **/
-    public static void callDialogue(String stringText,boolean inputTextAfterFirstShownIsOn) {
+    public static void callDialogue(String stringText, boolean inputTextAfterFirstShownIsOn) {
 
         if (dialogueMenu != null) {
             if (!dialogueIsOn) {
-                dialogueMenu.createDialogueMenu(stringText,inputTextAfterFirstShownIsOn);
+                dialogueMenu.createDialogueMenu(stringText, inputTextAfterFirstShownIsOn);
                 dialogueMenu.showMenu();
             } else {
                 dialogueMenu.removeDialogueMenu();
@@ -288,11 +315,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
 
-
     private void addItem() {
         ItemDataGenerator ig = new ItemDataGenerator();
         ItemData id = ig.generateItemData();
-        if(id!= null) {
+        if (id != null) {
             addEntity(WorldItemBuilder.buildWorldItem(id));
         }
     }
@@ -303,15 +329,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * @param entity will be added to the game next frame
      */
     public static void addEntity(Entity entity) {
-        if(entity != null)entitiesToAdd.add(entity);
+        if (entity != null) entitiesToAdd.add(entity);
     }
+
     /**
      * Given list will be added to the game
      *
      * @param entitiesList: List of entities, which will be added
      */
     public static void addEntityList(ArrayList<Entity> entitiesList) {
-        for(Entity entity: entitiesList) {
+        for (Entity entity : entitiesList) {
             addEntity(entity);
         }
     }
@@ -400,16 +427,21 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     public void restart() {
         currentLevelNumber = 1;
-        hero = new Hero();
         new PlayerHUDSystem();
         Ghost.setName();
-        System.out.println(Ghost.getName());
-
-        // gameOverHUD.hideMenu();
-
-        //gameOverHUD.removeGameOverMenu();
-        //controller.remove(gameOverHUD);
-        //gameOverHUD = new GameOverHUD<>();
-        //controller.add(gameOverHUD);
+        HealthComponent hc = (HealthComponent) hero.getComponent(HealthComponent.class).get();
+        hc.setCurrentHealthpoints(hc.getMaximalHealthpoints());
+        gameOverHUD.hideMenu();
+        placeOnLevelStart(hero);
+        InventoryComponent inv = (InventoryComponent) hero.getComponent(InventoryComponent.class).get();
+        List<ItemData> items = inv.getItems();
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getItemType().equals(ItemType.Backpack)) {
+                inv.removeBackpack();
+                inv.removeItem(items.get(i));
+            }
+            else if (!items.get(i).getItemName().equals("Sword"))
+                inv.removeItem(items.get(i));
+        }
     }
 }
