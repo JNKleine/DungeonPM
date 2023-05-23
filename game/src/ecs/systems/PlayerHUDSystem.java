@@ -5,11 +5,16 @@ import ecs.components.InventoryComponent;
 import ecs.items.ItemData;
 import starter.Game;
 
+/**
+ * System for managing the PlayerHUD which shows the current health points of the associated Entity (player)
+ * and shows the GameOverHUD if necessary
+ */
 public class PlayerHUDSystem extends ECS_System{
     private HealthComponent heroHC;
     private InventoryComponent heroIC;
     private int currentLiveFromHero;
     private ItemData curItem;
+
     public PlayerHUDSystem() {
         heroHC = (HealthComponent) Game.getHero().get().getComponent(HealthComponent.class).get();
         heroIC = (InventoryComponent) Game.getHero().get().getComponent(InventoryComponent.class).get();
@@ -17,6 +22,8 @@ public class PlayerHUDSystem extends ECS_System{
         currentLiveFromHero = heroHC.getCurrentHealthpoints();
         curItem = heroIC.getCurMainItem();
     }
+
+    /** Updates the graphic display of the PlayerHUD */
     @Override
     public void update() {
         if(heroHC.getCurrentHealthpoints() <= 0) {

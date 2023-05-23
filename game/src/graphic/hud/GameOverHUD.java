@@ -10,8 +10,13 @@ import starter.Game;
 import tools.Constants;
 import tools.Point;
 
+/**
+ * Shows a GameOver-Screen when the health points are 0 or below 0.
+ * The Player can decide if he wants to restart or leave the Game.
+ */
 public class GameOverHUD <T extends Actor> extends ScreenController<T> {
 
+    /** add a Textbutton-Listener for the buttons "restart" and "leave" */
     TextButtonListener tb = new TextButtonListener() {
         @Override
         public void clicked(InputEvent event, float x, float y) {
@@ -24,14 +29,6 @@ public class GameOverHUD <T extends Actor> extends ScreenController<T> {
             }
         }
     };
-
-    public void restart() {
-        Game game = new Game();
-        game.restart();
-        //hideMenu();
-        //removeGameOverMenu();
-        //new GameOverHUD<>();
-    }
 
     /**
      * Creates a Screencontroller with a ScalingViewport which stretches the ScreenElements on
@@ -86,6 +83,15 @@ public class GameOverHUD <T extends Actor> extends ScreenController<T> {
         hideMenu();
     }
 
+    /** Restarts the Game by calling the method in the class Game */
+    public void restart() {
+        Game game = new Game();
+        game.restart();
+        //hideMenu();
+        //removeGameOverMenu();
+        //new GameOverHUD<>();
+    }
+
     /**shows the Menu**/
     public void showMenu() {
         this.forEach((Actor s) -> s.setVisible(true));
@@ -95,4 +101,5 @@ public class GameOverHUD <T extends Actor> extends ScreenController<T> {
     public void hideMenu() {
         this.forEach((Actor s) -> s.setVisible(false));
     }
+
 }
