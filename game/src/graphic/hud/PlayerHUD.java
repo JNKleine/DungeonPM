@@ -4,10 +4,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import controller.ScreenController;
 import ecs.components.HealthComponent;
 import ecs.components.InventoryComponent;
+import ecs.entities.Hero;
+import starter.Game;
 import tools.Constants;
 import tools.Point;
 
@@ -34,6 +37,23 @@ public class PlayerHUD <T extends Actor> extends ScreenController<T> {
                     .build());
         currentHP.setFontScale(2);
         add((T) currentHP);
+        Hero hero = (Hero) Game.getHero().get();
+        ScreenImage currMoneyImg = null;
+        if ( hero.getMoney() <5)
+            currMoneyImg = new ScreenImage("items/coins/coinI/bronzeCoin.png", new Point(0,5));
+        else if ( hero.getMoney() >= 5 && hero.getMoney() <10)
+            currMoneyImg = new ScreenImage("items/coins/coinV/silverCoin.png", new Point(0,5));
+        else if ( hero.getMoney() >= 10 )
+            currMoneyImg = new ScreenImage("items/coins/coinX/GoldCoin.png", new Point(0,5));
+        ScreenText currMoney =
+            new ScreenText(hero.getMoney() + "" ,
+                new Point(50,25),
+                1,
+                new LabelStyleBuilder(FontBuilder.DEFAULT_FONT).setFontcolor(Color.WHITE).build());
+        currMoney.setFontScale(2);
+        add((T) currMoneyImg);
+        add((T) currMoney);
+
 
         ScreenImage img = new ScreenImage("hud/inventoryHud/Rahmen.png",new Point(0,0));
         img.setPosition(
