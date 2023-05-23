@@ -76,11 +76,6 @@ public class PlayerSystem extends ECS_System {
             else if (Gdx.input.isKeyPressed(KeyboardConfig.SECOND_SKILL.get()))
                 ksd.pc.getSkillSlot2().ifPresent(skill -> skill.execute(ksd.e));
         }
-        //Nur drinne, da der aktuelle Bug besteht:
-        else {
-            if (Gdx.input.isKeyJustPressed(KeyboardConfig.PRESS_ESC.get()))
-                Game.callDialogue("",true);
-        }
     }
 
     private KSData buildDataObject(PlayableComponent pc) {

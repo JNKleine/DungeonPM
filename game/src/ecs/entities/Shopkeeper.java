@@ -6,6 +6,7 @@ import ecs.items.ItemData;
 import ecs.items.item.Damagestone;
 import ecs.items.item.PotionOfHealing;
 import ecs.items.item.Telestone;
+import ecs.systems.DialogueSystem;
 import graphic.Animation;
 import starter.Game;
 
@@ -15,7 +16,7 @@ public class Shopkeeper extends Entity {
 
     private ItemData[] possibleItemsInShop = new ItemData[]{new Telestone().getItemData(),new Damagestone().getItemData(),
         new PotionOfHealing().getItemData()};
-    public static int moduloForLevelSpawn = 20;
+    public static int moduloForLevelSpawn = 1;
     private boolean haggle;
     private int currentPriceFactor;
     private int discount;
@@ -28,7 +29,7 @@ public class Shopkeeper extends Entity {
         addPositionComponent();
         addInteractionComponent();
         addAnimationComponent();
-        addInventoryComponent(rn.nextInt(4,10));
+        addInventoryComponent(8);
         fillInventory();
         haggle = false;
         currentPriceFactor = 100;
@@ -67,12 +68,12 @@ public class Shopkeeper extends Entity {
     @Override
     public String getAnswer(String text) {
         if(text.toLowerCase().contains("trade") || text.toLowerCase().contains("your inventory")) {
-
             Game.inventory.createInventory(this);
+            DialogueSystem.callInventoryHUD(this);
             return "Here are all my items";
         }
         else if(text.toLowerCase().contains("my inventory") || text.toLowerCase().contains("my items")) {
-            Game.inventory.createInventory(Game.getHero().get());
+            DialogueSystem.callInventoryHUD(Game.getHero().get());
             return "What do you wanna sell?";
         }
         else if(text.toLowerCase().contains("haggle")) {

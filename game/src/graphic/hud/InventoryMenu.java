@@ -68,7 +68,7 @@ public class InventoryMenu <T extends Actor> extends ScreenController<T>  {
             ScreenImage img = new ScreenImage("hud/inventoryHud/Rahmen.png",new Point(0,0));
             img.setPosition(
                 ((Constants.WINDOW_WIDTH) / 2.6f - img.getWidth()+xPos*64),
-                ((Constants.WINDOW_HEIGHT) / 1.5f + img.getHeight()-yPos*64),
+                ((Constants.WINDOW_HEIGHT) / 1.25f + img.getHeight()-yPos*64),
                 Align.center | Align.bottom);
             add((T)img);
             currentInventory.add((T)img);
@@ -84,7 +84,7 @@ public class InventoryMenu <T extends Actor> extends ScreenController<T>  {
             ScreenImage img = new ScreenImage(items.get(i).getInventoryTexture().getNextAnimationTexturePath(),new Point(0,0));
             img.setPosition(
                 ((Constants.WINDOW_WIDTH) / 2.6f - img.getWidth()+xPos*64),
-                ((Constants.WINDOW_HEIGHT) / 1.5f + img.getHeight()-yPos*64),
+                ((Constants.WINDOW_HEIGHT) / 1.25f + img.getHeight()-yPos*64),
                 Align.center | Align.bottom);
             add((T)img);
 

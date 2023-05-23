@@ -7,6 +7,9 @@ public class DialogueSystem extends ECS_System {
 
     private static Entity e = null;
 
+    private static boolean showInventory = false;
+    private static Entity entityThatShowsInventory = null;
+
     private static boolean textInputAfterFirstShownIsOn;
     @Override
     public void update() {
@@ -17,6 +20,7 @@ public class DialogueSystem extends ECS_System {
                 System.out.println(callAnswerFromEntity(currentTextFromPlayer));
                 Game.callDialogue("",true);
                 Game.callDialogue(callAnswerFromEntity( currentTextFromPlayer),textInputAfterFirstShownIsOn);
+                if(showInventory) Game.callInventory(entityThatShowsInventory);
             }
         }
     }
@@ -46,4 +50,10 @@ public class DialogueSystem extends ECS_System {
         textInputAfterFirstShownIsOn = textInputAfterFirstIsOn;
         Game.callDialogue(answerFromEntity,true);
     }
+
+    public static void callInventoryHUD(Entity e) {
+        entityThatShowsInventory = e;
+        showInventory = true;
+    }
+
 }

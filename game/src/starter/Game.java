@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
+import controller.ScreenController;
 import controller.SystemController;
 import ecs.components.*;
 import ecs.entities.*;
@@ -73,6 +74,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static boolean inventoryIsOn = false;
 
     /** All entities that are currently active in the dungeon */
+    private static ArrayList<ScreenController> listOfCurWindows = new ArrayList<>();
     private static final Set<Entity> entities = new HashSet<>();
     /** All entities to be removed from the dungeon in the next frame */
     private static final Set<Entity> entitiesToRemove = new HashSet<>();
@@ -161,6 +163,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P) && !inventoryIsOn && !dialogueIsOn) togglePause();
         if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn) callInventory(getHero().get());
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) closeRecentWindow();
     }
 
     @Override
@@ -242,8 +245,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             if (pauseMenu != null) {
                 if (paused) {
                     pauseMenu.showMenu();
+                    listOfCurWindows.add(pauseMenu);
                 } else {
                     pauseMenu.hideMenu();
+                    listOfCurWindows.remove(pauseMenu);
                 }
             }
 
@@ -258,11 +263,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             }
             if (inventory != null) {
                 if (paused) {
+
                     inventory.createInventory(e);
                     inventory.showMenu();
+                    listOfCurWindows.add(inventory);
                 } else {
                     inventory.removeInventory();
                     inventory.hideMenu();
+                    listOfCurWindows.remove(inventory);
 
             }
         }
@@ -277,12 +285,37 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             if (!dialogueIsOn) {
                 dialogueMenu.createDialogueMenu(stringText,inputTextAfterFirstShownIsOn);
                 dialogueMenu.showMenu();
+                listOfCurWindows.add(dialogueMenu);
             } else {
                 dialogueMenu.removeDialogueMenu();
                 dialogueMenu.hideMenu();
+                listOfCurWindows.remove(dialogueMenu);
             }
             dialogueIsOn = !dialogueIsOn;
 
+        }
+    }
+
+    public static void addRecentWindow(ScreenController window) {
+        listOfCurWindows.add(window);
+    }
+
+    public static void closeRecentWindow() {
+        if(listOfCurWindows.size() > 0) {
+            ScreenController curWindow = listOfCurWindows.get(listOfCurWindows.size()-1);
+            listOfCurWindows.remove(curWindow);
+            if(curWindow.equals(inventory)) {
+                callInventory(getHero().get());
+            }
+            else if(curWindow.equals(dialogueMenu)) {
+                callDialogue("",true);
+            }
+            else if(curWindow.equals(pauseMenu)) {
+                togglePause();
+            }
+            else if(curWindow.equals(gameOverHUD)) {
+                gameOverHUD.hideMenu();
+            }
         }
     }
 

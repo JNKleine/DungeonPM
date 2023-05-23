@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Align;
 import controller.ScreenController;
+import ecs.components.HealthComponent;
+import starter.Game;
 import tools.Constants;
 import tools.Point;
 
@@ -78,6 +80,7 @@ public class GameOverHUD <T extends Actor> extends ScreenController<T> {
     /**shows the Menu**/
     public void showMenu() {
         this.forEach((Actor s) -> s.setVisible(true));
+        Game.addRecentWindow(Game.gameOverHUD);
     }
 
     /** hides the Menu */
