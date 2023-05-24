@@ -22,6 +22,6 @@ public class Telestone extends Item {
             new DeletingItemInWorld(),
             new DeleteOnDrop(),
             new TeleportPlayerOnUse(),
-            new DamageModifier());
+            new DamageModifier(),50);
     }
 }

@@ -21,6 +21,6 @@ public class PotionOfHealing extends Item {
             new DeletingItemInWorld(),
             new DeleteOnDrop(),
             new HealPlayerOnUse(20),
-            new DamageModifier());
+            new DamageModifier(),60);
     }
 }

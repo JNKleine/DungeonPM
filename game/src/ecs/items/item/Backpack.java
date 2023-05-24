@@ -24,7 +24,7 @@ public class Backpack extends Item {
             new BackpackOnCollect(size),
             new BackpackOnDrop(),
             new NothingOnUse(),
-            new DamageModifier());
+            new DamageModifier(),40);
         this.size = size;
         this.storedItems = storedItems;
     }

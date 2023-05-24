@@ -10,7 +10,6 @@ import ecs.items.ItemType;
 
 public class Coin extends Item{
 
-    private int value;
 
     public Coin(int value, String inventoryTexture, String worldTexture){
             super(ItemType.Passive, inventoryTexture,
@@ -18,8 +17,7 @@ public class Coin extends Item{
                 new CoinOnCollect(value),
                 new DeleteOnDropAndSpawnInWorld(),
                 new NothingOnUse(),
-                new DamageModifier());
+                new DamageModifier(),value);
     }
 
-    public int getValue() {return this.value;}
 }

@@ -65,14 +65,59 @@ public class Shopkeeper extends Entity {
         }
     }
 
+    private String sellItem(InventoryComponent ic,InventoryComponent icH,Hero hero) {
+        if(ic.getCurMainItem() != null) {
+            if(hero.getMoney() >= ic.getCurMainItem().getValue()) {
+                if(icH.emptySlots() > 0) {
+                    ic.removeItem(ic.getCurMainItem());
+                    icH.addItem(ic.getCurMainItem());
+                    hero.decreaseMoney(ic.getCurMainItem().getValue());
+                    ic.setCurMainItem(null);
+                    return "Congratulations to your new item!";
+                }
+                else {
+                    return "Your inventory is full!";
+                }
+            }
+            else {
+                return "You don't have enough coins!";
+            }
+        }
+        else {
+            return "You never chosen any item!";
+        }
+    }
+
+    private void buyItem() {
+
+    }
+
+    private String getPrice(InventoryComponent ic) {
+        if(ic.getCurMainItem() != null) {
+            return ic.getCurMainItem().getValue()+" Coins for this "+ic.getCurMainItem().getItemName()+"!";
+        }
+        else {
+            return "You never chosen any item!";
+        }
+    }
+
+    private void rollDice() {
+
+    }
+
+
     @Override
     public String getAnswer(String text) {
+        Hero hero = (Hero)Game.getHero().get();
+        InventoryComponent icFromHero = (InventoryComponent) hero.getComponent(InventoryComponent.class).get();
+        InventoryComponent icFromShop = (InventoryComponent) this.getComponent(InventoryComponent.class).get();
         if(text.toLowerCase().contains("trade") || text.toLowerCase().contains("your inventory")) {
-            Game.inventory.createInventory(this);
+            DialogueSystem.hideInventoryHUD();
             DialogueSystem.callInventoryHUD(this);
             return "Here are all my items";
         }
         else if(text.toLowerCase().contains("my inventory") || text.toLowerCase().contains("my items")) {
+            DialogueSystem.hideInventoryHUD();
             DialogueSystem.callInventoryHUD(Game.getHero().get());
             return "What do you wanna sell?";
         }
@@ -82,13 +127,14 @@ public class Shopkeeper extends Entity {
                 return "";
                  }
         }
+        else if(text.toLowerCase().contains("how much i get")) {
+            return getPrice(icFromHero);
+        }
         else if(text.toLowerCase().contains("costs") || text.toLowerCase().contains("how much")) {
-            //Ausgabe des Preises
-            return "";
+            return getPrice(icFromShop);
         }
         else if(text.toLowerCase().contains("buy this item")) {
-            //Kauf vom ausgewählten Item
-            return "";
+            return sellItem(icFromShop,icFromHero,hero);
         }
         else if(text.toLowerCase().contains("sell this item")) {
             //Verkauf des Items vom Hero

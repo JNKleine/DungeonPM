@@ -257,12 +257,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     /**Call the inventoryHUD and show it**/
     public static void callInventory(Entity e) {
             inventoryIsOn = !inventoryIsOn;
-            paused = !paused;
-            if (systems != null) {
-                systems.forEach(ECS_System::toggleRun);
-            }
+
             if (inventory != null) {
-                if (paused) {
+                if (inventoryIsOn) {
 
                     inventory.createInventory(e);
                     inventory.showMenu();

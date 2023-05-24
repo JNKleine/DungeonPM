@@ -20,7 +20,7 @@ public class DialogueSystem extends ECS_System {
                 System.out.println(callAnswerFromEntity(currentTextFromPlayer));
                 Game.callDialogue("",true);
                 Game.callDialogue(callAnswerFromEntity( currentTextFromPlayer),textInputAfterFirstShownIsOn);
-                if(showInventory) Game.callInventory(entityThatShowsInventory);
+                if(showInventory) Game.callInventory(entityThatShowsInventory); showInventory = false;
             }
         }
     }
@@ -54,6 +54,11 @@ public class DialogueSystem extends ECS_System {
     public static void callInventoryHUD(Entity e) {
         entityThatShowsInventory = e;
         showInventory = true;
+    }
+
+    public static void hideInventoryHUD() {
+        showInventory = false;
+        if(Game.inventoryIsOn) Game.callInventory(entityThatShowsInventory);
     }
 
 }
