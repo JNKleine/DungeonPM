@@ -6,6 +6,9 @@ import ecs.entities.Hero;
 import ecs.items.IOnCollect;
 import starter.Game;
 
+/**
+ * Deletes a Coin from the World and adds it to the total currency of the Hero
+ */
 public class CoinOnCollect implements IOnCollect {
 
     private int value;

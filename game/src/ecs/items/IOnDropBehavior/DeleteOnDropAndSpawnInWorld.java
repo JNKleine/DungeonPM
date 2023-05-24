@@ -8,6 +8,9 @@ import ecs.items.ItemDataGenerator;
 import ecs.items.WorldItemBuilder;
 import tools.Point;
 
+/**
+ * Handles what happend when an item is dropped out of an inventory and needs to get spawned in the world
+ */
 public class DeleteOnDropAndSpawnInWorld implements IOnDrop {
 
     @Override

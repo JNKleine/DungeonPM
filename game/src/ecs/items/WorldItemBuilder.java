@@ -34,6 +34,12 @@ public class WorldItemBuilder {
         return droppedItem;
     }
 
+    /**
+     * Creates an Entity at a specified Position which then can be added to the game
+     *
+     * @param itemData the Data which should be given to the world Item
+     * @param point Position of the created Entity
+     */
     public void buildWorldItemAtPosition(ItemData itemData, Point point) {
         Entity droppedItem = new Entity();
         new PositionComponent(droppedItem,point);

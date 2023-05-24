@@ -76,6 +76,7 @@ import java.util.Random;
     // add InventoryComponent
     private void addInventoryComponent(){
         InventoryComponent inv = new InventoryComponent(this, 1);
+        // Add one Coin to the Inventory of a Monster
         addCoin();
     }
 
