@@ -3,6 +3,7 @@ package ecs.entities;
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.items.ItemData;
+import ecs.items.ItemType;
 import ecs.items.item.Damagestone;
 import ecs.items.item.PotionOfHealing;
 import ecs.items.item.Telestone;
@@ -16,10 +17,10 @@ public class Shopkeeper extends Entity {
 
     private ItemData[] possibleItemsInShop = new ItemData[]{new Telestone().getItemData(), new Damagestone().getItemData(),
         new PotionOfHealing().getItemData()};
-    public static int moduloForLevelSpawn = 1;
+    public static int moduloForLevelSpawn = 15;
     private boolean haggle;
-    private int currentPriceFactor;
-    private int discount;
+    private int dice;
+    private float currentPriceFactor;
     private final String pathToIdle = "character/npc/shop";
 
     /**
@@ -34,8 +35,7 @@ public class Shopkeeper extends Entity {
         addInventoryComponent(8);
         fillInventory();
         haggle = false;
-        currentPriceFactor = 100;
-        discount = rn.nextInt(10, 20);
+        currentPriceFactor = 1.2f;
     }
 
     //add PositionComponent
@@ -69,14 +69,17 @@ public class Shopkeeper extends Entity {
         }
     }
 
-    private String sellItem(InventoryComponent ic, InventoryComponent icH, Hero hero) {
-        if (ic.getCurMainItem() != null) {
-            if (hero.getMoney() >= ic.getCurMainItem().getValue()) {
-                if (icH.emptySlots() > 0) {
+
+    private String sellItem(InventoryComponent ic,InventoryComponent icH,Hero hero) {
+        if(ic.getCurMainItem() != null) {
+            int itemPrice = (int)(ic.getCurMainItem().getValue()*currentPriceFactor);
+            if(hero.getMoney() >= itemPrice) {
+                if(icH.emptySlots() > 0) {
                     ic.removeItem(ic.getCurMainItem());
                     icH.addItem(ic.getCurMainItem());
                     hero.decreaseMoney(ic.getCurMainItem().getValue());
                     ic.setCurMainItem(null);
+                    DialogueSystem.hideInventoryHUD();
                     return "Congratulations to your new item!";
                 } else {
                     return "Your inventory is full!";
@@ -85,32 +88,58 @@ public class Shopkeeper extends Entity {
                 return "You don't have enough coins!";
             }
         } else {
-            return "You never chosen any item!";
+            return "Chose a new item you want to buy!";
         }
     }
 
-    private void buyItem() {
+    private String buyItem(InventoryComponent icH,Hero hero) {
+        if(icH.getCurMainItem() != null) {
+                if(icH.getCurMainItem().getItemType() == ItemType.Backpack &&
+                    icH.emptySlots() < icH.getBackpackSize()) {
+                    return "Sorry, your backpack is still full of items!\nEmpty it, and I will buy it";
+                }
+                else icH.removeBackpack();
+            hero.increaseMoney(icH.getCurMainItem().getValue());
+            icH.removeItem(icH.getCurMainItem());
+            icH.setCurMainItem(null);
+            DialogueSystem.hideInventoryHUD();
+            return "It was my pleasure doing business with you";
+        }
+        else return "Chose a new item you want to sell!";
     }
 
-    private String getPrice(InventoryComponent ic) {
-        if (ic.getCurMainItem() != null) {
-            return ic.getCurMainItem().getValue() + " Coins for this " + ic.getCurMainItem().getItemName() + "!";
-        } else {
+    private String getPrice(InventoryComponent ic,boolean itemIsForSell) {
+        if(ic.getCurMainItem() != null) {
+            if(itemIsForSell) {
+                return "I want "+(int)(ic.getCurMainItem().getValue()*currentPriceFactor) +
+                    " Coins for this " + ic.getCurMainItem().getItemName() + "!";
+            }
+            else
+                return "This "+ic.getCurMainItem().getItemName()+" would be "+ic.getCurMainItem().getValue()+
+                    " Coins worth!";
+            }
+        else {
             return "You never chosen any item!";
         }
     }
 
     private String rollDice() {
-        Random rdm = new Random();
-        int dice = rdm.nextInt(5) + 1;
-        if (dice % 2 == 0) {
-            currentPriceFactor -= 0.1f;
-            return "you rolled a " + dice + ",\nthat mean's you won\nyou now get a 10% discount on my items";
+        if(!haggle) {
+            Random rdm = new Random();
+            dice = rdm.nextInt(5) + 1;
+            haggle = true;
+            if (dice % 2 == 0) {
+                currentPriceFactor -= 0.1f;
+                return "you rolled a " + dice + ",\nthat mean's you won\nyou now get a 10% discount on my items";
+            } else if (dice % 2 == 1) {
+                currentPriceFactor += 0.1f;
+                return "you rolled a " + dice + ",\nthat mean's you lost\nmy items are now 10% more expensive";
+            }
         }
-        else {
-            currentPriceFactor += 0.1f;
-            return "you rolled a " + dice +",\nthat mean's you lost\nmy items are now 10% more expensive";
-        }
+        if (currentPriceFactor == 1.1f)
+            return "We've already haggled and you rolled a "+ dice + "\nthat mean's you won\nyou now get a 10% discount on my items";
+        else
+            return "We've already haggled and you rolled a "+ dice + "\nthat mean's you lost\nmy items are now 10% more expensive";
     }
 
 
@@ -127,23 +156,23 @@ public class Shopkeeper extends Entity {
             DialogueSystem.hideInventoryHUD();
             DialogueSystem.callInventoryHUD(Game.getHero().get());
             return "What do you wanna sell?";
-        } else if (text.toLowerCase().contains("haggle")) {
-            if (haggle) {
-                return "We've already haggled!";
-            } else {
-                haggle = true;
-                return rollDice();
-            }
-        } else if (text.toLowerCase().contains("how much i get")) {
-            return getPrice(icFromHero);
-        } else if (text.toLowerCase().contains("costs") || text.toLowerCase().contains("how much")) {
-            return getPrice(icFromShop);
-        } else if (text.toLowerCase().contains("buy this item")) {
-            return sellItem(icFromShop, icFromHero, hero);
-        } else if (text.toLowerCase().contains("sell this item")) {
-            //Verkauf des Items vom Hero
-            return "";
-        } else if (text.matches("[0-9]+")) {
+        }
+        else if (text.toLowerCase().contains("haggle")) {
+            return rollDice();
+        }
+        else if(text.toLowerCase().contains("how much i get")) {
+            return getPrice(icFromHero,false);
+        }
+        else if(text.toLowerCase().contains("costs") || text.toLowerCase().contains("how much")) {
+            return getPrice(icFromShop,true);
+        }
+        else if(text.toLowerCase().contains("buy this item")) {
+            return sellItem(icFromShop,icFromHero,hero);
+        }
+        else if(text.toLowerCase().contains("sell this item")) {
+            return buyItem(icFromHero,hero);
+        }
+        else if (text.matches("[0-9]+")) {
             return "I don't know, what to do with\n all this numbers, sorry!";
         } else if (text.matches("[A-Za-z ]+")) {
             return "I don't understand these words!";
