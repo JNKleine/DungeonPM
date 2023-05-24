@@ -1,6 +1,7 @@
 package ecs.entities;
 
 import dslToGame.AnimationBuilder;
+import ecs.items.item.Coin;
 import ecs.items.item.Sword;
 import ecs.components.*;
 import ecs.components.AnimationComponent;
@@ -30,6 +31,8 @@ public class Hero extends Entity {
     private final String pathToGetDamage = "knight/onHitAnimation";
     private  final String pathToDieAnim = "knight/onDieAnimation";
     private Skill firstSkill;
+
+    private int money;
 
     /** Entity with Components */
     public Hero() {
@@ -77,7 +80,6 @@ public class Hero extends Entity {
     }
 
     private void setupInventoryComponent() {
-
         InventoryComponent ic = new InventoryComponent(this,4);
         ic.addItem(new Sword().getItemData());
     }
@@ -90,5 +92,17 @@ public class Hero extends Entity {
                 DamageType.PHYSICAL, this));
         }
 
+    }
+
+    public void increaseMoney(int value) {
+        this.money+=value;
+    }
+
+    public void decreaseMoney(int value) {
+        this.money-=value;
+    }
+
+    public int getMoney() {
+        return this.money;
     }
 }

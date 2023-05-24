@@ -7,6 +7,9 @@ public class DialogueSystem extends ECS_System {
 
     private static Entity e = null;
 
+    private static boolean showInventory = false;
+    private static Entity entityThatShowsInventory = null;
+
     private static boolean textInputAfterFirstShownIsOn;
     @Override
     public void update() {
@@ -17,6 +20,7 @@ public class DialogueSystem extends ECS_System {
                 System.out.println(callAnswerFromEntity(currentTextFromPlayer));
                 Game.callDialogue("",true);
                 Game.callDialogue(callAnswerFromEntity( currentTextFromPlayer),textInputAfterFirstShownIsOn);
+                if(showInventory) Game.callInventory(entityThatShowsInventory); showInventory = false;
             }
         }
     }
@@ -46,4 +50,22 @@ public class DialogueSystem extends ECS_System {
         textInputAfterFirstShownIsOn = textInputAfterFirstIsOn;
         Game.callDialogue(answerFromEntity,true);
     }
+
+    /**
+     * Call the inventory from an Entity, in the dialoguesystem
+     * @param e: Entity whose inventory is to be opened
+     * **/
+    public static void callInventoryHUD(Entity e) {
+        entityThatShowsInventory = e;
+        showInventory = true;
+    }
+
+    /**
+     * Call, to hide the inventory, if the inventoryHUD is currently open
+     * **/
+    public static void hideInventoryHUD() {
+        showInventory = false;
+        if(Game.inventoryIsOn) Game.callInventory(entityThatShowsInventory);
+    }
+
 }

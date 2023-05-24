@@ -8,6 +8,7 @@ import ecs.components.ItemComponent;
 import ecs.components.PositionComponent;
 import ecs.components.stats.DamageModifier;
 import ecs.entities.Entity;
+import ecs.items.item.Item;
 import graphic.Animation;
 import java.util.List;
 import starter.Game;
@@ -20,6 +21,8 @@ public class ItemData {
     private Animation worldTexture;
     private String itemName;
     private String description;
+
+    private int value;
 
     private IOnCollect onCollect;
     private IOnDrop onDrop;
@@ -48,6 +51,7 @@ public class ItemData {
             Animation worldTexture,
             String itemName,
             String description,
+            int value,
             IOnCollect onCollect,
             IOnDrop onDrop,
             IOnUse onUse,
@@ -57,6 +61,7 @@ public class ItemData {
         this.worldTexture = worldTexture;
         this.itemName = itemName;
         this.description = description;
+        this.value = value;
         this.setOnCollect(onCollect);
         this.setOnDrop(onDrop);
         this.setOnUse(onUse);
@@ -77,13 +82,14 @@ public class ItemData {
             Animation inventoryTexture,
             Animation worldTexture,
             String itemName,
-            String description) {
+            String description,int value) {
         this(
                 itemType,
                 inventoryTexture,
                 worldTexture,
                 itemName,
                 description,
+                value,
                 ItemData::defaultCollect,
                 ItemData::defaultDrop,
                 ItemData::defaultUseCallback,
@@ -96,7 +102,7 @@ public class ItemData {
                 new Animation(List.of(ItemConfig.TEXTURE.get()), 1),
                 new Animation(List.of(ItemConfig.TEXTURE.get()), 1),
                 ItemConfig.NAME.get(),
-                ItemConfig.DESCRIPTION.get());
+                ItemConfig.DESCRIPTION.get(), 0);
     }
 
     /**
@@ -146,6 +152,10 @@ public class ItemData {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getValue() {
+        return value;
     }
 
     /**

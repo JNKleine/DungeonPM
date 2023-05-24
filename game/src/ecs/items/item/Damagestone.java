@@ -25,6 +25,6 @@ public class Damagestone extends Item {
                     return 5;
                 }
             },
-            new DamageModifier());
+            new DamageModifier(),30);
     }
 }

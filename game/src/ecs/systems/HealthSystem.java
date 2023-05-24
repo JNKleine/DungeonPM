@@ -1,14 +1,16 @@
 package ecs.systems;
 
-import ecs.components.AnimationComponent;
-import ecs.components.HealthComponent;
-import ecs.components.MissingComponentException;
+import ecs.components.*;
 import ecs.components.stats.StatsComponent;
 import ecs.components.xp.XPComponent;
 import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import java.util.stream.Stream;
+
+import ecs.items.ItemData;
+import ecs.items.item.Item;
 import starter.Game;
+import tools.Point;
 
 /**
  * The HealthSystem offsets the damage to be done to all entities with the HealthComponent. Triggers
@@ -95,7 +97,6 @@ public class HealthSystem extends ECS_System {
         hsd.ac.setCurrentAnimation(hsd.hc.getDieAnimation());
         // TODO: Before removing the entity, check if the animation is finished (Issue #246)
         Game.removeEntity(hsd.hc.getEntity());
-
         // Add XP
         hsd.e
                 .getComponent(XPComponent.class)

@@ -8,8 +8,10 @@ import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.CollideAI;
 import ecs.components.ai.idle.WallWalk;
 import ecs.components.ai.transition.RangeTransition;
+import ecs.items.item.Coin;
 import graphic.Animation;
 import starter.Game;
+import java.util.Random;
 
 /**
  * WallWalker is a specific monster of the dungeon. WallWalker inherits from Monster
@@ -33,7 +35,6 @@ public class WallWalker extends Monster {
             1+(Game.currentLevelNumber/10),0.5f,1,
             "monster/wallWalker/idleRight","monster/wallWalker/idleLeft",
             "monster/wallWalker/runRight","monster/wallWalker/runLeft",Faction.FOE);
-
         addHitBox();
         addAIComponent();
         addHealthComponent();

@@ -17,6 +17,8 @@ public class EntitySpawnRateSetter {
     private final Monster[] monsters = new Monster[]{new SlimeGuard(), new PillowOfBadDreams(), new WallWalker()};
 
     private final Entity[] ghostAndGrave = new Entity[]{new Ghost(), new Gravestone()};
+
+    private final Entity shop = new Shopkeeper();
     //Object from type Random
     private final Random random = new Random();
 
@@ -97,4 +99,26 @@ public class EntitySpawnRateSetter {
         }
         return toSpawn;
     }
+
+    /**
+     * A shopkeeper spawns every x levels.
+     * x is defined in the Shopkeeper class.
+     */
+    public Entity spawnShop() {
+        Entity toSpawn = null;
+        if(Game.currentLevelNumber%Shopkeeper.moduloForLevelSpawn == 0) {
+            try {
+                Class klass = Class.forName(shop.getClass().getName());
+                toSpawn = (Entity) klass.newInstance();
+            } catch (ClassNotFoundException e) {
+                System.out.println("No such Class found" + shop.getClass().getName());
+            } catch (InstantiationException e) {
+                System.out.println("Can not instantiate" + shop.getClass().getName());
+            } catch (IllegalAccessException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return toSpawn;
+    }
 }
+

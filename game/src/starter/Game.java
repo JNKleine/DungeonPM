@@ -9,11 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
+import controller.ScreenController;
 import controller.SystemController;
-import ecs.components.HealthComponent;
-import ecs.components.InventoryComponent;
-import ecs.components.MissingComponentException;
-import ecs.components.PositionComponent;
+import ecs.components.*;
 import ecs.entities.*;
 import ecs.items.ItemData;
 import ecs.items.ItemDataGenerator;
@@ -83,9 +81,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static boolean inventoryIsOn = false;
 
-    /**
-     * All entities that are currently active in the dungeon
-     */
+    /** All entities that are currently active in the dungeon */
+    private static ArrayList<ScreenController> listOfCurWindows = new ArrayList<>();
+
     private static final Set<Entity> entities = new HashSet<>();
     /**
      * All entities to be removed from the dungeon in the next frame
@@ -108,7 +106,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static int currentLevelNumber = 0;
     private static PauseMenu<Actor> pauseMenu;
 
-    private static InventoryMenu<Actor> inventory;
+    public static InventoryMenu<Actor> inventory;
 
     public static DialogueMenu<Actor> dialogueMenu;
 
@@ -185,7 +183,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P) && !inventoryIsOn && !dialogueIsOn) togglePause();
-        if (Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn) callInventory();
+        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn) callInventory(getHero().get());
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) closeRecentWindow();
     }
 
     @Override
@@ -197,7 +196,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         entitiesToAdd.clear();
         addItem();
         addEntityList(entitySpawner.getListOfMonsterToSpawnVariableProbability());
-        if (currentLevelNumber <= 10) {
+        addEntity(entitySpawner.spawnShop());
+        if(currentLevelNumber <= 10) {
             addEntityList(entitySpawner.spawnGraveAndGhost(10));
         }
         getHero().ifPresent(this::placeOnLevelStart);
@@ -260,37 +260,38 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * Toggle between pause and run
      */
     public static void togglePause() {
-        isPaused = !isPaused;
-        paused = !paused;
-        if (systems != null) {
-            systems.forEach(ECS_System::toggleRun);
-        }
-        if (pauseMenu != null) {
-            if (paused) {
-                pauseMenu.showMenu();
-            } else {
-                pauseMenu.hideMenu();
+            isPaused = !isPaused;
+            paused = !paused;
+            if (systems != null) {
+                systems.forEach(ECS_System::toggleRun);
+            }
+            if (pauseMenu != null) {
+                if (paused) {
+                    pauseMenu.showMenu();
+                    listOfCurWindows.add(pauseMenu);
+                } else {
+                    pauseMenu.hideMenu();
+                    listOfCurWindows.remove(pauseMenu);
+                }
             }
         }
 
     }
 
-    /**
-     * Call the inventoryHUD and show it
-     **/
-    public static void callInventory() {
-        inventoryIsOn = !inventoryIsOn;
-        paused = !paused;
-        if (systems != null) {
-            systems.forEach(ECS_System::toggleRun);
-        }
-        if (inventory != null) {
-            if (paused) {
-                inventory.createInventory();
-                inventory.showMenu();
-            } else {
-                inventory.removeInventory();
-                inventory.hideMenu();
+    /**Call the inventoryHUD and show it**/
+    public static void callInventory(Entity e) {
+            inventoryIsOn = !inventoryIsOn;
+
+            if (inventory != null) {
+                if (inventoryIsOn) {
+
+                    inventory.createInventory(e);
+                    inventory.showMenu();
+                    listOfCurWindows.add(inventory);
+                } else {
+                    inventory.removeInventory();
+                    inventory.hideMenu();
+                    listOfCurWindows.remove(inventory);
 
             }
         }
@@ -305,12 +306,43 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             if (!dialogueIsOn) {
                 dialogueMenu.createDialogueMenu(stringText, inputTextAfterFirstShownIsOn);
                 dialogueMenu.showMenu();
+                listOfCurWindows.add(dialogueMenu);
             } else {
                 dialogueMenu.removeDialogueMenu();
                 dialogueMenu.hideMenu();
+                listOfCurWindows.remove(dialogueMenu);
             }
             dialogueIsOn = !dialogueIsOn;
 
+        }
+    }
+
+    /**Add a window to the currently open windows
+     * @param window: ScreenController, that is closable
+     * **/
+    public static void addRecentWindow(ScreenController window) {
+        listOfCurWindows.add(window);
+    }
+
+    /**
+     * Close the last window that was opened
+     * **/
+    public static void closeRecentWindow() {
+        if(listOfCurWindows.size() > 0) {
+            ScreenController curWindow = listOfCurWindows.get(listOfCurWindows.size()-1);
+            listOfCurWindows.remove(curWindow);
+            if(curWindow.equals(inventory)) {
+                callInventory(getHero().get());
+            }
+            else if(curWindow.equals(dialogueMenu)) {
+                callDialogue("",true);
+            }
+            else if(curWindow.equals(pauseMenu)) {
+                togglePause();
+            }
+            else if(curWindow.equals(gameOverHUD)) {
+                gameOverHUD.hideMenu();
+            }
         }
     }
 
@@ -350,6 +382,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     public static void removeEntity(Entity entity) {
         entitiesToRemove.add(entity);
+        try {InventoryComponent inv = (InventoryComponent) entity.getComponent(InventoryComponent.class).get();
+            DropLoot drop = new DropLoot();
+            if ( inv.getCurMainItem() != null)
+                drop.onDeath(entity);}
+        catch ( NoSuchElementException e ) {
+        }
     }
 
     /**

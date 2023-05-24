@@ -92,6 +92,7 @@ public class GameOverHUD <T extends Actor> extends ScreenController<T> {
     /**shows the Menu**/
     public void showMenu() {
         this.forEach((Actor s) -> s.setVisible(true));
+        Game.addRecentWindow(Game.gameOverHUD);
     }
 
     /** hides the Menu */

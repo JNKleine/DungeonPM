@@ -22,6 +22,6 @@ public class Sword extends Item {
             new DeletingItemInWorld(),
             new DeleteOnDrop(),
             new SwordOnUse(1,10),
-            new DamageModifier());
+            new DamageModifier(),200);
     }
 }

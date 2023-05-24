@@ -12,6 +12,7 @@ public class Item {
      * Items have a itemData object
      * **/
     private ItemData itemData;
+    private int itemValue;
 
     /**
      * Constructor for Items
@@ -24,16 +25,21 @@ public class Item {
      * @param iOD IONDropBehavior from item
      * @param iOU IONUseBehavior from item
      * @param dmgM DamageModifier from item
+     * @param itemValue Coin-worth from Item
      * **/
     public Item (ItemType itemType, String inventoryTexture, String worldTexture, String itemName, String description,
-                 IOnCollect iOC, IOnDrop iOD, IOnUse iOU, DamageModifier dmgM) {
+                 IOnCollect iOC, IOnDrop iOD, IOnUse iOU, DamageModifier dmgM, int itemValue) {
      itemData = new ItemData(itemType, AnimationBuilder.buildAnimation(inventoryTexture),
-                    AnimationBuilder.buildAnimation(worldTexture),itemName,description,
+                    AnimationBuilder.buildAnimation(worldTexture),itemName,description,itemValue,
          iOC,iOD,iOU,dmgM);
     }
 
     /**Get the ItemData from this object**/
     public ItemData getItemData() {
         return itemData;
+    }
+
+    public int getValue() {
+        return itemValue;
     }
 }
