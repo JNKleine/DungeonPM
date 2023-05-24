@@ -15,10 +15,10 @@ public class Coin extends Item{
 
 
     /**
-     * Creates a Coin, coins are the currency in this game
-     * @param value value of the Coun
-     * @param inventoryTexture
-     * @param worldTexture
+     * Creates a coin, coins are the currency in this game
+     * @param value value of the coin
+     * @param inventoryTexture Texture when a coin is in the Inventory
+     * @param worldTexture Texture when a coin is in the world
      */
     public Coin(int value, String inventoryTexture, String worldTexture){
             super(ItemType.Passive, inventoryTexture,
