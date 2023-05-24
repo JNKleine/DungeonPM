@@ -276,7 +276,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             }
         }
 
-    }
+
 
     /**Call the inventoryHUD and show it**/
     public static void callInventory(Entity e) {
@@ -293,8 +293,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                     inventory.hideMenu();
                     listOfCurWindows.remove(inventory);
 
+                }
             }
-        }
     }
 
     /**
