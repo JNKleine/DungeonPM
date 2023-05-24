@@ -293,10 +293,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
+    /**Add a window to the currently open windows
+     * @param window: ScreenController, that is closable
+     * **/
     public static void addRecentWindow(ScreenController window) {
         listOfCurWindows.add(window);
     }
 
+    /**
+     * Close the last window that was opened
+     * **/
     public static void closeRecentWindow() {
         if(listOfCurWindows.size() > 0) {
             ScreenController curWindow = listOfCurWindows.get(listOfCurWindows.size()-1);

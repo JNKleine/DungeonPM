@@ -100,6 +100,10 @@ public class EntitySpawnRateSetter {
         return toSpawn;
     }
 
+    /**
+     * A shopkeeper spawns every x levels.
+     * x is defined in the Shopkeeper class.
+     */
     public Entity spawnShop() {
         Entity toSpawn = null;
         if(Game.currentLevelNumber%Shopkeeper.moduloForLevelSpawn == 0) {

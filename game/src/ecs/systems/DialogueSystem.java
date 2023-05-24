@@ -51,11 +51,18 @@ public class DialogueSystem extends ECS_System {
         Game.callDialogue(answerFromEntity,true);
     }
 
+    /**
+     * Call the inventory from an Entity, in the dialoguesystem
+     * @param e: Entity whose inventory is to be opened
+     * **/
     public static void callInventoryHUD(Entity e) {
         entityThatShowsInventory = e;
         showInventory = true;
     }
 
+    /**
+     * Call, to hide the inventory, if the inventoryHUD is currently open
+     * **/
     public static void hideInventoryHUD() {
         showInventory = false;
         if(Game.inventoryIsOn) Game.callInventory(entityThatShowsInventory);
