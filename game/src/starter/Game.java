@@ -424,6 +424,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     /**
      * Restarts the Game.
      * Called when clicking the restart-Button when the game is over (-> GameOverHUD).
+     * Deletes Whole inventory of Hero, beside the Sword and gives the hero full live
+     * Places Hero on another Tile in the same Level
      */
     public void restart() {
         currentLevelNumber = 1;
