@@ -21,10 +21,8 @@ import java.util.Random;
  */
 public class Ghost extends Monster {
 
-    /**
-     * Generates a random name for the ghost
-     */
-    public static final String name = getRandomName();
+    // Generates a random name for the ghost
+    private static String name = getRandomName();
 
     /**
      * Creates an object from type ghost
@@ -47,6 +45,7 @@ public class Ghost extends Monster {
         }
     }
 
+    // add InteractionComponent
     private void addInteractionComponent() {
         new InteractionComponent(this, 1f, true, new OpenDialogueOnInteraction(
             this,"Hello there",true));
@@ -88,14 +87,25 @@ public class Ghost extends Monster {
     public void onHit(HitboxComponent hb) {
     }
 
-
+    // generate a random name for the ghost
     private static String getRandomName() {
         String[] randomNames = fillNames();
         Random rdm = new Random();
-        System.out.println(randomNames[rdm.nextInt(randomNames.length)]);
+        //System.out.println(randomNames[rdm.nextInt(randomNames.length)]);
         return randomNames[rdm.nextInt(randomNames.length)];
     }
 
+    /** Setter for changing the name of the ghost */
+    public static void setName() {
+        name = getRandomName();
+    }
+
+    /**
+     * Getter for the name of this entity
+     *
+     * @return name of the ghost
+     */
+    public static String getName() { return name; }
 
     @Override
     public String getAnswer(String text) {
@@ -129,7 +139,6 @@ public class Ghost extends Monster {
         randomNames[8] = "Max";
         randomNames[9] = "Achim";
         return randomNames;
-
     }
 }
 
