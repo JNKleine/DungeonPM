@@ -13,6 +13,9 @@ import starter.Game;
 
 import java.util.Random;
 
+/**
+ * Shop of the game, where your able to buy and sell items, you can also haggle with the shopkeeper
+ */
 public class Shopkeeper extends Entity {
 
     private ItemData[] possibleItemsInShop = new ItemData[]{new Telestone().getItemData(), new Damagestone().getItemData(),
@@ -70,6 +73,7 @@ public class Shopkeeper extends Entity {
     }
 
 
+    // Sells an item from the perspective of the shop
     private String sellItem(InventoryComponent ic,InventoryComponent icH,Hero hero) {
         if(ic.getCurMainItem() != null) {
             int itemPrice = (int)(ic.getCurMainItem().getValue()*currentPriceFactor);
@@ -92,6 +96,7 @@ public class Shopkeeper extends Entity {
         }
     }
 
+    // buys an item from the perspective of the shop
     private String buyItem(InventoryComponent icH,Hero hero) {
         if(icH.getCurMainItem() != null) {
                 if(icH.getCurMainItem().getItemType() == ItemType.Backpack &&
@@ -108,6 +113,7 @@ public class Shopkeeper extends Entity {
         else return "Chose a new item you want to sell!";
     }
 
+    // Gets the Price, when u ask him how much, for buy and sell
     private String getPrice(InventoryComponent ic,boolean itemIsForSell) {
         if(ic.getCurMainItem() != null) {
             if(itemIsForSell) {
@@ -123,6 +129,7 @@ public class Shopkeeper extends Entity {
         }
     }
 
+    // Minigame, roll a dice and if you get an even number u win a dicsout, if u you get an odd number items are more expensive
     private String rollDice() {
         if(!haggle) {
             Random rdm = new Random();
@@ -143,6 +150,11 @@ public class Shopkeeper extends Entity {
     }
 
 
+    /**
+     * Calls methods when you speak to him, and returns the answers of that methods
+     * @param text Entered input from the player in the dialogHUD
+     * @return Answer from the Shop
+     */
     @Override
     public String getAnswer(String text) {
         Hero hero = (Hero) Game.getHero().get();
