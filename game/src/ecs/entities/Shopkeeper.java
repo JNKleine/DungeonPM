@@ -77,7 +77,7 @@ public class Shopkeeper extends Entity {
                 if(icH.emptySlots() > 0) {
                     ic.removeItem(ic.getCurMainItem());
                     icH.addItem(ic.getCurMainItem());
-                    hero.decreaseMoney(ic.getCurMainItem().getValue());
+                    hero.decreaseMoney(itemPrice);
                     ic.setCurMainItem(null);
                     DialogueSystem.hideInventoryHUD();
                     return "Congratulations to your new item!";
