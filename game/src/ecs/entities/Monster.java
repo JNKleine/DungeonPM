@@ -73,6 +73,29 @@ import java.util.Random;
         addVelocityComponent();
         addInventoryComponent();
     }
+
+    /**
+     * New Constructor for a boss Monster
+     * @param initDamage: initial int value for damage per hit
+     * @param initHitpoints: initial int value for Livepoints
+     * @param pathToIdleLeft: String path idle left animation
+     * @param pathToIdleRight: String path idle right animation
+     */
+    public Monster(int initHitpoints,
+                   int initDamage,
+                   String pathToIdleRight, String pathToIdleLeft,Faction faction) {
+        super(initDamage,faction);
+        this.initHitpoints = initHitpoints;
+        this.initDamage = initDamage;
+        this.pathToIdleRight = pathToIdleRight;
+        this.pathToIdleLeft = pathToIdleLeft;
+        this.MAXIMUM_MONSTER_IN_LEVEL = 1;
+        this.SPAWN_PROBABILITY = 0;
+        addPositionComponent();
+        addAnimationComponent();
+    }
+
+
     // add InventoryComponent
     private void addInventoryComponent(){
         InventoryComponent inv = new InventoryComponent(this, 1);

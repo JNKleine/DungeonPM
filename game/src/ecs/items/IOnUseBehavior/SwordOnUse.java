@@ -80,7 +80,7 @@ public class SwordOnUse implements IOnUse {
         ArrayList<Entity> listOfEntities = new ArrayList<>();
         ArrayList<Entity> entsToHit = new ArrayList<>();
         for (Entity e : entities) {
-            if (e.getFaction() == Faction.FOE)
+            if (e.getFaction() == Faction.FOE || e.getFaction() == Faction.BOSSMONSTER)
                 listOfEntities.add(e);
         }
         // Hit left
