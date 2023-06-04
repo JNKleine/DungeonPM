@@ -25,5 +25,8 @@ public enum Faction {
      */
     PLAYER,
 
+    /**
+     * TRAP is for any trap
+     ***/
     TRAP
 }
