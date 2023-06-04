@@ -28,5 +28,11 @@ public enum Faction {
     /**
      * BOSSMONSTER is only in use for a BOSSMONSTER
      */
-    BOSSMONSTER
+    BOSSMONSTER,
+
+    /**
+     * TRAP is for any trap
+     */
+    TRAP
+
 }

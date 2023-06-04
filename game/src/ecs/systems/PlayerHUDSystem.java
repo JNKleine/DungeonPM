@@ -33,6 +33,7 @@ public class PlayerHUDSystem extends ECS_System{
     /** Updates the graphic display of the PlayerHUD */
     @Override
     public void update() {
+        heroIC = (InventoryComponent) Game.getHero().get().getComponent(InventoryComponent.class).get();
         if(heroHC.getCurrentHealthpoints() <= 0) {
             Game.gameOverHUD.showMenu();
         }

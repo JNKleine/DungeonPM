@@ -47,8 +47,8 @@ public class SlimeGuard extends Monster  {
         //Add HealthComponent
     private void addHealthComponent() {
         Animation onHit = AnimationBuilder.buildAnimation(this.pathToGetDamage);
-        Animation onDeath = AnimationBuilder.buildAnimation(this.pathToDieAnim);
-        new HealthComponent(this,super.initHitpoints ,(IOnDeathFunction) Game::removeEntity
+        Animation onDeath = AnimationBuilder.buildAnimationNotRepeatable(this.pathToDieAnim);
+        new HealthComponent(this,super.initHitpoints , Game::removeEntity
             ,onHit,onDeath);
     }
 

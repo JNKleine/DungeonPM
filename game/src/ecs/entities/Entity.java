@@ -20,7 +20,7 @@ public class Entity {
     private Faction faction = Faction.NEUTRAL;
     private final int initDamage;
     private HashMap<Class, Component> components;
-    private final Logger entityLogger;
+    public final Logger entityLogger;
 
     /**
      * Initialize an object of type entity

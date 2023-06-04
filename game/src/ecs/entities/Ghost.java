@@ -109,6 +109,8 @@ public class Ghost extends Monster {
 
     @Override
     public String getAnswer(String text) {
+        entityLogger.info("Hero requests a response from "+this.getClass().getSimpleName()+" Input: "+
+            text);
         if (text.toLowerCase().contains("your") && text.toLowerCase().contains("name")) {
             return "My Name is " + name;
 

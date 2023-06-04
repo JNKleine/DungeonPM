@@ -11,4 +11,8 @@ public class AnimationBuilder {
     public static Animation buildAnimation(String path) {
         return new Animation(TextureHandler.getInstance().getTexturePaths(path), frameTime);
     }
+
+    public static Animation buildAnimationNotRepeatable(String path) {
+        return new Animation(TextureHandler.getInstance().getTexturePaths(path), frameTime,false);
+    }
 }
