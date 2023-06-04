@@ -5,33 +5,31 @@ import ecs.components.HealthComponent;
 import ecs.components.HitboxComponent;
 import ecs.components.IOnDeathFunction;
 import ecs.components.ai.AIComponent;
-import ecs.components.ai.fight.CollideAI;
+import ecs.components.ai.BossMonsterAI.BossMonsterAI;
 import ecs.components.ai.idle.WallWalk;
 import ecs.components.ai.transition.RangeTransition;
 import graphic.Animation;
 import starter.Game;
 
-public class BossMonster extends Monster{
+public class Telepeter extends Monster{
 
     private String name;
 
-    private final String pathToDieAnim;
+    private final String pathToDieAnim = "character/Telepeter/onDieAnimationLeft";
 
-    private final String pathToGetDamage;
+    private final String pathToGetDamage = "character/Telepeter/onHitAnimationLeft";
+
     /**
-     * Constructor for a Bossmonster
-     *
-     * @param initHitpoints         : initial int value for Livepoints
-     * @param initDamage            : initial int value for damage per hit
-     * @param pathToIdleRight       : String path idle right animation
-     * @param pathToIdleLeft        : String path idle left animation
-     * @param name                  : Name of the Bossmonster
+     * Constructor for the telepeter
      **/
-    public BossMonster(String name, int initHitpoints, int initDamage, String pathToIdleRight, String pathToIdleLeft, String pathToDieAnim, String pathToGetDamage) {
-        super(initHitpoints, initDamage, pathToIdleRight, pathToIdleLeft, Faction.BOSSMONSTER);
+    public Telepeter() {
+        super(0.02f,0.02f,500,50,0,1,
+                "character/Telepeter/idleRight",
+                "character/Telepeter/idleLeft",
+                "",
+                "",
+                Faction.BOSSMONSTER);
         this.name = name;
-        this.pathToDieAnim = pathToDieAnim;
-        this.pathToGetDamage = pathToGetDamage;
         addHitBox();
         addAIComponent();
         addHealthComponent();
@@ -45,7 +43,7 @@ public class BossMonster extends Monster{
     }
 
     private void addAIComponent() {
-        CollideAI fightAI = new CollideAI(0f);
+        BossMonsterAI fightAI = new BossMonsterAI(7f);
         // Update to Teleport AI
         WallWalk idleAI = new WallWalk();
         RangeTransition transitionAI = new RangeTransition(0f);

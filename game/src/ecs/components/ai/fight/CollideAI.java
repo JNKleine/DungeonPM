@@ -38,5 +38,6 @@ public class CollideAI implements IFightAI {
             timeSinceLastUpdate++;
             AITools.move(entity, path);
         }
+
     }
 }

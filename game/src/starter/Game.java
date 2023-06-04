@@ -117,6 +117,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private Logger gameLogger;
 
+    public static Telepeter telepeter;
+
     public static void main(String[] args) {
         // start the game
         try {
@@ -483,5 +485,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 inv.removeItem(items.get(i));
         }
         placeOnLevelStart(hero);
+    }
+
+    public void startBossMonsterLevel() {
+        this.telepeter = new Telepeter();
+
     }
 }
