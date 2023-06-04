@@ -9,8 +9,6 @@ import tools.Constants;
 
 public class MeleeAI implements IFightAI {
     private final float attackRange;
-    private final int delay = Constants.FRAME_RATE;
-    private int timeSinceLastUpdate = 0;
     private final Skill fightSkill;
     private GraphPath<Tile> path;
 
@@ -28,15 +26,12 @@ public class MeleeAI implements IFightAI {
 
     @Override
     public void fight(Entity entity) {
+        fightSkill.reduceCoolDown();
         if (AITools.playerInRange(entity, attackRange)) {
             fightSkill.execute(entity);
         } else {
-            if (timeSinceLastUpdate >= delay) {
                 path = AITools.calculatePathToHero(entity);
-                timeSinceLastUpdate = -1;
-            }
-            timeSinceLastUpdate++;
-            AITools.move(entity, path);
+                AITools.move(entity, path);
         }
     }
 }

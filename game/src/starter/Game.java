@@ -119,6 +119,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static Telepeter telepeter;
 
+
+
     public static void main(String[] args) {
         // start the game
         try {
@@ -196,6 +198,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         EntitySpawnRateSetter entitySpawner = new EntitySpawnRateSetter();
         entities.clear();
         entitiesToAdd.clear();
+        new Telepeter();
         addItem();
         addEntityList(entitySpawner.getListOfMonsterToSpawnVariableProbability());
         addEntity(entitySpawner.spawnShop());
