@@ -7,9 +7,7 @@ import com.badlogic.gdx.utils.Align;
 import controller.ScreenController;
 import ecs.components.InventoryComponent;
 import ecs.entities.Entity;
-import ecs.entities.Hero;
 import ecs.items.ItemData;
-import starter.Game;
 import tools.Constants;
 import tools.Point;
 

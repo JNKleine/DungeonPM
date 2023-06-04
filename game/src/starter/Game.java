@@ -81,6 +81,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static boolean inventoryIsOn = false;
 
+    public static boolean questHUDIsOn = false;
+
     /** All entities that are currently active in the dungeon */
     private static ArrayList<ScreenController> listOfCurWindows = new ArrayList<>();
 
@@ -113,6 +115,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static GameOverHUD<Actor> gameOverHUD;
 
     public static PlayerHUD<Actor> playerHUD;
+
+    public static QuestHUD<Actor> questHUD;
     private static Entity hero;
 
     private Logger gameLogger;
@@ -163,11 +167,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         dialogueMenu = new DialogueMenu<>();
         inventory = new InventoryMenu<>();
         playerHUD = new PlayerHUD<>();
+        questHUD = new QuestHUD<>();
         controller.add(pauseMenu);
         controller.add(inventory);
         controller.add(dialogueMenu);
         controller.add(playerHUD);
         controller.add(gameOverHUD);
+        controller.add(questHUD);
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
@@ -184,6 +190,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P) && !inventoryIsOn && !dialogueIsOn) togglePause();
         if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn) callInventory(getHero().get());
+        if(Gdx.input.isKeyJustPressed(Input.Keys.PERIOD) && !isPaused && !dialogueIsOn) callQuestHUD();
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) closeRecentWindow();
     }
 
@@ -276,6 +283,23 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             }
         }
 
+    /**Call the inventoryHUD and show it**/
+    public static void callQuestHUD() {
+        questHUDIsOn = !questHUDIsOn;
+
+        if (questHUD != null) {
+            if (questHUDIsOn) {
+
+                questHUD.createQuestHUD();
+                questHUD.showMenu();
+                listOfCurWindows.add(questHUD);
+            } else {
+                questHUD.removeHUD();
+                listOfCurWindows.remove(questHUD);
+
+            }
+        }
+    }
 
 
     /**Call the inventoryHUD and show it**/
@@ -342,6 +366,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             }
             else if(curWindow.equals(gameOverHUD)) {
                 gameOverHUD.hideMenu();
+            }
+            else if(curWindow.equals(questHUD)) {
+                callQuestHUD();
             }
         }
     }
