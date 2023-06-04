@@ -56,6 +56,7 @@ public class SwordOnUse implements IOnUse {
         ArrayList<Entity> entities = getEntitiesToHit();
         for (Entity entity : entities) {
             HealthComponent hc = (HealthComponent) entity.getComponent(HealthComponent.class).get();
+            System.out.println(hc.getCurrentHealthpoints() + " test in SwordOnUse z59");
             hc.receiveHit(new Damage(damage, DamageType.PHYSICAL, e));
             VelocityComponent vp = (VelocityComponent) entity.getComponent(VelocityComponent.class).get();
             vp.setCurrentXVelocity(0f);
