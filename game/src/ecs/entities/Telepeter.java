@@ -13,8 +13,6 @@ import starter.Game;
 
 public class Telepeter extends Monster{
 
-    private String name;
-
     private final String pathToDieAnim = "character/Telepeter/onDieAnimationLeft";
 
     private final String pathToGetDamage = "character/Telepeter/onHitAnimationLeft";
@@ -29,7 +27,6 @@ public class Telepeter extends Monster{
                 "",
                 "",
                 Faction.BOSSMONSTER);
-        this.name = name;
         addHitBox();
         addAIComponent();
         addHealthComponent();
@@ -38,8 +35,8 @@ public class Telepeter extends Monster{
     private void addHitBox() {
         new HitboxComponent(
             this,
-            (you,other,direction) -> System.out.println( this.name + "CollisionEnter"),
-            (you,other,direction) -> System.out.println( this.name + "CollisionLeave"));
+            (you,other,direction) -> System.out.println( "TelepeterCollisionEnter"),
+            (you,other,direction) -> System.out.println( "TelepeterCollisionLeave"));
     }
 
     private void addAIComponent() {
