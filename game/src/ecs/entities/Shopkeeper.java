@@ -6,6 +6,7 @@ import ecs.items.ItemData;
 import ecs.items.ItemType;
 import ecs.items.item.Damagestone;
 import ecs.items.item.PotionOfHealing;
+import ecs.items.item.PotionOfTrapDestroying;
 import ecs.items.item.Telestone;
 import ecs.systems.DialogueSystem;
 import graphic.Animation;
@@ -19,7 +20,7 @@ import java.util.Random;
 public class Shopkeeper extends Entity {
 
     private ItemData[] possibleItemsInShop = new ItemData[]{new Telestone().getItemData(), new Damagestone().getItemData(),
-        new PotionOfHealing().getItemData()};
+        new PotionOfHealing().getItemData(), new PotionOfTrapDestroying().getItemData()};
     public static int moduloForLevelSpawn = 15;
     private boolean haggle;
     private int dice;

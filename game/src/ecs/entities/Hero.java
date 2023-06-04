@@ -2,6 +2,7 @@ package ecs.entities;
 
 import dslToGame.AnimationBuilder;
 import ecs.items.item.Coin;
+import ecs.items.item.PotionOfTrapDestroying;
 import ecs.items.item.Sword;
 import ecs.components.*;
 import ecs.components.AnimationComponent;
@@ -82,6 +83,7 @@ public class Hero extends Entity {
     private void setupInventoryComponent() {
         InventoryComponent ic = new InventoryComponent(this,4);
         ic.addItem(new Sword().getItemData());
+        ic.addItem(new PotionOfTrapDestroying().getItemData());
     }
 
     public void onHit(HitboxComponent hb) {

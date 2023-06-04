@@ -7,7 +7,6 @@ import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import ecs.entities.Faction;
 
-import java.util.logging.Logger;
 
 public class SpikeTrap extends Trap{
     public SpikeTrap() {
@@ -21,7 +20,6 @@ public class SpikeTrap extends Trap{
             HealthComponent hc = (HealthComponent) e.getComponent(HealthComponent.class).get();
             hc.receiveHit(new Damage(getDamage(),
                 DamageType.PHYSICAL, this));
-            Logger.getLogger("DamageTroughTrap");
             HealthComponent ownHC = (HealthComponent) this.getComponent(HealthComponent.class).get();
             ownHC.setCurrentHealthpoints(0);
         }
