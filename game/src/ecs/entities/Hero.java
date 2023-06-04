@@ -74,8 +74,8 @@ public class Hero extends Entity {
 
     private void setupHealthComponent() {
         Animation getHitAnimation = AnimationBuilder.buildAnimation(pathToGetDamage);
-        Animation getDieAnimation = AnimationBuilder.buildAnimation(pathToDieAnim);
-        HealthComponent hc = new HealthComponent(this,100,(IOnDeathFunction) Game::removeEntity,getHitAnimation,getDieAnimation);
+        Animation getDieAnimation = AnimationBuilder.buildAnimationNotRepeatable(pathToDieAnim);
+        HealthComponent hc = new HealthComponent(this,100,Game::removeEntity,getHitAnimation,getDieAnimation);
 
     }
 

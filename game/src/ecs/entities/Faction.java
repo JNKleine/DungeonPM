@@ -23,5 +23,7 @@ public enum Faction {
     /**
     * PLAYER is for any playable entity
      */
-    PLAYER
+    PLAYER,
+
+    TRAP
 }

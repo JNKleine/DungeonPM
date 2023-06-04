@@ -1,6 +1,9 @@
 package level.monstergenerator;
 
 import ecs.entities.*;
+import ecs.entities.Trap.ExplosionTrap;
+import ecs.entities.Trap.SpikeTrap;
+import ecs.entities.Trap.Trap;
 import starter.Game;
 
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ public class EntitySpawnRateSetter {
     //List of all types of monster, that are allowed to spawn
     private final Monster[] monsters = new Monster[]{new SlimeGuard(), new PillowOfBadDreams(), new WallWalker()};
 
+    private final Trap[] traps = new Trap[] {new ExplosionTrap(), new SpikeTrap()};
     private final Entity[] ghostAndGrave = new Entity[]{new Ghost(), new Gravestone()};
 
     private final Entity shop = new Shopkeeper();
@@ -45,6 +49,29 @@ public class EntitySpawnRateSetter {
                         System.out.println("No such Class found" + m.getClass().getName());
                     } catch (InstantiationException e) {
                         System.out.println("Can not instantiate" + m.getClass().getName());
+                    } catch (IllegalAccessException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
+        }
+        return toSpawn;
+    }
+
+    public ArrayList<Entity> getListOfTrapsToSpawn() {
+        ArrayList<Entity> toSpawn = new ArrayList<>();
+
+        for (Trap t : traps) {
+            for (int i = 0; i < t.getMaxTrapInLevel(); i++) {
+                float curProb = random.nextFloat(0.01f, 1.0f) + Game.currentLevelNumber / 100f;
+                if (curProb >= 1.0f - t.getSpawnProb()) {
+                    try {
+                        Class klass = Class.forName(t.getClass().getName());
+                        toSpawn.add((Trap) klass.newInstance());
+                    } catch (ClassNotFoundException e) {
+                        System.out.println("No such Class found" + t.getClass().getName());
+                    } catch (InstantiationException e) {
+                        System.out.println("Can not instantiate" + t.getClass().getName());
                     } catch (IllegalAccessException e) {
                         System.out.println(e.getMessage());
                     }

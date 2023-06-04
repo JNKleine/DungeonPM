@@ -196,6 +196,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         entitiesToAdd.clear();
         addItem();
         addEntityList(entitySpawner.getListOfMonsterToSpawnVariableProbability());
+        addEntityList(entitySpawner.getListOfTrapsToSpawn());
         addEntity(entitySpawner.spawnShop());
         if(currentLevelNumber <= 10) {
             addEntityList(entitySpawner.spawnGraveAndGhost(10));
@@ -389,6 +390,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         catch ( NoSuchElementException e ) {
         }
     }
+
+    public static void sound(Entity e) {}
 
     /**
      * @return Set with all entities currently in game
