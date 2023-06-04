@@ -1,6 +1,5 @@
 package ecs.entities.Trap;
 
-import ecs.components.AnimationComponent;
 import ecs.components.HealthComponent;
 import ecs.components.HitboxComponent;
 import ecs.damage.Damage;

@@ -36,14 +36,6 @@ public class Trap extends Entity {
             (you,other,direction) -> System.out.println("PillowOfBadDreamsCollisionLeave"));
     }
 
-    protected void addNewAnimation() {
-        this.removeComponent(AnimationComponent.class);
-        Animation idleRight = AnimationBuilder.buildAnimation(pathToAlternativeAnimation);
-        Animation idleLeft = AnimationBuilder.buildAnimation(pathToAlternativeAnimation);
-        new AnimationComponent(this,idleRight,idleLeft);
-        this.removeComponent(AnimationComponent.class);
-    }
-
     private void addAnimationComponent() {
         Animation idleRight = AnimationBuilder.buildAnimation(pathToNormalAnimation);
         Animation idleLeft = AnimationBuilder.buildAnimation(pathToNormalAnimation);
