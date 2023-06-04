@@ -158,6 +158,7 @@ public class Shopkeeper extends Entity {
      */
     @Override
     public String getAnswer(String text) {
+        entityLogger.info("Hero requests a response from "+this.getClass().getSimpleName());
         Hero hero = (Hero) Game.getHero().get();
         InventoryComponent icFromHero = (InventoryComponent) hero.getComponent(InventoryComponent.class).get();
         InventoryComponent icFromShop = (InventoryComponent) this.getComponent(InventoryComponent.class).get();

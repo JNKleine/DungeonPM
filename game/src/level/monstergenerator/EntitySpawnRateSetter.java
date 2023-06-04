@@ -58,6 +58,14 @@ public class EntitySpawnRateSetter {
         return toSpawn;
     }
 
+    /**
+     * Returns a list of entities from type trap to spawn
+     *
+     * <p>calculates the amount of traps that will be spawned based on the spawn probabilities
+     * and the maximum number of every single trap type</p>
+     *
+     * @return Returns a ArrayList from Entities
+     */
     public ArrayList<Entity> getListOfTrapsToSpawn() {
         ArrayList<Entity> toSpawn = new ArrayList<>();
 

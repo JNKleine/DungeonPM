@@ -7,12 +7,22 @@ import ecs.entities.Faction;
 import graphic.Animation;
 import starter.Game;
 
-
+/**
+ * The class Trap is the mother of all traps
+ * **/
 public class Trap extends Entity {
     private String pathToAlternativeAnimation;
     private String pathToNormalAnimation;
     private int maxTrap;
     private float spawnProb;
+    /**
+     * Construct an object from type Trap
+     * @param initDamage initial damage, that the trap gives
+     * @param pathToNormalAnimation path to animation, for the inactive trap
+     * @param pathToActiveAnimation path to animation for the active trap
+     * @param maxTrapInLevel number of maximal possible traps in one level
+     * @param spawnProb spawn probability of this trap
+     * **/
     public Trap(int initDamage,String pathToNormalAnimation,String pathToActiveAnimation,float spawnProb, int maxTrapInLevel) {
         super(initDamage,Faction.TRAP);
         addPositionComponent();
@@ -25,15 +35,17 @@ public class Trap extends Entity {
         this.spawnProb = spawnProb;
     }
 
+    //Add PositionComponent
     private void addPositionComponent() {
         new PositionComponent(this);
     }
 
-    public void addHitBoxComponent() {
+     //Add a HitboxComponent to this Trap
+    private void addHitBoxComponent() {
         new HitboxComponent(
         this,
-            (you,other,direction) -> System.out.println("PillowOfBadDreamsCollisionEnter"),
-            (you,other,direction) -> System.out.println("PillowOfBadDreamsCollisionLeave"));
+            (you,other,direction) -> System.out.println("TrapCollisionEnter"),
+            (you,other,direction) -> System.out.println("TrapCollisionLeave"));
     }
 
     private void addAnimationComponent() {
@@ -49,10 +61,15 @@ public class Trap extends Entity {
             ,onHit,onDeath);
     }
 
+    /**
+     * Get the maximum number of traps, that should be in a level from this type
+     * **/
     public int getMaxTrapInLevel() {
         return maxTrap;
     }
-
+    /**
+     * Get the spawn probability of this trap.
+     * **/
     public float getSpawnProb() {
         return spawnProb;
     }

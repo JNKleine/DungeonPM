@@ -6,6 +6,9 @@ import ecs.items.IOnDropBehavior.DeleteOnDrop;
 import ecs.items.IOnUseBehavior.DestroyTrapsOnUse;
 import ecs.items.ItemType;
 
+/**
+ * PotionOfTrapDestroying is an Item for destroying traps
+ * **/
 public class PotionOfTrapDestroying extends Item{
     /**
      * Create a PotionOfTrapDestroying with specified properties

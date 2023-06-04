@@ -80,12 +80,19 @@ public class Hero extends Entity {
 
     }
 
+    /**
+     * Set the inventory from the hero to the start values
+     * **/
     public void setupInventoryComponent() {
         InventoryComponent ic = new InventoryComponent(this,4);
         ic.addItem(new Sword().getItemData());
         ic.addItem(new PotionOfTrapDestroying().getItemData());
     }
 
+    /**
+     * Determines what happen to the Herro, if an Entity collides with the Hero
+     * @param hb: Hitbox from the other Entity
+     * **/
     public void onHit(HitboxComponent hb) {
         Entity e = hb.getEntity();
         if (e.getFaction().equals(Faction.FOE)) {

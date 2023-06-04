@@ -16,7 +16,6 @@ import ecs.entities.*;
 import ecs.items.ItemData;
 import ecs.items.ItemDataGenerator;
 
-import ecs.items.ItemType;
 import ecs.items.WorldItemBuilder;
 import ecs.systems.*;
 import graphic.DungeonCamera;
@@ -469,6 +468,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * Places Hero on another Tile in the same Level
      */
     public void restart() {
+        gameLogger = Logger.getLogger(this.getClass().getName());
+        gameLogger.info("Restart. Hero is reset to starting values");
         currentLevelNumber = 1;
         new PlayerHUDSystem();
         Ghost.setName();
