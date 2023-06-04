@@ -465,7 +465,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     /**
      * Restarts the Game.
      * Called when clicking the restart-Button when the game is over (-> GameOverHUD).
-     * Deletes the whole inventory of Hero, beside the Sword and gives the hero full life
+     * Deletes the whole inventory of Hero, beside the start items and gives the hero full life
      * Places Hero on another Tile in the same Level
      */
     public void restart() {
@@ -475,16 +475,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         HealthComponent hc = (HealthComponent) hero.getComponent(HealthComponent.class).get();
         hc.setCurrentHealthpoints(hc.getMaximalHealthpoints());
         gameOverHUD.hideMenu();
-        InventoryComponent inv = (InventoryComponent) hero.getComponent(InventoryComponent.class).get();
-        List<ItemData> items = inv.getItems();
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getItemType().equals(ItemType.Backpack)) {
-                inv.removeBackpack();
-                inv.removeItem(items.get(i));
-            }
-            else if (!items.get(i).getItemName().equals("Sword"))
-                inv.removeItem(items.get(i));
-        }
+        getHero().get().removeComponent(InventoryComponent.class);
+        ((Hero)hero).setupInventoryComponent();
         placeOnLevelStart(hero);
     }
 }

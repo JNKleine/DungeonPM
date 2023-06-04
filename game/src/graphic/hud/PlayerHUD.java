@@ -37,7 +37,7 @@ public class PlayerHUD <T extends Actor> extends ScreenController<T> {
      * Creates a PlayerHUD for the associated Entity (the player)
      *
      * @param hc the HealthComponent of the associated Entity
-     * @param ic the InteractionComponent of the associated Entity
+     * @param ic the InventoryComponent of the associated Entity
      */
     public void createPlayerHUD(HealthComponent hc, InventoryComponent ic) {
         ScreenText currentHP =

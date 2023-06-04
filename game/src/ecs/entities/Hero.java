@@ -80,7 +80,7 @@ public class Hero extends Entity {
 
     }
 
-    private void setupInventoryComponent() {
+    public void setupInventoryComponent() {
         InventoryComponent ic = new InventoryComponent(this,4);
         ic.addItem(new Sword().getItemData());
         ic.addItem(new PotionOfTrapDestroying().getItemData());
