@@ -19,7 +19,7 @@ public abstract class DamageFoeMagicOnUse implements IOnUse {
     public void onUse(Entity e, ItemData item) {
         Set<Entity>  entities = Game.getEntities();
         for(Entity en : entities) {
-            if(en.getFaction().equals(Faction.FOE)) {
+            if(en.getFaction().equals(Faction.FOE) || en.getFaction().equals(Faction.BOSSMONSTER)) {
                 HealthComponent hc = (HealthComponent)en.getComponent(HealthComponent.class).get();
                 hc.receiveHit(new Damage(getDamageAmount(),DamageType.MAGIC,e));
             }
