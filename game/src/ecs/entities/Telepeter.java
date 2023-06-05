@@ -47,7 +47,7 @@ public class Telepeter extends Monster{
     private void addAIComponent() {
         HealthComponent hcH =  (HealthComponent) Game.getHero().get().getComponent(HealthComponent.class).get();
         MeleeAI fightAI = new MeleeAI(1f,new Skill(entity -> hcH.receiveHit(new Damage(getDamage(), DamageType.PHYSICAL,entity)),3f));
-        TelepeterOutOfRangeWalk idleAI =  new TelepeterOutOfRangeWalk(90,120,2);
+        TelepeterOutOfRangeWalk idleAI =  new TelepeterOutOfRangeWalk(90,120,5,3);
         RangeTransition transitionAI = new RangeTransition(3f);
 
         new AIComponent(this, fightAI,idleAI,transitionAI);

@@ -4,8 +4,11 @@ import ecs.components.PositionComponent;
 import ecs.components.ai.AITools;
 import ecs.components.ai.idle.IIdleAI;
 import ecs.entities.Entity;
+import ecs.entities.Faction;
 import ecs.entities.PillowOfBadDreams;
 import ecs.entities.SlimeGuard;
+import ecs.entities.Trap.ExplosionTrap;
+import ecs.entities.Trap.SpikeTrap;
 import level.elements.tile.FloorTile;
 import level.elements.tile.Tile;
 import starter.Game;
@@ -22,10 +25,13 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
     private final int waitFramesTillTeleport;
     private final int maxEntitiesPerSpawn;
 
-    public TelepeterOutOfRangeWalk(int waitFramesTillSpawn, int waitFramesTillTeleport, int maxAnzEntitiesPerSpawn) {
+    private final int maxTrapsPerSpawn;
+
+    public TelepeterOutOfRangeWalk(int waitFramesTillSpawn, int waitFramesTillTeleport, int maxTrapsPerSpawn, int maxEntitiesPerSpawn) {
         this.waitFramesTillSpawn = waitFramesTillSpawn;
         this.waitFramesTillTeleport = waitFramesTillTeleport;
-        this.maxEntitiesPerSpawn = maxAnzEntitiesPerSpawn;
+        this.maxEntitiesPerSpawn = maxEntitiesPerSpawn;
+        this.maxTrapsPerSpawn = maxEntitiesPerSpawn;
 
     }
 
@@ -53,7 +59,7 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
 
     private void spawnMonster() {
         Random rnd = new Random();
-        int anzMonster = rnd.nextInt(1,maxEntitiesPerSpawn);
+        int anzMonster = rnd.nextInt(1,maxEntitiesPerSpawn+1);
         int monsterKind = rnd.nextInt(2);
         for (int i = 0; i < anzMonster; i++) {
             if(monsterKind == 0) {
@@ -65,7 +71,23 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
     }
 
     private void spawnTraps() {
-        //Zerstöre alle bestehenden Traps und spawn neue
+        for(Entity e: Game.getEntities()) {
+            if (e.getFaction().equals(Faction.TRAP)) {
+                HealthComponent hc = (HealthComponent) e.getComponent(HealthComponent.class).get();
+                hc.setCurrentHealthpoints(0);
+            }
+        }
+            Random rnd = new Random();
+            int anzTrap = rnd.nextInt(1,maxTrapsPerSpawn+1);
+            int trapKind = rnd.nextInt(2);
+            for (int i = 0; i < anzTrap; i++) {
+                if(trapKind == 0) {
+                    new SpikeTrap();
+                }
+                else
+                    new ExplosionTrap();
+            }
+
     }
 
     private void teleportRandom(Entity entity) {
