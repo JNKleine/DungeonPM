@@ -1,6 +1,9 @@
 package ecs.entities;
 
 import dslToGame.AnimationBuilder;
+import ecs.Quests.Quest;
+import ecs.Quests.QuestBehavior.KillFoeQuestBehavior;
+import ecs.Quests.QuestTag;
 import ecs.items.item.Coin;
 import ecs.items.item.Sword;
 import ecs.components.*;
@@ -44,6 +47,7 @@ public class Hero extends Entity {
         PlayableComponent pc = new PlayableComponent(this);
         setupHealthComponent();
         setupInventoryComponent();
+        setUpQuestLogComponent();
         pc.setSkillSlot1(firstSkill);
     }
 
@@ -82,6 +86,10 @@ public class Hero extends Entity {
     private void setupInventoryComponent() {
         InventoryComponent ic = new InventoryComponent(this,4);
         ic.addItem(new Sword().getItemData());
+    }
+
+    private void setUpQuestLogComponent() {
+       QuestLogComponent ql = new QuestLogComponent(this,10);
     }
 
     public void onHit(HitboxComponent hb) {

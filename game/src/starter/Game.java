@@ -188,9 +188,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         setCameraFocus();
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P) && !inventoryIsOn && !dialogueIsOn) togglePause();
-        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn) callInventory(getHero().get());
-        if(Gdx.input.isKeyJustPressed(Input.Keys.PERIOD) && !isPaused && !dialogueIsOn) callQuestHUD();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P) && !inventoryIsOn && !dialogueIsOn && !questHUDIsOn) togglePause();
+        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn && !questHUDIsOn) callInventory(getHero().get());
+        if(Gdx.input.isKeyJustPressed(Input.Keys.PERIOD) && !isPaused && !dialogueIsOn && !inventoryIsOn) callQuestHUD();
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) closeRecentWindow();
     }
 
@@ -484,6 +484,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new ProjectileSystem();
         new DialogueSystem();
         new PlayerHUDSystem();
+        new QuestSystem();
     }
 
     /**

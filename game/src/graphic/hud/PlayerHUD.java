@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Align;
 import controller.ScreenController;
 import ecs.components.HealthComponent;
 import ecs.components.InventoryComponent;
+import ecs.components.QuestLogComponent;
 import ecs.entities.Hero;
 import starter.Game;
 import tools.Constants;
@@ -38,8 +39,9 @@ public class PlayerHUD <T extends Actor> extends ScreenController<T> {
      *
      * @param hc the HealthComponent of the associated Entity
      * @param ic the InteractionComponent of the associated Entity
+     * @param qLC the QuestLogComponent of the associated Entity
      */
-    public void createPlayerHUD(HealthComponent hc, InventoryComponent ic) {
+    public void createPlayerHUD(HealthComponent hc, InventoryComponent ic, QuestLogComponent qLC) {
         ScreenText currentHP =
             new ScreenText(
                 hc.getCurrentHealthpoints()+"/"+hc.getMaximalHealthpoints()+"HP",
@@ -50,6 +52,17 @@ public class PlayerHUD <T extends Actor> extends ScreenController<T> {
                     .build());
         currentHP.setFontScale(2);
         add((T) currentHP);
+
+        ScreenText currentQuest =
+            new ScreenText(
+                qLC.getMainQuest() != null? qLC.getMainQuest().getShortQuestDescriptionWithProgress():"",
+                new Point(20, 450),
+                1,
+                new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                    .setFontcolor(Color.LIGHT_GRAY)
+                    .build());
+        add((T) currentQuest);
+
         Hero hero = (Hero) Game.getHero().get();
         ScreenImage currMoneyImg = null;
         if ( hero.getMoney() <5)

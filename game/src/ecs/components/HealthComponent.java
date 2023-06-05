@@ -13,6 +13,7 @@ import logging.CustomLogLevel;
 import semanticAnalysis.types.DSLContextMember;
 import semanticAnalysis.types.DSLType;
 import semanticAnalysis.types.DSLTypeMember;
+import starter.Game;
 
 /** The HealthComponent makes an entity vulnerable and killable */
 @DSLType(name = "health_component")
@@ -78,8 +79,13 @@ public class HealthComponent extends Component {
         this.lastCause = damage.cause() != null ? damage.cause() : this.lastCause;
     }
 
-    /** Triggers the onDeath Function */
+    /** Triggers the onDeath Function, and, if a quest is in the questLog, increase their progress */
     public void triggerOnDeath() {
+        if(Game.getHero().get().getComponent(QuestLogComponent.class).isPresent() && entity.getComponent(QuestObjectiveComponent.class).isPresent()) {
+            QuestLogComponent qLC = (QuestLogComponent) Game.getHero().get().getComponent(QuestLogComponent.class).get();
+            QuestObjectiveComponent qOC = (QuestObjectiveComponent)entity.getComponent(QuestObjectiveComponent.class).get();
+            qLC.increaseProgress(qOC.getPartOfQuests());
+        }
         onDeath.onDeath(entity);
     }
 

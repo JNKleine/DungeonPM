@@ -2,6 +2,7 @@
 package ecs.entities;
 
 import dslToGame.AnimationBuilder;
+import ecs.Quests.QuestTag;
 import ecs.components.*;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
@@ -72,6 +73,7 @@ import java.util.Random;
         addAnimationComponent();
         addVelocityComponent();
         addInventoryComponent();
+        addQuestObjectiveComponent();
     }
     // add InventoryComponent
     private void addInventoryComponent(){
@@ -113,6 +115,10 @@ import java.util.Random;
         InventoryComponent inv = (InventoryComponent) this.getComponent(InventoryComponent.class).get();
         inv.addItem(coin.getItemData());
         inv.setCurMainItem(coin.getItemData());
+    }
+
+    private void addQuestObjectiveComponent() {
+        QuestObjectiveComponent e =new QuestObjectiveComponent(this, QuestTag.KILL_MONSTER);
     }
 
     /**
