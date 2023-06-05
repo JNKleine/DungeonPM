@@ -20,7 +20,7 @@ public class Shopkeeper extends Entity {
 
     private ItemData[] possibleItemsInShop = new ItemData[]{new Telestone().getItemData(), new Damagestone().getItemData(),
         new PotionOfHealing().getItemData()};
-    public static int moduloForLevelSpawn = 15;
+    public static int moduloForLevelSpawn = 1;
     private boolean haggle;
     private int dice;
     private float currentPriceFactor;
@@ -183,8 +183,10 @@ public class Shopkeeper extends Entity {
         }
         else if(text.toLowerCase().contains("sell this item")) {
             return buyItem(icFromHero,hero);
-        }
-        else if (text.matches("[0-9]+")) {
+        } else if ( text.toLowerCase().contains("Special")) {
+            Game.bossRoom = true;
+            return "If you go down the next ladder, you will fight against the Boss";
+        } else if (text.matches("[0-9]+")) {
             return "I don't know, what to do with\n all this numbers, sorry!";
         } else if (text.matches("[A-Za-z ]+")) {
             return "I don't understand these words!";
