@@ -29,8 +29,8 @@ public class Telepeter extends Monster{
         super(0.02f,0.02f,500,50,0,1,
                 "character/Telepeter/idleRight",
                 "character/Telepeter/idleLeft",
-            "character/Telepeter/idleRight",
-            "character/Telepeter/idleRight",
+            "character/Telepeter/onWalkAnimationRight",
+            "character/Telepeter/onWalkAnimationLeft",
                 Faction.BOSSMONSTER);
         addHitBox();
         addAIComponent();
