@@ -183,7 +183,7 @@ public class Shopkeeper extends Entity {
         }
         else if(text.toLowerCase().contains("sell this item")) {
             return buyItem(icFromHero,hero);
-        } else if ( text.toLowerCase().contains("Special")) {
+        } else if ( text.toLowerCase().contains("special")) {
             Game.bossRoom = true;
             return "If you go down the next ladder, you will fight against the Boss";
         } else if (text.matches("[0-9]+")) {
