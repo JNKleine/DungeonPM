@@ -550,6 +550,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().get().removeComponent(QuestLogComponent.class);
         hero.addComponent(new QuestLogComponent(hero,10));
         Ghost.questIsAccepted = false;
+        Shopkeeper.specialQuestIsAccepted = false;
     }
 
     /**

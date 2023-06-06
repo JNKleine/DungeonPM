@@ -22,7 +22,7 @@ import java.util.Random;
 public class Shopkeeper extends Entity {
     private Quest q = null;
     private boolean questIsSuggested = false;
-    private static boolean specialQuestIsAccepted = false;
+    public static boolean specialQuestIsAccepted = false;
     private boolean questIsAccepted= false;
 
     private ItemData[] possibleItemsInShop = new ItemData[]{new Telestone().getItemData(), new Damagestone().getItemData(),
