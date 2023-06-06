@@ -63,6 +63,10 @@ public class QuestLogComponent extends Component {
         }
     }
 
+    public boolean questIsInLog(Quest q) {
+        return questLog.contains(q);
+    }
+
     public void setCurMainQuest(Quest quest) {
         mainQuest = quest;
     }

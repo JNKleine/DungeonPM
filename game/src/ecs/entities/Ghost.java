@@ -1,6 +1,8 @@
 
 package ecs.entities;
 
+import ecs.Quests.Quest;
+import ecs.Quests.QuestBuilder;
 import ecs.components.*;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.CollideAI;
@@ -24,6 +26,9 @@ public class Ghost extends Monster {
     // Generates a random name for the ghost
     private static String name = getRandomName();
 
+    private Quest q = QuestBuilder.getRandomSideQuest();
+    private boolean questIsSuggested = false;
+    private static boolean questIsAccepted = false;
     /**
      * Creates an object from type ghost
      *
@@ -116,6 +121,19 @@ public class Ghost extends Monster {
             return "We are at Dungeon level " + Game.currentLevelNumber + "!";
         } else if(text.toLowerCase().contains("help") && text.toLowerCase().contains("you")) {
             return "How you can help me? It would be awfully\nkind if you could take me to my grave!";
+        } else if(text.toLowerCase().contains("quest") && !questIsAccepted) {
+            questIsSuggested = true;
+            return q.getQuestDescription()+"\nDo you accept this quest?";
+        } else if(text.toLowerCase().contains("quest"))  {
+            return "I gave you a quest already!";
+        }
+        else if(text.toLowerCase().contains("yes") && questIsSuggested) {
+            QuestLogComponent qLC = (QuestLogComponent) Game.getHero().get().getComponent(QuestLogComponent.class).get();
+            if(!qLC.questIsInLog(q)) {
+                qLC.addQuestToLog(q);
+                questIsAccepted = true;
+            }
+            return "Ok, great! The Quest is now in the QuestLog";
         }
         else if (text.matches("[0-9]+")) {
             return "I don't know, what to do with\n all this numbers, sorry!";

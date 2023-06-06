@@ -1,6 +1,8 @@
 package ecs.entities;
 
 import dslToGame.AnimationBuilder;
+import ecs.Quests.Quest;
+import ecs.Quests.QuestBuilder;
 import ecs.components.*;
 import ecs.items.ItemData;
 import ecs.items.ItemType;
@@ -17,6 +19,10 @@ import java.util.Random;
  * Shop of the game, where your able to buy and sell items, you can also haggle with the shopkeeper
  */
 public class Shopkeeper extends Entity {
+    private Quest q = null;
+    private boolean questIsSuggested = false;
+    private boolean specialQuestIsAccepted = false;
+    private boolean questIsAccepted= false;
 
     private ItemData[] possibleItemsInShop = new ItemData[]{new Telestone().getItemData(), new Damagestone().getItemData(),
         new PotionOfHealing().getItemData()};
@@ -183,6 +189,26 @@ public class Shopkeeper extends Entity {
         }
         else if(text.toLowerCase().contains("sell this item")) {
             return buyItem(icFromHero,hero);
+        } else if(text.toLowerCase().contains("special quest") && !specialQuestIsAccepted) {
+            q = QuestBuilder.getSpecialQuest();
+            questIsSuggested = true;
+            return q.getQuestDescription()+"\nDo you accept this quest?";
+        }
+        else if(text.toLowerCase().contains("quest") && !questIsAccepted) {
+            q = QuestBuilder.getRandomSideQuest();
+            questIsSuggested = true;
+            return q.getQuestDescription()+"\nDo you accept this quest?";
+        } else if(text.toLowerCase().contains("quest"))  {
+            return "I gave you a quest already!";
+        }
+        else if(text.toLowerCase().contains("yes") && questIsSuggested) {
+            QuestLogComponent qLC = (QuestLogComponent) Game.getHero().get().getComponent(QuestLogComponent.class).get();
+            if(!qLC.questIsInLog(q)) {
+                qLC.addQuestToLog(q);
+                if(QuestBuilder.getSpecialQuest().equals(q)) specialQuestIsAccepted = true;
+                else questIsAccepted = true;
+            }
+            return "Ok, great! The Quest is now in the QuestLog";
         }
         else if (text.matches("[0-9]+")) {
             return "I don't know, what to do with\n all this numbers, sorry!";
