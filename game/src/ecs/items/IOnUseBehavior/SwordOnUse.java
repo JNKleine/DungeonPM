@@ -18,6 +18,7 @@ import tools.Point;
 
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.logging.Logger;
 
 
 /**
@@ -39,6 +40,8 @@ public class SwordOnUse implements IOnUse {
      */
     private int damage;
 
+    private Logger hitLogger;
+
     /**
      * Creates a new Sword with the given hitRange and damage
      *
@@ -48,6 +51,7 @@ public class SwordOnUse implements IOnUse {
     public SwordOnUse(int hitRange, int damage) {
         this.hitRange = hitRange;
         this.damage = damage;
+        hitLogger = Logger.getLogger("hitLogger");
     }
 
     @Override
@@ -56,11 +60,11 @@ public class SwordOnUse implements IOnUse {
         ArrayList<Entity> entities = getEntitiesToHit();
         for (Entity entity : entities) {
             HealthComponent hc = (HealthComponent) entity.getComponent(HealthComponent.class).get();
-            System.out.println(hc.getCurrentHealthpoints() + " test in SwordOnUse z59");
             hc.receiveHit(new Damage(damage, DamageType.PHYSICAL, e));
             VelocityComponent vp = (VelocityComponent) entity.getComponent(VelocityComponent.class).get();
             vp.setCurrentXVelocity(0f);
             vp.setCurrentXVelocity(0f);
+            hitLogger.info(this.damage + " was given to " + entity.getClass().getSimpleName() + " current health of the attacked entity is " + hc.getCurrentHealthpoints() );
         }
         AnimationComponent ac = (AnimationComponent) this.hero.getComponent(AnimationComponent.class).get();
         if (PlayerSystem.getKey() == 0)
