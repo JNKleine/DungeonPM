@@ -548,6 +548,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         ((Hero)hero).setupInventoryComponent();
         restarted = true;
         bossRoom = false;
+        telepeter = null;
         QuestLogComponent qlC = (QuestLogComponent)getHero().get().getComponent(QuestLogComponent.class).get();
         qlC.resetToStartValue();
         Ghost.questIsAccepted = false;
