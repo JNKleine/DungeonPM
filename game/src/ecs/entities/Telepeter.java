@@ -33,6 +33,7 @@ public class Telepeter extends Monster{
         addHitBox();
         addAIComponent();
         addHealthComponent();
+
     }
 
     private void addHitBox() {

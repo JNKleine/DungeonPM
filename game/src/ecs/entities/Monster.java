@@ -6,6 +6,7 @@ import ecs.components.*;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import ecs.items.item.Coin;
+import ecs.items.item.Emerald;
 import graphic.Animation;
 
 import java.util.Random;
@@ -77,8 +78,12 @@ import java.util.Random;
     // add InventoryComponent
     private void addInventoryComponent(){
         InventoryComponent inv = new InventoryComponent(this, 1);
-        // Add one Coin to the Inventory of a Monster
-        addCoin();
+        if (this.getFaction().equals(Faction.BOSSMONSTER)){
+            addEmerald();
+        } else{
+            // Add one Coin to the Inventory of a Monster
+            addCoin();
+        }
     }
 
     //add PositionComponent
@@ -114,6 +119,13 @@ import java.util.Random;
         InventoryComponent inv = (InventoryComponent) this.getComponent(InventoryComponent.class).get();
         inv.addItem(coin.getItemData());
         inv.setCurMainItem(coin.getItemData());
+    }
+
+    private void addEmerald() {
+        Emerald emerald = new Emerald(500,"items/emerald","items/emerald");
+        InventoryComponent inv = (InventoryComponent) this.getComponent(InventoryComponent.class).get();
+        inv.addItem(emerald.getItemData());
+        inv.setCurMainItem(emerald.getItemData());
     }
 
     /**
