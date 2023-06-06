@@ -554,13 +554,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * Starts the bossmonster level and creates a bossmonster
      */
     public void startBossMonsterLevel() {
-        Tile[][] tiles = createTilesTest();
+        Tile[][] tiles = createTiles();
         bossLevel = new TileLevel(tiles,"BossMonsterLevel");
         levelAPI.setLevel(bossLevel);
         this.telepeter = new Telepeter();
       }
 
-    private Tile[][] createTilesTest() {
+    private Tile[][] createTiles() {
         Tile[][] tiles = new Tile[32][32];
         for ( int i = 0; i < 32; i++) {
             for ( int j = 0; j < 32; j++) {
