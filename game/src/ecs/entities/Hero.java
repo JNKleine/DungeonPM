@@ -95,7 +95,7 @@ public class Hero extends Entity {
     }
 
 
-    private void setUpQuestLogComponent() {
+    public void setUpQuestLogComponent() {
        QuestLogComponent ql = new QuestLogComponent(this,10);
     }
 

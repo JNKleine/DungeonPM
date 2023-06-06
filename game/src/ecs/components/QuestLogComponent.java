@@ -130,4 +130,9 @@ public class QuestLogComponent extends Component {
     public Quest getMainQuest() {
         return mainQuest;
     }
+
+    public void resetToStartValue() {
+        questLog = new ArrayList<>();
+        mainQuest = null;
+    }
 }
