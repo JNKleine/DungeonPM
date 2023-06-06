@@ -51,6 +51,7 @@ public class QuestHUD  <T extends Actor> extends ScreenController<T> {
         this(new SpriteBatch());
     }
 
+    /** Create the QuestHUD, to show all active Quests **/
     public void createQuestHUD() {
         Entity hero = Game.getHero().get();
         qlC = (QuestLogComponent)hero.getComponent(QuestLogComponent.class).get();
@@ -111,6 +112,7 @@ public class QuestHUD  <T extends Actor> extends ScreenController<T> {
             hideMenu();
     }
 
+    /** Remove the current QuestHUD **/
     public void removeHUD() {
         forEach(this::remove);
     }

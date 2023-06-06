@@ -4,12 +4,25 @@ import ecs.entities.Entity;
 
 public interface QuestBehavior {
 
-    public boolean checkQuestCondition();
+    /**
+     * Checks whether the objective of the quest has been fulfilled
+     * **/
+    boolean checkQuestCondition();
 
-    public void increaseProgress();
+    /**
+     * Increase the progress from this specific quest
+     * **/
+    void increaseProgress();
 
-    public void getReward(Entity e);
+    /**
+     * The entity get the reward for this quest
+     * @param e: Entity, that will be rewarded
+     * **/
+    void getReward(Entity e);
 
-    public String getConditionToString();
+    /**
+     * Get the Quest condition as String
+     * **/
+    String getConditionToString();
 
 }

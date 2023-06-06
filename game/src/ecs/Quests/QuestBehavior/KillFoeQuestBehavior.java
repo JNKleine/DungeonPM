@@ -12,20 +12,34 @@ public class KillFoeQuestBehavior implements QuestBehavior {
         this.questCondition = questCondition;
     }
 
+    /**
+     * Checks whether the objective of the quest has been fulfilled
+     * **/
     @Override
     public boolean checkQuestCondition() {
         return counter >= questCondition;
     }
 
+    /**
+     * Increase the progress from this specific quest
+     * **/
     public void increaseProgress() {
         counter++;
     }
+
+    /**
+     * The entity get the reward for this quest
+     * @param e: Entity, that will be rewarded
+     * **/
     @Override
     public void getReward(Entity e) {
         Hero h = (Hero)e;
         ((Hero) e).increaseMoney(200);
     }
 
+    /**
+     * Get the Quest condition as String
+     * **/
     @Override
     public String getConditionToString() {
         return counter+"/"+questCondition;

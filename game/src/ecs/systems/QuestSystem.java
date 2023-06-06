@@ -5,17 +5,25 @@ import ecs.components.QuestLogComponent;
 import ecs.entities.Entity;
 import starter.Game;
 
+/**
+ * The quest system is for checking if a quest has been completed
+ * **/
 public class QuestSystem extends ECS_System{
     private Entity hero;
     private QuestLogComponent qlC;
 
 
-
+    /**
+    * Creates the QuestSystem
+    * **/
     public QuestSystem() {
         hero = Game.getHero().get();
         qlC = (QuestLogComponent) hero.getComponent(QuestLogComponent.class).get();
     }
 
+    /**
+     * Determines what happens each frame
+     * **/
     @Override
     public void update() {
         if(qlC != null && !qlC.isEmpty()) {

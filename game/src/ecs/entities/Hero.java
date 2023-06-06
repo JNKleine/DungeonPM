@@ -92,6 +92,7 @@ public class Hero extends Entity {
        QuestLogComponent ql = new QuestLogComponent(this,10);
     }
 
+    /**onHit from Hero**/
     public void onHit(HitboxComponent hb) {
         Entity e = hb.getEntity();
         if (e.getFaction().equals(Faction.FOE)) {
@@ -101,15 +102,17 @@ public class Hero extends Entity {
         }
 
     }
-
+    /**Increase current Money from Hero**/
     public void increaseMoney(int value) {
         this.money+=value;
     }
 
+    /**Decrease current Money from Hero**/
     public void decreaseMoney(int value) {
         this.money-=value;
     }
 
+    /**Get current amount of Money**/
     public int getMoney() {
         return this.money;
     }
