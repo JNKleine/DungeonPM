@@ -20,6 +20,7 @@ import tools.Point;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * IdleAI of the Bossmonster Telepeter
@@ -33,6 +34,8 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
     private final int maxEntitiesPerSpawn;
 
     private final int maxTrapsPerSpawn;
+
+    private boolean secondStage = true;
 
 
     /**
@@ -54,6 +57,7 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
         HealthComponent hc = (HealthComponent)entity.getComponent(HealthComponent.class).get();
         if(curFrames%waitFramesTillSpawn == 0 && Game.getEntities().size() <= 20) {
             if(hc.getCurrentHealthpoints()*2 <= hc.getMaximalHealthpoints()) {
+                logSecondStage(entity);
                 spawnMonster();
             }
             else {
@@ -125,5 +129,12 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
         pc.setPosition(nextToPlayer.get(rn.nextInt(0,nextToPlayer.size()))
             .getCoordinateAsPoint());
 
+    }
+
+    private void logSecondStage(Entity entity) {
+        Logger bossLogger = Logger.getLogger("Boss");
+        if ( secondStage )
+            bossLogger.info("The " + entity.getClass().getSimpleName() + " is now in Stage two and more aggresive");
+        secondStage = false;
     }
 }
