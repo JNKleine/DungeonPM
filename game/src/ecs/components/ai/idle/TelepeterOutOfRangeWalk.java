@@ -39,7 +39,7 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
 
 
     /**
-     *
+     * 
      * @param waitFramesTillSpawn time to wait until the telepeter spawns a new monster or trap
      * @param waitFramesTillTeleport time to wait until the telepeter teleport to a new position
      * @param maxTrapsPerSpawn maximum number of traps to spawn at one attack
@@ -57,7 +57,8 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
         HealthComponent hc = (HealthComponent)entity.getComponent(HealthComponent.class).get();
         if(curFrames%waitFramesTillSpawn == 0 && Game.getEntities().size() <= 20) {
             if(hc.getCurrentHealthpoints()*2 <= hc.getMaximalHealthpoints()) {
-                logSecondStage(entity);
+                if ( secondStage)
+                    setupSecondStage(entity);
                 spawnMonster();
             }
             else {
@@ -131,10 +132,9 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
 
     }
 
-    private void logSecondStage(Entity entity) {
+    private void setupSecondStage(Entity entity) {
         Logger bossLogger = Logger.getLogger("Boss");
-        if ( secondStage )
-            bossLogger.info("The " + entity.getClass().getSimpleName() + " is now in Stage two and more aggresive");
+        bossLogger.info("The " + entity.getClass().getSimpleName() + " is now in Stage two and more aggresive");
         secondStage = false;
     }
 }
