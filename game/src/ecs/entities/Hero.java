@@ -90,7 +90,7 @@ public class Hero extends Entity {
     }
 
     /**
-     * Determines what happen to the Herro, if an Entity collides with the Hero
+     * Determines what happens to the Hero, if an Entity collides with the Hero
      * @param hb: Hitbox from the other Entity
      * **/
     public void onHit(HitboxComponent hb) {
