@@ -30,6 +30,7 @@ import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
 import level.elements.TileLevel;
+import level.elements.tile.ExitTile;
 import level.elements.tile.Tile;
 import level.elements.tile.TileFactory;
 import level.generator.IGenerator;
@@ -127,6 +128,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static Telepeter telepeter;
 
+    public static ILevel bossLevel;
 
 
     public static void main(String[] args) {
@@ -201,17 +203,22 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     @Override
     public void onLevelLoad() {
-        currentLevelNumber++;
         currentLevel = levelAPI.getCurrentLevel();
-        EntitySpawnRateSetter entitySpawner = new EntitySpawnRateSetter();
-        entities.clear();
-        entitiesToAdd.clear();
-        addItem();
-        addEntityList(entitySpawner.getListOfMonsterToSpawnVariableProbability());
-        addEntityList(entitySpawner.getListOfTrapsToSpawn());
-        addEntity(entitySpawner.spawnShop());
-        if(currentLevelNumber <= 10) {
-            addEntityList(entitySpawner.spawnGraveAndGhost(10));
+        if ( bossRoom == false) {
+            currentLevelNumber++;
+            EntitySpawnRateSetter entitySpawner = new EntitySpawnRateSetter();
+            entities.clear();
+            entitiesToAdd.clear();
+            addItem();
+            addEntityList(entitySpawner.getListOfMonsterToSpawnVariableProbability());
+            addEntityList(entitySpawner.getListOfTrapsToSpawn());
+            addEntity(entitySpawner.spawnShop());
+            if (currentLevelNumber <= 10) {
+                addEntityList(entitySpawner.spawnGraveAndGhost(10));
+            }
+        } else {
+            entities.clear();
+            entitiesToAdd.clear();
         }
         getHero().ifPresent(this::placeOnLevelStart);
     }
@@ -246,9 +253,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     private void loadNextLevelIfEntityIsOnEndTile(Entity hero) {
-        if (isOnEndTile(hero) && bossRoom == false) levelAPI.loadLevel(LEVELSIZE);
-        else if ( isOnEndTile(hero) && bossRoom == true) startBossMonsterLevel();
-
+        if ( telepeter != null && bossRoom == true) {
+            HealthComponent hC = (HealthComponent) telepeter.getComponent(HealthComponent.class).get();
+            if ( hC.getCurrentHealthpoints() <= 0) {
+                addExitToBossLevel();
+                bossRoom = false;
+            }
+        } else {
+            if (isOnEndTile(hero) && bossRoom == false) levelAPI.loadLevel(LEVELSIZE);
+            else if (isOnEndTile(hero) && bossRoom == true) startBossMonsterLevel();
+        }
     }
 
     private boolean isOnEndTile(Entity entity) {
@@ -496,10 +510,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         placeOnLevelStart(hero);
     }
 
+    /**
+     * Starts the bossmonster level and creates a bossmonster
+     */
     public void startBossMonsterLevel() {
         Tile[][] tiles = createTilesTest();
-        ILevel levelforBoss = new TileLevel(tiles,"BossMonsterLevel");
-        levelAPI.setLevel(levelforBoss);
+        bossLevel = new TileLevel(tiles,"BossMonsterLevel");
+        levelAPI.setLevel(bossLevel);
         this.telepeter = new Telepeter();
       }
 
@@ -535,5 +552,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
 
         return tiles;
+    }
+
+    private void addExitToBossLevel() {
+        PositionComponent pC = (PositionComponent) telepeter.getComponent(PositionComponent.class).get();
+        Coordinate cordOfBoss = pC.getPosition().toCoordinate();
+        ExitTile exit = new ExitTile("dungeon/default/floor/floor_ladder.png",cordOfBoss,DesignLabel.DEFAULT, bossLevel);
+        bossLevel.setRandomEnd();
+        levelAPI.update();
     }
 }

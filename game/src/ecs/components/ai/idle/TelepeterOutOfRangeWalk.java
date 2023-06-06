@@ -1,6 +1,9 @@
 package ecs.components.ai.idle;
+import dslToGame.AnimationBuilder;
+import ecs.components.AnimationComponent;
 import ecs.components.HealthComponent;
 import ecs.components.PositionComponent;
+import ecs.components.VelocityComponent;
 import ecs.components.ai.AITools;
 import ecs.components.ai.idle.IIdleAI;
 import ecs.entities.Entity;
@@ -9,6 +12,7 @@ import ecs.entities.PillowOfBadDreams;
 import ecs.entities.SlimeGuard;
 import ecs.entities.Trap.ExplosionTrap;
 import ecs.entities.Trap.SpikeTrap;
+import graphic.Animation;
 import level.elements.tile.FloorTile;
 import level.elements.tile.Tile;
 import starter.Game;
@@ -17,6 +21,9 @@ import tools.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * IdleAI of the Bossmonster Telepeter
+ */
 public class TelepeterOutOfRangeWalk implements IIdleAI {
 
     private int curFrames = 0;
@@ -27,12 +34,19 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
 
     private final int maxTrapsPerSpawn;
 
+
+    /**
+     *
+     * @param waitFramesTillSpawn time to wait until the telepeter spawns a new monster or trap
+     * @param waitFramesTillTeleport time to wait until the telepeter teleport to a new position
+     * @param maxTrapsPerSpawn maximum number of traps to spawn at one attack
+     * @param maxEntitiesPerSpawn maximum number of monsters to spawn at one attack
+     */
     public TelepeterOutOfRangeWalk(int waitFramesTillSpawn, int waitFramesTillTeleport, int maxTrapsPerSpawn, int maxEntitiesPerSpawn) {
         this.waitFramesTillSpawn = waitFramesTillSpawn;
         this.waitFramesTillTeleport = waitFramesTillTeleport;
         this.maxEntitiesPerSpawn = maxEntitiesPerSpawn;
         this.maxTrapsPerSpawn = maxEntitiesPerSpawn;
-
     }
 
     @Override
