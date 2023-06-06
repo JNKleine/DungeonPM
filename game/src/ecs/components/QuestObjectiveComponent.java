@@ -62,6 +62,14 @@ public class QuestObjectiveComponent extends Component {
     }
 
     /**
+     * Remove a QuestTag, if it is in this List
+     * @param questTag the old QuestTag
+     * **/
+    public void removeQuestTag(QuestTag questTag) {
+        partOfQuests.remove(questTag);
+    }
+
+    /**
      * Change the current List oof QuestTags to the new
      * @param questTagList the new QuestTags
      * **/

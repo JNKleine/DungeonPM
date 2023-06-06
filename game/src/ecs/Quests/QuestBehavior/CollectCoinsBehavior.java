@@ -1,8 +1,12 @@
 package ecs.Quests.QuestBehavior;
 
 import ecs.components.HealthComponent;
+import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+import ecs.items.ItemData;
+import ecs.items.ItemDataGenerator;
+import ecs.items.WorldItemBuilder;
 import starter.Game;
 
 public class CollectCoinsBehavior implements QuestBehavior{
@@ -34,8 +38,11 @@ public class CollectCoinsBehavior implements QuestBehavior{
      * **/
     @Override
     public void getReward(Entity e) {
-        HealthComponent hc = (HealthComponent)Game.getHero().get().getComponent(HealthComponent.class).get();
-        hc.setCurrentHealthpoints(hc.getMaximalHealthpoints());
+        ItemDataGenerator ig = new ItemDataGenerator();
+        ItemData item = ig.generateSafeItemData();
+        Entity itemEntity = WorldItemBuilder.buildWorldItem(item);
+        PositionComponent pc = (PositionComponent) Game.getHero().get().getComponent(PositionComponent.class).get();
+        itemEntity.addComponent(new PositionComponent(itemEntity,pc.getPosition()));
     }
 
     /**

@@ -22,7 +22,7 @@ import java.util.Random;
 public class Shopkeeper extends Entity {
     private Quest q = null;
     private boolean questIsSuggested = false;
-    private boolean specialQuestIsAccepted = false;
+    private static boolean specialQuestIsAccepted = false;
     private boolean questIsAccepted= false;
 
     private ItemData[] possibleItemsInShop = new ItemData[]{new Telestone().getItemData(), new Damagestone().getItemData(),
@@ -207,7 +207,10 @@ public class Shopkeeper extends Entity {
             QuestLogComponent qLC = (QuestLogComponent) Game.getHero().get().getComponent(QuestLogComponent.class).get();
             if(!qLC.questIsInLog(q)) {
                 qLC.addQuestToLog(q);
-                if(QuestBuilder.getSpecialQuest().equals(q)) specialQuestIsAccepted = true;
+                if(QuestBuilder.getSpecialQuest().equals(q)) {
+                    specialQuestIsAccepted = true;
+                    Game.bossRoom = true;
+                }
                 else questIsAccepted = true;
             }
             return "Ok, great! The Quest is now in the QuestLog";

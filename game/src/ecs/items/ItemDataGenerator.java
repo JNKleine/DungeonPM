@@ -21,6 +21,7 @@ public class ItemDataGenerator {
     private Random rand = new Random();
 
     /**
+     * Get a random ItemData to 30% probability, else get null
      * @return a new randomItemData
      */
     public ItemData generateItemData() {
@@ -31,4 +32,12 @@ public class ItemDataGenerator {
             return null;
         }
     }
-}
+
+    /**
+     * Get a random ItemData
+     * @return a new randomItemData
+     */
+    public ItemData generateSafeItemData() {
+            return templates.get(rand.nextInt(templates.size()));
+        }
+    }

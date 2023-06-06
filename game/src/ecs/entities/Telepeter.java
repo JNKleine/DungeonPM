@@ -1,9 +1,12 @@
 package ecs.entities;
 
 import dslToGame.AnimationBuilder;
+import ecs.Quests.Quest;
+import ecs.Quests.QuestTag;
 import ecs.components.HealthComponent;
 import ecs.components.HitboxComponent;
 import ecs.components.IOnDeathFunction;
+import ecs.components.QuestObjectiveComponent;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.MeleeAI;
 import ecs.components.ai.idle.TelepeterOutOfRangeWalk;
@@ -13,6 +16,8 @@ import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import graphic.Animation;
 import starter.Game;
+
+import java.util.ArrayList;
 
 public class Telepeter extends Monster{
 
@@ -33,7 +38,9 @@ public class Telepeter extends Monster{
         addHitBox();
         addAIComponent();
         addHealthComponent();
-
+       QuestObjectiveComponent qcC =  ((QuestObjectiveComponent)this.getComponent(QuestObjectiveComponent.class).get());
+        qcC.removeQuestTag(QuestTag.KILL_MONSTER);
+        qcC.addQuestTag(QuestTag.KILL_TELEPETER);
     }
 
     private void addHitBox() {
