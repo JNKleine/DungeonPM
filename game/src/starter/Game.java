@@ -530,21 +530,21 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         for ( int i = 8; i < 24;i++) {
             for ( int j = 8; j < 24; j++) {
                 if (i == 8 && j == 8) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_outer_corner_bottom_left.png", new Coordinate(j, i), LevelElement.WALL, null);
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_outerCorner_bottomLeft.png", new Coordinate(j, i), LevelElement.WALL, null);
                 } else if (i == 8 && j == 23) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_outer_corner_bottom_right.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_outerCorner_bottomRight.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
                 } else if (i == 23 && j == 8) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_outer_corner_upper_left.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_outerCorner_upperLeft.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
                 } else if (i == 23 && j == 23) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_outer_corner_upper_right.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_outerCorner_upperRight.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
                 } else if (i == 8 && j > 8 && j < 23) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_bottom.png", new Coordinate(j,i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_bottom.png", new Coordinate(j,i), LevelElement.WALL, DesignLabel.randomDesign());
                 } else if (i > 8 && i < 23 && j == 8) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_left.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_left.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
                 } else if (i == 23 && j > 8 && j < 23) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_top.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_top.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
                 } else if (i > 8 && i < 23 && j == 23) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_right.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_right.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
                 } else {
                     tiles[i][j] = TileFactory.createTile("dungeon/default/floor/floor_1.png", new Coordinate(j, i), LevelElement.FLOOR, DesignLabel.randomDesign());
                 }
