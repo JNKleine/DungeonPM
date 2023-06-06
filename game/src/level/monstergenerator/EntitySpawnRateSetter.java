@@ -11,12 +11,12 @@ import java.util.Random;
 /**
  * Used to determine the spawn rate of known entities
  *
- * <p>By using the getListOfMonsterToSpawn() method,
- * a list of monsters can be obtained,
+ * <p>By using the spawn-methods,
+ * lists of entities to spawn can be obtained,
  * which can then be used further</p>
  * */
 public class EntitySpawnRateSetter {
-    //List of all types of monster, that are allowed to spawn
+    //Lists of all types of certain entities that are allowed to spawn
     private final Monster[] monsters = new Monster[]{new SlimeGuard(), new PillowOfBadDreams(), new WallWalker()};
 
     private final Trap[] traps = new Trap[] {new ExplosionTrap(), new SpikeTrap()};

@@ -9,6 +9,10 @@ public class KillTelepeterBehavior implements QuestBehavior{
     private int counter;
     private int questCondition;
 
+    /**
+     * Construct the kill Telepeter behavior.
+     * The Telepeter has to be killed for fulfilling the quest.
+     */
     public KillTelepeterBehavior() {
         counter = 0;
         this.questCondition = 1;
@@ -30,7 +34,7 @@ public class KillTelepeterBehavior implements QuestBehavior{
     }
 
     /**
-     * The entity get the reward for this quest
+     * The entity gets the reward for this quest
      * @param e: Entity, that will be rewarded
      * **/
     @Override

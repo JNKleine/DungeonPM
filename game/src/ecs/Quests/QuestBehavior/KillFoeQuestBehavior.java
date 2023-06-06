@@ -7,6 +7,10 @@ public class KillFoeQuestBehavior implements QuestBehavior {
     private int counter = 0;
     private int questCondition = -1;
 
+    /**
+     * Construct the kill foe quest behavior
+     * @param questCondition the number of foes that has to be killed for fulfilling the quest
+     */
     public KillFoeQuestBehavior(int questCondition) {
         counter = 0;
         this.questCondition = questCondition;
@@ -28,7 +32,7 @@ public class KillFoeQuestBehavior implements QuestBehavior {
     }
 
     /**
-     * The entity get the reward for this quest
+     * The entity gets the reward for this quest
      * @param e: Entity, that will be rewarded
      * **/
     @Override

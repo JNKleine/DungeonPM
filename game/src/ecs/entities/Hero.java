@@ -95,13 +95,16 @@ public class Hero extends Entity {
     }
 
 
+    /**
+     * Set the hero's QuestLogComponent to the size of 10 quests
+     */
     public void setUpQuestLogComponent() {
        QuestLogComponent ql = new QuestLogComponent(this,10);
     }
 
 
     /**
-     * Determines what happen to the Herro, if an Entity collides with the Hero
+     * Determines what happens to the Hero, if an Entity collides with the Hero
      * @param hb: Hitbox from the other Entity **/
     public void onHit(HitboxComponent hb) {
         Entity e = hb.getEntity();

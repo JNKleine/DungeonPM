@@ -11,6 +11,11 @@ import starter.Game;
 
 public class CollectCoinsBehavior implements QuestBehavior{
     private int condition;
+
+    /**
+     * Construct the collect coins behavior
+     * @param condition the amount of money that has to be collected for fulfilling the quest
+     */
     public CollectCoinsBehavior(int condition) {
         this.condition = condition;
     }
@@ -33,7 +38,7 @@ public class CollectCoinsBehavior implements QuestBehavior{
     }
 
     /**
-     * The entity get the reward for this quest
+     * The entity gets the reward for this quest
      * @param e: Entity, that will be rewarded
      * **/
     @Override
