@@ -22,7 +22,7 @@ public class GameOverHUD <T extends Actor> extends ScreenController<T> {
         public void clicked(InputEvent event, float x, float y) {
             if (event.getListenerActor().getName().equals("restartButton")) {
                 System.out.println("Restart the Game");
-                restart();
+                Game.restart();
             } else if (event.getListenerActor().getName().equals("leaveButton")) {
                 System.out.println("Leave the Game");
                 com.badlogic.gdx.Gdx.app.exit();

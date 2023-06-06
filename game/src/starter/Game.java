@@ -292,6 +292,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
     }
 
+    private static void placeOnRestart(Entity hero) {
+        entities.add(hero);
+        PositionComponent pc =
+            (PositionComponent)
+                hero.getComponent(PositionComponent.class)
+                    .orElseThrow(
+                        () -> new MissingComponentException("PositionComponent"));
+        pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
+    }
+
     /**
      * Toggle between pause and run
      */
@@ -524,9 +534,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * Deletes the whole inventory of Hero, beside the start items and gives the hero full life
      * Places Hero on another Tile in the same Level
      */
-    public void restart() {
-        gameLogger = Logger.getLogger(this.getClass().getName());
-        gameLogger.info("Restart. Hero is reset to starting values");
+    public static void restart() {
         currentLevelNumber = 1;
         new PlayerHUDSystem();
         Ghost.setName();
@@ -535,7 +543,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         gameOverHUD.hideMenu();
         getHero().get().removeComponent(InventoryComponent.class);
         ((Hero)hero).setupInventoryComponent();
-        placeOnLevelStart(hero);
+        placeOnRestart(hero);
+        if ( telepeter != null) {
+            HealthComponent hcOfBoss = (HealthComponent) telepeter.getComponent(HealthComponent.class).get();
+            hcOfBoss.setCurrentHealthpoints(hcOfBoss.getMaximalHealthpoints());
+        }
     }
 
     /**
