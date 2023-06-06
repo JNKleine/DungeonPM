@@ -134,6 +134,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static ILevel bossLevel;
 
+    public static boolean restarted;
+
 
     public static void main(String[] args) {
         // start the game
@@ -154,12 +156,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     @Override
     public void render(float delta) {
         if (doSetup) setup();
-        batch.setProjectionMatrix(camera.combined);
-        frame();
-        clearScreen();
-        levelAPI.update();
-        controller.forEach(AbstractController::update);
-        camera.update();
+            batch.setProjectionMatrix(camera.combined);
+            frame();
+            clearScreen();
+            levelAPI.update();
+            controller.forEach(AbstractController::update);
+            camera.update();
     }
 
     /**
@@ -206,6 +208,17 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn && !questHUDIsOn) callInventory(getHero().get());
         if(Gdx.input.isKeyJustPressed(Input.Keys.PERIOD) && !isPaused && !dialogueIsOn && !inventoryIsOn) callQuestHUD();
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) closeRecentWindow();
+
+        if ( restarted ) {
+            if ( telepeter != null) {
+                HealthComponent hcOfBoss = (HealthComponent) telepeter.getComponent(HealthComponent.class).get();
+                hcOfBoss.setCurrentHealthpoints(0);
+                addExitToBossLevel();
+            }
+            levelAPI.loadLevel(LEVELSIZE);
+            placeOnLevelStart(hero);
+            restarted = false;
+        }
     }
 
     @Override
@@ -283,16 +296,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     private void placeOnLevelStart(Entity hero) {
-        entities.add(hero);
-        PositionComponent pc =
-            (PositionComponent)
-                hero.getComponent(PositionComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("PositionComponent"));
-        pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
-    }
-
-    private static void placeOnRestart(Entity hero) {
         entities.add(hero);
         PositionComponent pc =
             (PositionComponent)
@@ -543,11 +546,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         gameOverHUD.hideMenu();
         getHero().get().removeComponent(InventoryComponent.class);
         ((Hero)hero).setupInventoryComponent();
-        placeOnRestart(hero);
-        if ( telepeter != null) {
-            HealthComponent hcOfBoss = (HealthComponent) telepeter.getComponent(HealthComponent.class).get();
-            hcOfBoss.setCurrentHealthpoints(hcOfBoss.getMaximalHealthpoints());
-        }
+        restarted = true;
     }
 
     /**
