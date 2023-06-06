@@ -29,11 +29,16 @@ import java.util.logging.Logger;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
+import level.elements.TileLevel;
 import level.elements.tile.Tile;
+import level.elements.tile.TileFactory;
 import level.generator.IGenerator;
 import level.generator.postGeneration.WallGenerator;
 import level.generator.randomwalk.RandomWalkGenerator;
 import level.monstergenerator.EntitySpawnRateSetter;
+import level.tools.Coordinate;
+import level.tools.DesignLabel;
+import level.tools.LevelElement;
 import level.tools.LevelSize;
 import tools.Constants;
 import tools.Point;
@@ -42,6 +47,10 @@ import tools.Point;
  * The heart of the framework. From here all strings are pulled.
  */
 public class Game extends ScreenAdapter implements IOnLevelLoader {
+
+    /** boolean to check if the next ladder gets you to the boss*/
+    public static boolean bossRoom = false;
+
 
     private final LevelSize LEVELSIZE = LevelSize.SMALL;
 
@@ -197,7 +206,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         EntitySpawnRateSetter entitySpawner = new EntitySpawnRateSetter();
         entities.clear();
         entitiesToAdd.clear();
-        new Telepeter();
         addItem();
         addEntityList(entitySpawner.getListOfMonsterToSpawnVariableProbability());
         addEntityList(entitySpawner.getListOfTrapsToSpawn());
@@ -238,7 +246,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     private void loadNextLevelIfEntityIsOnEndTile(Entity hero) {
-        if (isOnEndTile(hero)) levelAPI.loadLevel(LEVELSIZE);
+        if (isOnEndTile(hero) && bossRoom == false) levelAPI.loadLevel(LEVELSIZE);
+        else if ( isOnEndTile(hero) && bossRoom == true) startBossMonsterLevel();
+
     }
 
     private boolean isOnEndTile(Entity entity) {
@@ -487,7 +497,43 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     public void startBossMonsterLevel() {
+        Tile[][] tiles = createTilesTest();
+        ILevel levelforBoss = new TileLevel(tiles,"BossMonsterLevel");
+        levelAPI.setLevel(levelforBoss);
         this.telepeter = new Telepeter();
+      }
 
+    private Tile[][] createTilesTest() {
+        Tile[][] tiles = new Tile[32][32];
+        for ( int i = 0; i < 32; i++) {
+            for ( int j = 0; j < 32; j++) {
+                tiles[i][j] = TileFactory.createTile("dungeon/default/floor/empty.png", new Coordinate(i,j), LevelElement.SKIP, null);
+            }
+        }
+        for ( int i = 8; i < 24;i++) {
+            for ( int j = 8; j < 24; j++) {
+                if (i == 8 && j == 8) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_outer_corner_bottom_left.png", new Coordinate(j, i), LevelElement.WALL, null);
+                } else if (i == 8 && j == 23) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_outer_corner_bottom_right.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else if (i == 23 && j == 8) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_outer_corner_upper_left.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else if (i == 23 && j == 23) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_outer_corner_upper_right.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else if (i == 8 && j > 8 && j < 23) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_bottom.png", new Coordinate(j,i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else if (i > 8 && i < 23 && j == 8) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_left.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else if (i == 23 && j > 8 && j < 23) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_top.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else if (i > 8 && i < 23 && j == 23) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/default/wall/wall_right.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else {
+                    tiles[i][j] = TileFactory.createTile("dungeon/default/floor/floor_1.png", new Coordinate(j, i), LevelElement.FLOOR, DesignLabel.randomDesign());
+                }
+            }
+        }
+
+        return tiles;
     }
 }
