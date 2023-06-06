@@ -39,7 +39,7 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
 
 
     /**
-     * 
+     *
      * @param waitFramesTillSpawn time to wait until the telepeter spawns a new monster or trap
      * @param waitFramesTillTeleport time to wait until the telepeter teleport to a new position
      * @param maxTrapsPerSpawn maximum number of traps to spawn at one attack
