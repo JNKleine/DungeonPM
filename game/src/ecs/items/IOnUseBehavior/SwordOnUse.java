@@ -64,7 +64,7 @@ public class SwordOnUse implements IOnUse {
             VelocityComponent vp = (VelocityComponent) entity.getComponent(VelocityComponent.class).get();
             vp.setCurrentXVelocity(0f);
             vp.setCurrentXVelocity(0f);
-            hitLogger.info(this.damage + " was given to " + entity.getClass().getSimpleName() + " current health of the attacked entity is " + hc.getCurrentHealthpoints() );
+            hitLogger.info(this.damage + " Damage was given to " + entity.getClass().getSimpleName() + " current health of the attacked entity is " + hc.getCurrentHealthpoints() );
         }
         AnimationComponent ac = (AnimationComponent) this.hero.getComponent(AnimationComponent.class).get();
         if (PlayerSystem.getKey() == 0)

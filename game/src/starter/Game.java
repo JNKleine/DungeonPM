@@ -24,6 +24,7 @@ import graphic.hud.*;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import level.IOnLevelLoader;
@@ -31,6 +32,7 @@ import level.LevelAPI;
 import level.elements.ILevel;
 import level.elements.TileLevel;
 import level.elements.tile.ExitTile;
+import level.elements.tile.FloorTile;
 import level.elements.tile.Tile;
 import level.elements.tile.TileFactory;
 import level.generator.IGenerator;
@@ -73,7 +75,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     protected Painter painter;
 
 
-    protected LevelAPI levelAPI;
+    public LevelAPI levelAPI;
+
+    public static LevelAPI levelAPIForRestart;
     /**
      * Generates the level
      */
@@ -168,6 +172,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         painter = new Painter(batch, camera);
         generator = new RandomWalkGenerator();
         levelAPI = new LevelAPI(batch, painter, generator, this);
+        levelAPIForRestart = new LevelAPI(batch,painter,generator,this);
         initBaseLogger();
         gameLogger = Logger.getLogger(this.getClass().getName());
         systems = new SystemController();
@@ -276,6 +281,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     private void placeOnLevelStart(Entity hero) {
+        entities.add(hero);
+        PositionComponent pc =
+            (PositionComponent)
+                hero.getComponent(PositionComponent.class)
+                    .orElseThrow(
+                        () -> new MissingComponentException("PositionComponent"));
+        pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
+    }
+
+    private static void placeOnRestart(Entity hero) {
         entities.add(hero);
         PositionComponent pc =
             (PositionComponent)
@@ -496,10 +511,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * Deletes the whole inventory of Hero, beside the start items and gives the hero full life
      * Places Hero on another Tile in the same Level
      */
-    public void restart() {
-        gameLogger = Logger.getLogger(this.getClass().getName());
-        gameLogger.info("Restart. Hero is reset to starting values");
-        currentLevelNumber = 1;
+    public static void restart() {
         new PlayerHUDSystem();
         Ghost.setName();
         HealthComponent hc = (HealthComponent) hero.getComponent(HealthComponent.class).get();
@@ -507,7 +519,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         gameOverHUD.hideMenu();
         getHero().get().removeComponent(InventoryComponent.class);
         ((Hero)hero).setupInventoryComponent();
-        placeOnLevelStart(hero);
+        currentLevelNumber = 1;
+        placeOnRestart(hero);
+        if ( telepeter != null) {
+            HealthComponent hcOfBoss = (HealthComponent) telepeter.getComponent(HealthComponent.class).get();
+            hcOfBoss.setCurrentHealthpoints(hcOfBoss.getMaximalHealthpoints());
+        }
     }
 
     /**
@@ -555,10 +572,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     private void addExitToBossLevel() {
-        PositionComponent pC = (PositionComponent) telepeter.getComponent(PositionComponent.class).get();
-        Coordinate cordOfBoss = pC.getPosition().toCoordinate();
-        ExitTile exit = new ExitTile("dungeon/default/floor/floor_ladder.png",cordOfBoss,DesignLabel.DEFAULT, bossLevel);
-        bossLevel.setRandomEnd();
+        List<FloorTile> floors = currentLevel.getFloorTiles();
+        bossLevel.changeTileElementType(floors.get(0),LevelElement.EXIT);
         levelAPI.update();
     }
 }
