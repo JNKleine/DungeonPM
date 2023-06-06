@@ -23,5 +23,16 @@ public enum Faction {
     /**
     * PLAYER is for any playable entity
      */
-    PLAYER
+    PLAYER,
+
+    /**
+     * BOSSMONSTER is only in use for a BOSSMONSTER
+     */
+    BOSSMONSTER,
+
+    /**
+     * TRAP is for any trap
+     */
+    TRAP
+
 }

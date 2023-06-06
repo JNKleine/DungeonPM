@@ -5,6 +5,7 @@ import ecs.Quests.Quest;
 import ecs.Quests.QuestBehavior.KillFoeQuestBehavior;
 import ecs.Quests.QuestTag;
 import ecs.items.item.Coin;
+import ecs.items.item.PotionOfTrapDestroying;
 import ecs.items.item.Sword;
 import ecs.components.*;
 import ecs.components.AnimationComponent;
@@ -78,21 +79,30 @@ public class Hero extends Entity {
 
     private void setupHealthComponent() {
         Animation getHitAnimation = AnimationBuilder.buildAnimation(pathToGetDamage);
-        Animation getDieAnimation = AnimationBuilder.buildAnimation(pathToDieAnim);
-        HealthComponent hc = new HealthComponent(this,100,(IOnDeathFunction) Game::removeEntity,getHitAnimation,getDieAnimation);
+        Animation getDieAnimation = AnimationBuilder.buildAnimationNotRepeatable(pathToDieAnim);
+        HealthComponent hc = new HealthComponent(this,100,Game::removeEntity,getHitAnimation,getDieAnimation);
 
     }
 
-    private void setupInventoryComponent() {
+    /**
+     * Set the inventory from the hero to the start values
+     * **/
+    public void setupInventoryComponent() {
         InventoryComponent ic = new InventoryComponent(this,4);
         ic.addItem(new Sword().getItemData());
+        ic.addItem(new PotionOfTrapDestroying().getItemData());
+        ic.setCurMainItem(ic.getItems().get(0));
     }
+
 
     private void setUpQuestLogComponent() {
        QuestLogComponent ql = new QuestLogComponent(this,10);
     }
 
-    /**onHit from Hero**/
+
+    /**
+     * Determines what happen to the Herro, if an Entity collides with the Hero
+     * @param hb: Hitbox from the other Entity **/
     public void onHit(HitboxComponent hb) {
         Entity e = hb.getEntity();
         if (e.getFaction().equals(Faction.FOE)) {

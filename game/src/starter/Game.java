@@ -16,7 +16,6 @@ import ecs.entities.*;
 import ecs.items.ItemData;
 import ecs.items.ItemDataGenerator;
 
-import ecs.items.ItemType;
 import ecs.items.WorldItemBuilder;
 import ecs.systems.*;
 import graphic.DungeonCamera;
@@ -30,11 +29,17 @@ import java.util.logging.Logger;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
+import level.elements.TileLevel;
+import level.elements.tile.ExitTile;
 import level.elements.tile.Tile;
+import level.elements.tile.TileFactory;
 import level.generator.IGenerator;
 import level.generator.postGeneration.WallGenerator;
 import level.generator.randomwalk.RandomWalkGenerator;
 import level.monstergenerator.EntitySpawnRateSetter;
+import level.tools.Coordinate;
+import level.tools.DesignLabel;
+import level.tools.LevelElement;
 import level.tools.LevelSize;
 import tools.Constants;
 import tools.Point;
@@ -43,6 +48,10 @@ import tools.Point;
  * The heart of the framework. From here all strings are pulled.
  */
 public class Game extends ScreenAdapter implements IOnLevelLoader {
+
+    /** boolean to check if the next ladder gets you to the boss*/
+    public static boolean bossRoom = false;
+
 
     private final LevelSize LEVELSIZE = LevelSize.SMALL;
 
@@ -121,6 +130,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private Logger gameLogger;
 
+    public static Telepeter telepeter;
+
+    public static ILevel bossLevel;
+
+
     public static void main(String[] args) {
         // start the game
         try {
@@ -196,16 +210,22 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     @Override
     public void onLevelLoad() {
-        currentLevelNumber++;
         currentLevel = levelAPI.getCurrentLevel();
-        EntitySpawnRateSetter entitySpawner = new EntitySpawnRateSetter();
-        entities.clear();
-        entitiesToAdd.clear();
-        addItem();
-        addEntityList(entitySpawner.getListOfMonsterToSpawnVariableProbability());
-        addEntity(entitySpawner.spawnShop());
-        if(currentLevelNumber <= 10) {
-            addEntityList(entitySpawner.spawnGraveAndGhost(10));
+        if ( bossRoom == false) {
+            currentLevelNumber++;
+            EntitySpawnRateSetter entitySpawner = new EntitySpawnRateSetter();
+            entities.clear();
+            entitiesToAdd.clear();
+            addItem();
+            addEntityList(entitySpawner.getListOfMonsterToSpawnVariableProbability());
+            addEntityList(entitySpawner.getListOfTrapsToSpawn());
+            addEntity(entitySpawner.spawnShop());
+            if (currentLevelNumber <= 10) {
+                addEntityList(entitySpawner.spawnGraveAndGhost(10));
+            }
+        } else {
+            entities.clear();
+            entitiesToAdd.clear();
         }
         getHero().ifPresent(this::placeOnLevelStart);
     }
@@ -240,7 +260,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     private void loadNextLevelIfEntityIsOnEndTile(Entity hero) {
-        if (isOnEndTile(hero)) levelAPI.loadLevel(LEVELSIZE);
+        if ( telepeter != null && bossRoom == true) {
+            HealthComponent hC = (HealthComponent) telepeter.getComponent(HealthComponent.class).get();
+            if ( hC.getCurrentHealthpoints() <= 0) {
+                addExitToBossLevel();
+                bossRoom = false;
+            }
+        } else {
+            if (isOnEndTile(hero) && bossRoom == false) levelAPI.loadLevel(LEVELSIZE);
+            else if (isOnEndTile(hero) && bossRoom == true) startBossMonsterLevel();
+        }
     }
 
     private boolean isOnEndTile(Entity entity) {
@@ -417,6 +446,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
+    public static void sound(Entity e) {}
+
     /**
      * @return Set with all entities currently in game
      */
@@ -490,26 +521,72 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     /**
      * Restarts the Game.
      * Called when clicking the restart-Button when the game is over (-> GameOverHUD).
-     * Deletes the whole inventory of Hero, beside the Sword and gives the hero full life
+     * Deletes the whole inventory of Hero, beside the start items and gives the hero full life
      * Places Hero on another Tile in the same Level
      */
     public void restart() {
+        gameLogger = Logger.getLogger(this.getClass().getName());
+        gameLogger.info("Restart. Hero is reset to starting values");
         currentLevelNumber = 1;
         new PlayerHUDSystem();
         Ghost.setName();
         HealthComponent hc = (HealthComponent) hero.getComponent(HealthComponent.class).get();
         hc.setCurrentHealthpoints(hc.getMaximalHealthpoints());
         gameOverHUD.hideMenu();
-        InventoryComponent inv = (InventoryComponent) hero.getComponent(InventoryComponent.class).get();
-        List<ItemData> items = inv.getItems();
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getItemType().equals(ItemType.Backpack)) {
-                inv.removeBackpack();
-                inv.removeItem(items.get(i));
-            }
-            else if (!items.get(i).getItemName().equals("Sword"))
-                inv.removeItem(items.get(i));
-        }
+        getHero().get().removeComponent(InventoryComponent.class);
+        ((Hero)hero).setupInventoryComponent();
         placeOnLevelStart(hero);
+    }
+
+    /**
+     * Starts the bossmonster level and creates a bossmonster
+     */
+    public void startBossMonsterLevel() {
+        Tile[][] tiles = createTilesTest();
+        bossLevel = new TileLevel(tiles,"BossMonsterLevel");
+        levelAPI.setLevel(bossLevel);
+        this.telepeter = new Telepeter();
+      }
+
+    private Tile[][] createTilesTest() {
+        Tile[][] tiles = new Tile[32][32];
+        for ( int i = 0; i < 32; i++) {
+            for ( int j = 0; j < 32; j++) {
+                tiles[i][j] = TileFactory.createTile("dungeon/default/floor/empty.png", new Coordinate(i,j), LevelElement.SKIP, null);
+            }
+        }
+        for ( int i = 8; i < 24;i++) {
+            for ( int j = 8; j < 24; j++) {
+                if (i == 8 && j == 8) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_outerCorner_bottomLeft.png", new Coordinate(j, i), LevelElement.WALL, null);
+                } else if (i == 8 && j == 23) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_outerCorner_bottomRight.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else if (i == 23 && j == 8) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_outerCorner_upperLeft.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else if (i == 23 && j == 23) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_outerCorner_upperRight.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else if (i == 8 && j > 8 && j < 23) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_bottom.png", new Coordinate(j,i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else if (i > 8 && i < 23 && j == 8) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_left.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else if (i == 23 && j > 8 && j < 23) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_top.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else if (i > 8 && i < 23 && j == 23) {
+                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_right.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                } else {
+                    tiles[i][j] = TileFactory.createTile("dungeon/default/floor/floor_1.png", new Coordinate(j, i), LevelElement.FLOOR, DesignLabel.randomDesign());
+                }
+            }
+        }
+
+        return tiles;
+    }
+
+    private void addExitToBossLevel() {
+        PositionComponent pC = (PositionComponent) telepeter.getComponent(PositionComponent.class).get();
+        Coordinate cordOfBoss = pC.getPosition().toCoordinate();
+        ExitTile exit = new ExitTile("dungeon/default/floor/floor_ladder.png",cordOfBoss,DesignLabel.DEFAULT, bossLevel);
+        bossLevel.setRandomEnd();
+        levelAPI.update();
     }
 }

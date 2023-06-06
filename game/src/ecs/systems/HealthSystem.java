@@ -95,24 +95,25 @@ public class HealthSystem extends ECS_System {
         // Entity appears to be dead, so let's clean up the mess
         hsd.hc.triggerOnDeath();
         hsd.ac.setCurrentAnimation(hsd.hc.getDieAnimation());
-        // TODO: Before removing the entity, check if the animation is finished (Issue #246)
-        Game.removeEntity(hsd.hc.getEntity());
-        // Add XP
-        hsd.e
+        if(hsd.ac.getCurrentAnimation().isFinished()) {
+            Game.removeEntity(hsd.hc.getEntity());
+            // Add XP
+            hsd.e
                 .getComponent(XPComponent.class)
                 .ifPresent(
-                        component -> {
-                            XPComponent deadXPComponent = (XPComponent) component;
-                            hsd.hc
-                                    .getLastDamageCause()
-                                    .flatMap(entity -> entity.getComponent(XPComponent.class))
-                                    .ifPresent(
-                                            c -> {
-                                                XPComponent killerXPComponent = (XPComponent) c;
-                                                killerXPComponent.addXP(
-                                                        deadXPComponent.getLootXP());
-                                            });
-                        });
+                    component -> {
+                        XPComponent deadXPComponent = (XPComponent) component;
+                        hsd.hc
+                            .getLastDamageCause()
+                            .flatMap(entity -> entity.getComponent(XPComponent.class))
+                            .ifPresent(
+                                c -> {
+                                    XPComponent killerXPComponent = (XPComponent) c;
+                                    killerXPComponent.addXP(
+                                        deadXPComponent.getLootXP());
+                                });
+                    });
+        }
     }
 
     private static MissingComponentException missingAC() {

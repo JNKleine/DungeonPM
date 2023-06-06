@@ -45,6 +45,18 @@ public class TileLevel implements ILevel {
     }
 
     /**
+     * Create a new level without an end tile
+     *
+     * @param layout The layout of the level.
+     */
+    public TileLevel(Tile[][] layout, String name) {
+        this.layout = layout;
+        putTilesInLists();
+        if (startTile == null) startTile = layout[16][16];
+    }
+
+
+    /**
      * Create a new Level
      *
      * @param layout The layout of the Level

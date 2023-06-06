@@ -8,6 +8,7 @@ import ecs.items.ItemData;
 import ecs.items.ItemType;
 import ecs.items.item.Damagestone;
 import ecs.items.item.PotionOfHealing;
+import ecs.items.item.PotionOfTrapDestroying;
 import ecs.items.item.Telestone;
 import ecs.systems.DialogueSystem;
 import graphic.Animation;
@@ -25,8 +26,8 @@ public class Shopkeeper extends Entity {
     private boolean questIsAccepted= false;
 
     private ItemData[] possibleItemsInShop = new ItemData[]{new Telestone().getItemData(), new Damagestone().getItemData(),
-        new PotionOfHealing().getItemData()};
-    public static int moduloForLevelSpawn = 15;
+        new PotionOfHealing().getItemData(), new PotionOfTrapDestroying().getItemData()};
+    public static int moduloForLevelSpawn = 1;
     private boolean haggle;
     private int dice;
     private float currentPriceFactor;
@@ -163,6 +164,7 @@ public class Shopkeeper extends Entity {
      */
     @Override
     public String getAnswer(String text) {
+        entityLogger.info("Hero requests a response from "+this.getClass().getSimpleName());
         Hero hero = (Hero) Game.getHero().get();
         InventoryComponent icFromHero = (InventoryComponent) hero.getComponent(InventoryComponent.class).get();
         InventoryComponent icFromShop = (InventoryComponent) this.getComponent(InventoryComponent.class).get();

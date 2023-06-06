@@ -24,6 +24,7 @@ public class CollideAI implements IFightAI {
 
     @Override
     public void fight(Entity entity) {
+
         if (AITools.playerInRange(entity, rushRange)) {
             // the faster pathing once a certain range is reached
             path = AITools.calculatePathToHero(entity);
@@ -38,5 +39,6 @@ public class CollideAI implements IFightAI {
             timeSinceLastUpdate++;
             AITools.move(entity, path);
         }
+
     }
 }
