@@ -56,8 +56,8 @@ public class Shopkeeper extends Entity {
         new InteractionComponent(this, 3, true,
             new OpenDialogueOnInteraction(
                 this, "Hello! Wanna trade?\nIf you want to haggle i will role a dice for you.\n" +
-                "If you get a even number you get to be lucky\nand get a discount.\nBut if you get an odd number " +
-                "you will be punished \nand the items are getting more expensive", true));
+                "If you get an even number you get to be lucky\nand get a discount.\nBut if you get an odd number " +
+                "you will be punished \nand the items are getting more expensive.\nOr wanna get a quest?\nTry to meet the challenge.", true));
     }
 
     //add AnimationComponent

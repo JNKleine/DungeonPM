@@ -60,10 +60,10 @@ public class DialogueMenu  <T extends Actor> extends ScreenController<T> {
 
         ScreenImage img = new ScreenImage("hud/inventoryHud/Rahmen.png",new Point(0,0));
         img.setScaleX(15f);
-        img.setScaleY(5f);
+        img.setScaleY(6.5f);
         img.setPosition(
             ((Constants.WINDOW_WIDTH) / 4.25f - img.getWidth()),
-            ((Constants.WINDOW_HEIGHT) / 3f + img.getHeight()),
+            ((Constants.WINDOW_HEIGHT) / 4f + img.getHeight()),
             Align.center | Align.bottom);
         add((T)img);
 
@@ -89,14 +89,14 @@ public class DialogueMenu  <T extends Actor> extends ScreenController<T> {
             say.setName("sayButton");
             say.setPosition(
                 ((Constants.WINDOW_WIDTH) / 1.72f - say.getWidth()),
-                ((Constants.WINDOW_HEIGHT) / 2.8f + say.getHeight()),
+                ((Constants.WINDOW_HEIGHT) / 3.5f + say.getHeight()),
                 Align.center | Align.bottom);
             add((T) say);
 
             sI = new ScreenInput("Write something here", new Point(0, 0));
             sI.setPosition(
                 ((Constants.WINDOW_WIDTH) / 1.1f - sI.getWidth()),
-                ((Constants.WINDOW_HEIGHT) / 2.8f + sI.getHeight()),
+                ((Constants.WINDOW_HEIGHT) / 3.5f + sI.getHeight()),
                 Align.center | Align.bottom);
             add((T) sI);
         }
