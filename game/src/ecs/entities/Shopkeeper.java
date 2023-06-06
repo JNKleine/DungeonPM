@@ -15,7 +15,7 @@ import starter.Game;
 import java.util.Random;
 
 /**
- * Shop of the game, where your able to buy and sell items, you can also haggle with the shopkeeper
+ * Shop of the game, where you are able to buy and sell items, you can also haggle with the shopkeeper
  */
 public class Shopkeeper extends Entity {
 
@@ -47,6 +47,7 @@ public class Shopkeeper extends Entity {
         new PositionComponent(this);
     }
 
+    // add InteractionComponent
     private void addInteractionComponent() {
         new InteractionComponent(this, 3, true,
             new OpenDialogueOnInteraction(
@@ -61,10 +62,12 @@ public class Shopkeeper extends Entity {
         new AnimationComponent(this, idle, idle);
     }
 
+    // add InventoryComponent
     private void addInventoryComponent(int inventorySpace) {
         InventoryComponent ic = new InventoryComponent(this, inventorySpace);
     }
 
+    // fills the inventory of the shop with the possible items
     private void fillInventory() {
         Random rd = new Random();
         InventoryComponent ic = (InventoryComponent) this.getComponent(InventoryComponent.class).get();
@@ -72,7 +75,6 @@ public class Shopkeeper extends Entity {
             ic.addItem(possibleItemsInShop[rd.nextInt(0, possibleItemsInShop.length)]);
         }
     }
-
 
     // Sells an item from the perspective of the shop
     private String sellItem(InventoryComponent ic,InventoryComponent icH,Hero hero) {

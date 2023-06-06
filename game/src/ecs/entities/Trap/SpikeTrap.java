@@ -20,7 +20,7 @@ public class SpikeTrap extends Trap{
     }
 
     /**
-     * Determines what happen, if an Entity collides with this trap
+     * Determines what happens, if an Entity collides with this trap
      * @param hb: HitBoxComponent from the other Entity
      * **/
     public void onHit(HitboxComponent hb) {

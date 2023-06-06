@@ -48,12 +48,14 @@ public class Trap extends Entity {
             (you,other,direction) -> System.out.println("TrapCollisionLeave"));
     }
 
+    // Add an AnimationComponent
     private void addAnimationComponent() {
         Animation idleRight = AnimationBuilder.buildAnimation(pathToNormalAnimation);
         Animation idleLeft = AnimationBuilder.buildAnimation(pathToNormalAnimation);
         new AnimationComponent(this,idleRight,idleLeft);
     }
 
+    // Add a HealthComponent
     private void addHealthComponent() {
         Animation onHit = AnimationBuilder.buildAnimation(this.pathToAlternativeAnimation);
         Animation onDeath = AnimationBuilder.buildAnimationNotRepeatable(this.pathToAlternativeAnimation);
