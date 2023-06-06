@@ -28,7 +28,7 @@ public class Ghost extends Monster {
 
     private Quest q = QuestBuilder.getRandomSideQuest();
     private boolean questIsSuggested = false;
-    private static boolean questIsAccepted = false;
+    public static boolean questIsAccepted = false;
     /**
      * Creates an object from type ghost
      *

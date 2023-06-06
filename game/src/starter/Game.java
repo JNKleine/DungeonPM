@@ -543,6 +543,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         gameOverHUD.hideMenu();
         getHero().get().removeComponent(InventoryComponent.class);
         ((Hero)hero).setupInventoryComponent();
+        getHero().get().removeComponent(QuestLogComponent.class);
+        hero.addComponent(new QuestLogComponent(hero,10));
+        Ghost.questIsAccepted = false;
         placeOnRestart(hero);
         if ( telepeter != null) {
             HealthComponent hcOfBoss = (HealthComponent) telepeter.getComponent(HealthComponent.class).get();
