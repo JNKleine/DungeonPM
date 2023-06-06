@@ -1,10 +1,14 @@
 package ecs.Quests;
 import ecs.Quests.QuestBehavior.QuestBehavior;
 import ecs.entities.Entity;
+
+import java.util.logging.Logger;
+
 /**
  * The quest is for holding all the information about a specific quest
  * **/
 public class Quest {
+    private final Logger questLogger;
     private String shortDescription;
     private String questDescription;
 
@@ -15,6 +19,8 @@ public class Quest {
     private boolean questIsFinished;
 
     private QuestTag questTag;
+
+    private boolean alreadyChecked;
 
     /**
      * Construct a Quest
@@ -36,6 +42,8 @@ public class Quest {
         this.questTag = questTag;
         this.questIsFinishedQuestText = finishedText;
         this.questIsFinished = false;
+        this.alreadyChecked= false;
+        questLogger = Logger.getLogger(this.getClass().getName());
 
         this.questShortDescriptionWithProgress = shortDescription+" "+questCondition.getConditionToString();
     }
@@ -45,9 +53,11 @@ public class Quest {
      * **/
     public void checkCondition() {
         questIsFinished = questCondition.checkQuestCondition();
-        if(questIsFinished) {
+        if(questIsFinished && !alreadyChecked) {
+            alreadyChecked = true;
+            questLogger.info("Quest "+this.getShortQuestDescriptionWithProgress()+" is finished");
             this.questShortDescriptionWithProgress = shortDescription+"("+questIsFinishedQuestText+")";
-        } else {
+        } else if(!questIsFinished) {
             this.questShortDescriptionWithProgress = shortDescription + " " + questCondition.getConditionToString();
         }
         }
@@ -72,6 +82,7 @@ public class Quest {
      * @param e: Entity that should be rewarded
      * **/
     public void getReward(Entity e) {
+        questLogger.info("Quest "+this.getShortQuestDescriptionWithProgress()+" reward requested");
         questCondition.getReward(e);
     }
 

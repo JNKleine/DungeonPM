@@ -3,12 +3,15 @@ import ecs.Quests.Quest;
 import ecs.Quests.QuestTag;
 import ecs.entities.Entity;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * This component is used to give an entity (especially the player)
  * a quest log in which active quests are managed
  * **/
 public class QuestLogComponent extends Component {
+
+    private final Logger questComponentLogger;
 
     private ArrayList<Quest> questLog;
     private int questLogSize;
@@ -20,6 +23,7 @@ public class QuestLogComponent extends Component {
      */
     public QuestLogComponent(Entity entity,int questLogSize) {
         super(entity);
+        questComponentLogger = Logger.getLogger(this.getClass().getName());
         questLog = new ArrayList<>();
        this.questLogSize = questLogSize;
     }
@@ -32,6 +36,7 @@ public class QuestLogComponent extends Component {
     public boolean addQuestToLog(Quest quest) {
         if(questLog.size() < questLogSize) {
             questLog.add(quest);
+            questComponentLogger.info("Added Quest "+quest.getShortQuestDescriptionWithProgress()+" to Log");
             return true;
         }
         return false;
@@ -43,6 +48,7 @@ public class QuestLogComponent extends Component {
      * @return boolean, which says, whether the quest could be removed
      * **/
     public boolean removeQuest(Quest quest) {
+        questComponentLogger.info("Remove Quest "+quest.getShortQuestDescriptionWithProgress()+" from Log, if existing");
         return questLog.remove(quest);
     }
 
@@ -93,6 +99,7 @@ public class QuestLogComponent extends Component {
     public void increaseProgress(ArrayList<QuestTag> questTag) {
         for(Quest q: questLog) {
             if(questTag.contains(q.getQuestTag())) {
+                questComponentLogger.info("Update Progress in Quest"+q.getShortQuestDescriptionWithProgress());
                 q.increaseProgressForQuest();
             }
         }
