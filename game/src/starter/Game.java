@@ -547,6 +547,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().get().removeComponent(InventoryComponent.class);
         ((Hero)hero).setupInventoryComponent();
         restarted = true;
+        getHero().get().removeComponent(QuestLogComponent.class);
+        hero.addComponent(new QuestLogComponent(hero,10));
+        Ghost.questIsAccepted = false;
     }
 
     /**
