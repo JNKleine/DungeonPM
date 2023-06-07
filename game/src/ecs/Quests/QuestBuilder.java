@@ -17,6 +17,7 @@ public class QuestBuilder {
     //Roll random Quest targets
     private static void reRollQuests() {
         Random rn = new Random();
+        questSelection.clear();
         int numberOfMonsters = rn.nextInt(15, 30);
         int numberOfCoins = ((Hero) Game.getHero().get()).getMoney() + rn.nextInt(100, 200);
         questSelection.add(new Quest("Kill Monsters", "You need to kill " + numberOfMonsters + " opposing Monsters", new KillFoeQuestBehavior(numberOfMonsters), QuestTag.KILL_MONSTER, "Completed - get Coins"));

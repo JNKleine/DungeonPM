@@ -541,8 +541,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         currentLevelNumber = 1;
         new PlayerHUDSystem();
         Ghost.setName();
-        HealthComponent hc = (HealthComponent) hero.getComponent(HealthComponent.class).get();
-        hc.setCurrentHealthpoints(hc.getMaximalHealthpoints());
         gameOverHUD.hideMenu();
         getHero().get().removeComponent(InventoryComponent.class);
         ((Hero)hero).setupInventoryComponent();
@@ -553,6 +551,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         qlC.resetToStartValue();
         Ghost.questIsAccepted = false;
         Shopkeeper.specialQuestIsAccepted = false;
+        HealthComponent hc = (HealthComponent) hero.getComponent(HealthComponent.class).get();
+        hc.setCurrentHealthpoints(hc.getMaximalHealthpoints());
     }
 
     /**
