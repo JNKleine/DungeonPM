@@ -54,7 +54,7 @@ public class Ghost extends Monster {
     // add InteractionComponent
     private void addInteractionComponent() {
         new InteractionComponent(this, 1f, true, new OpenDialogueOnInteraction(
-            this,"Hello there",true));
+            this,"Hello there\nask me something, maybe you want a quest?",true));
     }
 
     //add HitBoxComponent
