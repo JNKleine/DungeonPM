@@ -92,6 +92,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static boolean questHUDIsOn = false;
 
+    public static boolean lockPickHUDisOn = false;
+
     /** All entities that are currently active in the dungeon */
     private static ArrayList<ScreenController> listOfCurWindows = new ArrayList<>();
 
@@ -126,6 +128,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static PlayerHUD<Actor> playerHUD;
 
     public static QuestHUD<Actor> questHUD;
+
+    private static LockpickHUD<Actor> lockPickHUD;
     private static Entity hero;
 
     private Logger gameLogger;
@@ -184,12 +188,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         inventory = new InventoryMenu<>();
         playerHUD = new PlayerHUD<>();
         questHUD = new QuestHUD<>();
+        lockPickHUD = new LockpickHUD<>();
         controller.add(pauseMenu);
         controller.add(inventory);
         controller.add(dialogueMenu);
         controller.add(playerHUD);
         controller.add(gameOverHUD);
         controller.add(questHUD);
+        controller.add(lockPickHUD);
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
@@ -204,9 +210,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         setCameraFocus();
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P) && !inventoryIsOn && !dialogueIsOn && !questHUDIsOn) togglePause();
-        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn && !questHUDIsOn) callInventory(getHero().get());
-        if(Gdx.input.isKeyJustPressed(Input.Keys.PERIOD) && !isPaused && !dialogueIsOn && !inventoryIsOn) callQuestHUD();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P) && !inventoryIsOn && !dialogueIsOn && !questHUDIsOn && !lockPickHUDisOn) togglePause();
+        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn && !questHUDIsOn  && !lockPickHUDisOn) callInventory(getHero().get());
+        if(Gdx.input.isKeyJustPressed(Input.Keys.PERIOD) && !isPaused && !dialogueIsOn && !inventoryIsOn  && !lockPickHUDisOn) callQuestHUD();
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) closeRecentWindow();
 
         if ( restarted ) {
@@ -325,6 +331,24 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             }
         }
 
+    /**Call the LockpickHUD and show it**/
+    public static void callLockpickHUD() {
+        lockPickHUDisOn = !   lockPickHUDisOn;
+
+        if (lockPickHUD != null) {
+            if (   lockPickHUDisOn) {
+
+                lockPickHUD.createLockpickHUD(9);
+                lockPickHUD.showMenu();
+                listOfCurWindows.add(lockPickHUD);
+            } else {
+                lockPickHUD.removeHUD();
+                listOfCurWindows.remove(lockPickHUD);
+
+            }
+        }
+    }
+
     /**Call the inventoryHUD and show it**/
     public static void callQuestHUD() {
         questHUDIsOn = !questHUDIsOn;
@@ -342,6 +366,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             }
         }
     }
+
+
 
 
     /**Call the inventoryHUD and show it**/
@@ -411,6 +437,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             }
             else if(curWindow.equals(questHUD)) {
                 callQuestHUD();
+            }
+            else if(curWindow.equals(lockPickHUD)) {
+                callLockpickHUD();
             }
         }
     }
