@@ -3,6 +3,7 @@ package ecs.items.item;
 import ecs.components.stats.DamageModifier;
 import ecs.items.IOnCollectBehavior.DeletingItemInWorld;
 import ecs.items.IOnDropBehavior.DeleteOnDrop;
+import ecs.items.IOnDropBehavior.DeleteOnDropAndSpawnInWorld;
 import ecs.items.IOnUseBehavior.DamageFoeMagicOnUse;
 import ecs.items.ItemType;
 
@@ -18,7 +19,7 @@ public class Damagestone extends Item {
             "items/damagestone/damagestoneWorldAnimation","Damagestone",
             "Magic stone, that give every NPC with the Tag Foe, 5 HP damage",
             new DeletingItemInWorld(),
-            new DeleteOnDrop(),
+            new DeleteOnDropAndSpawnInWorld(),
             new DamageFoeMagicOnUse() {
                 @Override
                 public int getDamageAmount() {

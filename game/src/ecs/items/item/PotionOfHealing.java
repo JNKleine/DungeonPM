@@ -3,6 +3,7 @@ package ecs.items.item;
 import ecs.components.stats.DamageModifier;
 import ecs.items.IOnCollectBehavior.DeletingItemInWorld;
 import ecs.items.IOnDropBehavior.DeleteOnDrop;
+import ecs.items.IOnDropBehavior.DeleteOnDropAndSpawnInWorld;
 import ecs.items.IOnUseBehavior.HealPlayerOnUse;
 import ecs.items.ItemType;
 
@@ -19,7 +20,7 @@ public class PotionOfHealing extends Item {
             "items/potionOfHealing/potionOfHealingWorldAnimation","Potion of Healing",
             "drink this, you will receive 20 HP (trust me)",
             new DeletingItemInWorld(),
-            new DeleteOnDrop(),
+            new DeleteOnDropAndSpawnInWorld(),
             new HealPlayerOnUse(20),
             new DamageModifier(),60);
     }

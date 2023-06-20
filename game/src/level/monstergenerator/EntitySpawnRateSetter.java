@@ -5,6 +5,7 @@ import ecs.entities.Trap.ExplosionTrap;
 import ecs.entities.Trap.SpikeTrap;
 import ecs.entities.Trap.Trap;
 import starter.Game;
+import tools.Point;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -21,6 +22,8 @@ public class EntitySpawnRateSetter {
 
     private final Trap[] traps = new Trap[] {new ExplosionTrap(), new SpikeTrap()};
     private final Entity[] ghostAndGrave = new Entity[]{new Ghost(), new Gravestone()};
+
+    private final Monster[] mimic = new Monster[]{new Mimic()};
 
     private final Entity shop = new Shopkeeper();
     //Object from type Random
@@ -151,6 +154,33 @@ public class EntitySpawnRateSetter {
                 System.out.println("Can not instantiate" + shop.getClass().getName());
             } catch (IllegalAccessException e) {
                 System.out.println(e.getMessage());
+            }
+        }
+        return toSpawn;
+    }
+
+    public ArrayList<Entity> getChestOrMimicToSpawnProbability() {
+        ArrayList<Entity> toSpawn = new ArrayList<>();
+        for (Monster m : mimic) {
+            for (int i = 0; i < m.getMaximumOfMonster(); i++) {
+                float curProb = random.nextFloat(0.01f, 1.0f);
+                if (curProb >= 1.0f - m.getSpawnProbability()) {
+                    int mimicOrChest = random.nextInt(1, 3);
+                    if (mimicOrChest == 2) {
+                        Chest.createNewChest();
+                    } else {
+                        try {
+                            Class klass = Class.forName(m.getClass().getName());
+                            toSpawn.add((Monster) klass.newInstance());
+                        } catch (ClassNotFoundException e) {
+                            System.out.println("No such Class found" + m.getClass().getName());
+                        } catch (InstantiationException e) {
+                            System.out.println("Can not instantiate" + m.getClass().getName());
+                        } catch (IllegalAccessException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }
             }
         }
         return toSpawn;

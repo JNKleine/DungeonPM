@@ -232,6 +232,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             addItem();
             addEntityList(entitySpawner.getListOfMonsterToSpawnVariableProbability());
             addEntityList(entitySpawner.getListOfTrapsToSpawn());
+            addEntityList(entitySpawner.getChestOrMimicToSpawnProbability());
             addEntity(entitySpawner.spawnShop());
             if (currentLevelNumber <= 10) {
                 addEntityList(entitySpawner.spawnGraveAndGhost(10));

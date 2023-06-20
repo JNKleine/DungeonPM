@@ -10,7 +10,9 @@ import java.util.stream.IntStream;
 import level.tools.LevelElement;
 import starter.Game;
 import tools.Point;
-
+/**
+ * Chest holds all information about a chest and their stored items
+ * **/
 public class Chest extends Entity {
 
     public static final float defaultInteractionRadius = 1f;
@@ -33,12 +35,34 @@ public class Chest extends Entity {
         ItemDataGenerator itemDataGenerator = new ItemDataGenerator();
 
         List<ItemData> itemData =
-            IntStream.range(0, random.nextInt(1,3))
-                .mapToObj(i -> itemDataGenerator.generateItemData())
+            IntStream.range(0, random.nextInt(1,4))
+                .mapToObj(i -> itemDataGenerator.generateSafeItemData())
                 .toList();
-        return new Chest(
+        Chest c =  new Chest(
             itemData,
             Game.currentLevel.getRandomTile(LevelElement.FLOOR).getCoordinate().toPoint());
+        c.addInteractionComponent();
+    return c;
+    }
+
+    /**
+     * small Generator which uses the Item#ITEM_REGISTER
+     * @param position The position, the Chest should spawn
+     * @return a configured Chest
+     */
+    public static Chest createNewChest(Point position) {
+        Random random = new Random();
+        ItemDataGenerator itemDataGenerator = new ItemDataGenerator();
+
+        List<ItemData> itemData =
+            IntStream.range(0, random.nextInt(1,4))
+                .mapToObj(i -> itemDataGenerator.generateSafeItemData())
+                .toList();
+        Chest c =  new Chest(
+            itemData,
+            position);
+        c.addInteractionComponent();
+        return c;
     }
 
     /**
@@ -51,11 +75,14 @@ public class Chest extends Entity {
         new PositionComponent(this, position);
         InventoryComponent ic = new InventoryComponent(this, itemData.size());
         itemData.forEach(ic::addItem);
+        for(ItemData i: ic.getItems()) {
+           System.out.println(i.getItemName());
+        }
         AnimationComponent ac =
             new AnimationComponent(
                 this,
-                new Animation(DEFAULT_CLOSED_ANIMATION_FRAMES, 100, false),
-                new Animation(DEFAULT_OPENING_ANIMATION_FRAMES, 100, false));
+                new Animation(DEFAULT_CLOSED_ANIMATION_FRAMES, 3, false),
+                new Animation(DEFAULT_OPENING_ANIMATION_FRAMES, 3, false));
     }
 
     private void dropItems(Entity entity) {
@@ -117,5 +144,14 @@ public class Chest extends Entity {
                 + Chest.class.getName()
                 + " in Entity "
                 + e.getClass().getName());
+    }
+
+    public void addInteractionComponent() {
+        new InteractionComponent(this, 1f, false, new IInteraction() {
+            @Override
+            public void onInteraction(Entity entity) {
+                ((Chest)entity).dropItems(entity);
+            }
+        });
     }
 }

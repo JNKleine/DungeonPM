@@ -54,7 +54,7 @@ public class Shopkeeper extends Entity {
     }
 
     private void addInteractionComponent() {
-        new InteractionComponent(this, 3, true,
+        new InteractionComponent(this, 2, true,
             new OpenDialogueOnInteraction(
                 this, "Hello! Wanna trade?\nIf you want to haggle i will role a dice for you.\n" +
                 "If you get an even number you get to be lucky\nand get a discount.\nBut if you get an odd number " +
