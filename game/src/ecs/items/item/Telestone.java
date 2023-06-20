@@ -4,6 +4,7 @@ import ecs.components.stats.DamageModifier;
 import ecs.items.*;
 import ecs.items.IOnDropBehavior.DeleteOnDrop;
 import ecs.items.IOnCollectBehavior.DeletingItemInWorld;
+import ecs.items.IOnDropBehavior.DeleteOnDropAndSpawnInWorld;
 import ecs.items.IOnUseBehavior.TeleportPlayerOnUse;
 
 /**
@@ -20,7 +21,7 @@ public class Telestone extends Item {
             "items/telestone/telestoneWorldAnimation","Telestone",
             "Magic stone, that can teleport you",
             new DeletingItemInWorld(),
-            new DeleteOnDrop(),
+            new DeleteOnDropAndSpawnInWorld(),
             new TeleportPlayerOnUse(),
             new DamageModifier(),50);
     }

@@ -30,10 +30,10 @@ public class Telepeter extends Monster{
      **/
     public Telepeter() {
         super(0.02f,0.02f,500,50,0,1,
-                "character/Telepeter/idleRight",
-                "character/Telepeter/idleLeft",
-            "character/Telepeter/onWalkAnimationRight",
-            "character/Telepeter/onWalkAnimationLeft",
+                "character/monster/Telepeter/idleRight",
+                "character/monster/Telepeter/idleLeft",
+            "character/monster/Telepeter/onWalkAnimationRight",
+            "character/monster/Telepeter/onWalkAnimationLeft",
                 Faction.BOSSMONSTER);
         addHitBox();
         addAIComponent();
@@ -53,7 +53,7 @@ public class Telepeter extends Monster{
     private void addAIComponent() {
         HealthComponent hcH =  (HealthComponent) Game.getHero().get().getComponent(HealthComponent.class).get();
         MeleeAI fightAI = new MeleeAI(1.2f,new Skill(entity -> hcH.receiveHit(new Damage(getDamage(), DamageType.PHYSICAL,entity)),3f));
-        TelepeterOutOfRangeWalk idleAI =  new TelepeterOutOfRangeWalk(90,120,5,3);
+        TelepeterOutOfRangeWalk idleAI =  new TelepeterOutOfRangeWalk(90,120,5,3,xSpeed,ySpeed);
         RangeTransition transitionAI = new RangeTransition(3f);
 
         new AIComponent(this, fightAI,idleAI,transitionAI);

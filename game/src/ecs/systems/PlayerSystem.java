@@ -8,6 +8,7 @@ import ecs.entities.Faction;
 import ecs.entities.Hero;
 import ecs.tools.interaction.InteractionTool;
 import starter.Game;
+import tools.Point;
 
 
 /** Used to control the player */
@@ -61,7 +62,7 @@ public class PlayerSystem extends ECS_System {
                         InventoryComponent ic = (InventoryComponent) e.getComponent(InventoryComponent.class).get();
                         if (ic.getCurMainItem() != null) {
                             PositionComponent pc = (PositionComponent) e.getComponent(PositionComponent.class).get();
-                            ic.getCurMainItem().triggerDrop(e, pc.getPosition());
+                            ic.getCurMainItem().triggerDrop(e, new Point(pc.getPosition().x+1,pc.getPosition().y));
                         }
                     }
                 }

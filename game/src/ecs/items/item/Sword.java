@@ -3,6 +3,7 @@ package ecs.items.item;
 import ecs.components.stats.DamageModifier;
 import ecs.items.IOnCollectBehavior.DeletingItemInWorld;
 import ecs.items.IOnDropBehavior.DeleteOnDrop;
+import ecs.items.IOnDropBehavior.DeleteOnDropAndSpawnInWorld;
 import ecs.items.IOnUseBehavior.SwordOnUse;;
 import ecs.items.ItemType;
 
@@ -20,7 +21,7 @@ public class Sword extends Item {
             "items/sword/swordWorldAnimation","Sword",
             "Sword to hit and kill Monsters",
             new DeletingItemInWorld(),
-            new DeleteOnDrop(),
+            new DeleteOnDropAndSpawnInWorld(),
             new SwordOnUse(1,10),
             new DamageModifier(),200);
     }

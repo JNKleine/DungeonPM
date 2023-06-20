@@ -1,9 +1,7 @@
 package ecs.items;
 
-import ecs.items.item.Backpack;
-import ecs.items.item.Damagestone;
-import ecs.items.item.PotionOfHealing;
-import ecs.items.item.Telestone;
+import ecs.items.item.*;
+
 import java.util.List;
 import java.util.Random;
 
@@ -18,6 +16,14 @@ public class ItemDataGenerator {
                     new PotionOfHealing().getItemData(),
                     new Backpack(4,ItemType.Active).getItemData()
             );
+
+    private List<ItemData> loot =
+        List.of(
+            new Telestone().getItemData(),
+            new Damagestone().getItemData(),
+            new PotionOfHealing().getItemData(),
+            new PotionOfTrapDestroying().getItemData()
+        );
     private Random rand = new Random();
 
     /**
@@ -38,6 +44,6 @@ public class ItemDataGenerator {
      * @return a new randomItemData
      */
     public ItemData generateSafeItemData() {
-            return templates.get(rand.nextInt(templates.size()));
+            return loot.get(rand.nextInt(0,loot.size()));
         }
     }

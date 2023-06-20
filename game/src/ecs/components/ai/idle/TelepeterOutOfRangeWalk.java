@@ -35,6 +35,10 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
 
     private final int maxTrapsPerSpawn;
 
+    private final float xSpeed;
+
+    private final float ySpeed;
+
     private boolean secondStage = true;
 
 
@@ -45,11 +49,13 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
      * @param maxTrapsPerSpawn maximum number of traps to spawn at one attack
      * @param maxEntitiesPerSpawn maximum number of monsters to spawn at one attack
      */
-    public TelepeterOutOfRangeWalk(int waitFramesTillSpawn, int waitFramesTillTeleport, int maxTrapsPerSpawn, int maxEntitiesPerSpawn) {
+    public TelepeterOutOfRangeWalk(int waitFramesTillSpawn, int waitFramesTillTeleport, int maxTrapsPerSpawn, int maxEntitiesPerSpawn,float xSpeed, float ySpeed) {
         this.waitFramesTillSpawn = waitFramesTillSpawn;
         this.waitFramesTillTeleport = waitFramesTillTeleport;
         this.maxEntitiesPerSpawn = maxEntitiesPerSpawn;
         this.maxTrapsPerSpawn = maxEntitiesPerSpawn;
+        this.xSpeed = xSpeed;
+        this.ySpeed = ySpeed;
     }
 
     @Override
@@ -133,6 +139,13 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
     }
 
     private void setupSecondStage(Entity entity) {
+        Animation secondStageIdleLeft = AnimationBuilder.buildAnimation("character/monster/Telepeter/TelepeterStageTwo/idleLeft");
+        Animation secondStageIdleRight = AnimationBuilder.buildAnimation("character/monster/Telepeter/TelepeterStageTwo/idleRight");
+        Animation secondStageRunLeft = AnimationBuilder.buildAnimation("character/monster/Telepeter/TelepeterStageTwo/runLeft");
+        Animation secondStageRunRight = AnimationBuilder.buildAnimation("character/monster/Telepeter/TelepeterStageTwo/runRight");
+
+        entity.addComponent(new AnimationComponent(entity,secondStageIdleLeft,secondStageIdleRight));
+        entity.addComponent(new VelocityComponent(entity,xSpeed, ySpeed,secondStageRunLeft,secondStageRunRight));
         Logger bossLogger = Logger.getLogger("Boss");
         bossLogger.info("The " + entity.getClass().getSimpleName() + " is now in Stage two and more aggresive");
         secondStage = false;
