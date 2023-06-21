@@ -150,8 +150,18 @@ public class Chest extends Entity {
         new InteractionComponent(this, 1f, false, new IInteraction() {
             @Override
             public void onInteraction(Entity entity) {
-                Game.lockPickHUD.toOpen = entity;
-                Game.callLockPickHUD(true);
+                Hero hero = (Hero)Game.getHero().get();
+                InventoryComponent ic = (InventoryComponent)hero.getComponent(InventoryComponent.class).get();
+                ItemData mainItem = ic.getCurMainItem();
+                if(mainItem.getItemName().equals("Key")) {
+                 ic.removeItem(mainItem);
+                 ic.setCurMainItem(null);
+                 dropItems(entity);
+                }
+                else {
+                    Game.lockPickHUD.toOpen = entity;
+                    Game.callLockPickHUD(true);
+                }
             }
         });
     }

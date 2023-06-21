@@ -6,10 +6,7 @@ import ecs.Quests.QuestBuilder;
 import ecs.components.*;
 import ecs.items.ItemData;
 import ecs.items.ItemType;
-import ecs.items.item.Damagestone;
-import ecs.items.item.PotionOfHealing;
-import ecs.items.item.PotionOfTrapDestroying;
-import ecs.items.item.Telestone;
+import ecs.items.item.*;
 import ecs.systems.DialogueSystem;
 import graphic.Animation;
 import starter.Game;
@@ -26,8 +23,8 @@ public class Shopkeeper extends Entity {
     private boolean questIsAccepted= false;
 
     private ItemData[] possibleItemsInShop = new ItemData[]{new Telestone().getItemData(), new Damagestone().getItemData(),
-        new PotionOfHealing().getItemData(), new PotionOfTrapDestroying().getItemData()};
-    public static int moduloForLevelSpawn = 15;
+        new PotionOfHealing().getItemData(), new PotionOfTrapDestroying().getItemData(), new Key().getItemData()};
+    public static int moduloForLevelSpawn = 1;
     private boolean haggle;
     private int dice;
     private float currentPriceFactor;

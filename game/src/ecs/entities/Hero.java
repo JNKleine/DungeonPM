@@ -5,6 +5,7 @@ import ecs.Quests.Quest;
 import ecs.Quests.QuestBehavior.KillFoeQuestBehavior;
 import ecs.Quests.QuestTag;
 import ecs.items.item.Coin;
+import ecs.items.item.Key;
 import ecs.items.item.PotionOfTrapDestroying;
 import ecs.items.item.Sword;
 import ecs.components.*;
@@ -91,6 +92,7 @@ public class Hero extends Entity {
         InventoryComponent ic = new InventoryComponent(this,4);
         ic.addItem(new Sword().getItemData());
         ic.addItem(new PotionOfTrapDestroying().getItemData());
+        ic.addItem(new Key().getItemData());
         ic.setCurMainItem(ic.getItems().get(0));
     }
 

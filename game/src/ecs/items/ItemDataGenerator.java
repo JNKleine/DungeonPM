@@ -24,6 +24,16 @@ public class ItemDataGenerator {
             new PotionOfHealing().getItemData(),
             new PotionOfTrapDestroying().getItemData()
         );
+
+
+    private List<ItemData> questLoot =
+        List.of(
+            new Telestone().getItemData(),
+            new Damagestone().getItemData(),
+            new PotionOfHealing().getItemData(),
+            new PotionOfTrapDestroying().getItemData(),
+            new Key().getItemData()
+        );
     private Random rand = new Random();
 
     /**
@@ -38,6 +48,15 @@ public class ItemDataGenerator {
             return null;
         }
     }
+
+    /**
+     * Get a random ItemData from questLoot List
+     * @return a new randomItemData
+     */
+    public ItemData generateQuestLootItemData() {
+        return questLoot.get(rand.nextInt(0,questLoot.size()));
+    }
+
 
     /**
      * Get a random ItemData

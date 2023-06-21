@@ -44,7 +44,7 @@ public class CollectCoinsBehavior implements QuestBehavior{
     @Override
     public void getReward(Entity e) {
         ItemDataGenerator ig = new ItemDataGenerator();
-        ItemData item = ig.generateSafeItemData();
+        ItemData item = ig.generateQuestLootItemData();
         Entity itemEntity = WorldItemBuilder.buildWorldItem(item);
         PositionComponent pc = (PositionComponent) Game.getHero().get().getComponent(PositionComponent.class).get();
         itemEntity.addComponent(new PositionComponent(itemEntity,pc.getPosition()));
