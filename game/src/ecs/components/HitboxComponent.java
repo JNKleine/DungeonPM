@@ -1,13 +1,8 @@
 package ecs.components;
 
-import ecs.components.ai.AITools;
 import ecs.components.collision.ICollide;
-import ecs.damage.Damage;
-import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import java.util.logging.Logger;
-
-import ecs.entities.Faction;
 import level.elements.tile.Tile;
 import logging.CustomLogLevel;
 import semanticAnalysis.types.DSLContextMember;
@@ -70,14 +65,14 @@ public class HitboxComponent extends Component {
 
     /**
      * When another hitbox is hit, the body of that method is executed
+     *
      * @param other hitbox of another entity
      * @param direction direction in which the collision happens
      */
     public void onEnter(HitboxComponent other, Tile.Direction direction) {
         if (iCollideEnter != null) iCollideEnter.onCollision(this.entity, other.entity, direction);
         entity.onHit(other);
-        }
-
+    }
 
     /**
      * @param other hitbox of another entity

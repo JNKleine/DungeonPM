@@ -1,11 +1,11 @@
 package ecs.components.ai.idle;
+
 import dslToGame.AnimationBuilder;
 import ecs.components.AnimationComponent;
 import ecs.components.HealthComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.components.ai.AITools;
-import ecs.components.ai.idle.IIdleAI;
 import ecs.entities.Entity;
 import ecs.entities.Faction;
 import ecs.entities.PillowOfBadDreams;
@@ -13,18 +13,14 @@ import ecs.entities.SlimeGuard;
 import ecs.entities.Trap.ExplosionTrap;
 import ecs.entities.Trap.SpikeTrap;
 import graphic.Animation;
-import level.elements.tile.FloorTile;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.logging.Logger;
 import level.elements.tile.Tile;
 import starter.Game;
 import tools.Point;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Logger;
-
-/**
- * IdleAI of the Bossmonster Telepeter
- */
+/** IdleAI of the Bossmonster Telepeter */
 public class TelepeterOutOfRangeWalk implements IIdleAI {
 
     private int curFrames = 0;
@@ -41,15 +37,19 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
 
     private boolean secondStage = true;
 
-
     /**
-     *
      * @param waitFramesTillSpawn time to wait until the telepeter spawns a new monster or trap
      * @param waitFramesTillTeleport time to wait until the telepeter teleport to a new position
      * @param maxTrapsPerSpawn maximum number of traps to spawn at one attack
      * @param maxEntitiesPerSpawn maximum number of monsters to spawn at one attack
      */
-    public TelepeterOutOfRangeWalk(int waitFramesTillSpawn, int waitFramesTillTeleport, int maxTrapsPerSpawn, int maxEntitiesPerSpawn,float xSpeed, float ySpeed) {
+    public TelepeterOutOfRangeWalk(
+            int waitFramesTillSpawn,
+            int waitFramesTillTeleport,
+            int maxTrapsPerSpawn,
+            int maxEntitiesPerSpawn,
+            float xSpeed,
+            float ySpeed) {
         this.waitFramesTillSpawn = waitFramesTillSpawn;
         this.waitFramesTillTeleport = waitFramesTillTeleport;
         this.maxEntitiesPerSpawn = maxEntitiesPerSpawn;
@@ -60,68 +60,63 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
 
     @Override
     public void idle(Entity entity) {
-        HealthComponent hc = (HealthComponent)entity.getComponent(HealthComponent.class).get();
-        if(curFrames%waitFramesTillSpawn == 0 && Game.getEntities().size() <= 20) {
-            if(hc.getCurrentHealthpoints()*2 <= hc.getMaximalHealthpoints()) {
-                if ( secondStage)
-                    setupSecondStage(entity);
+        HealthComponent hc = (HealthComponent) entity.getComponent(HealthComponent.class).get();
+        if (curFrames % waitFramesTillSpawn == 0 && Game.getEntities().size() <= 20) {
+            if (hc.getCurrentHealthpoints() * 2 <= hc.getMaximalHealthpoints()) {
+                if (secondStage) setupSecondStage(entity);
                 spawnMonster();
-            }
-            else {
+            } else {
                 spawnTraps();
             }
         }
-        if(curFrames%waitFramesTillTeleport == 0) {
-            if(hc.getCurrentHealthpoints()*2 <= hc.getMaximalHealthpoints()) {
+        if (curFrames % waitFramesTillTeleport == 0) {
+            if (hc.getCurrentHealthpoints() * 2 <= hc.getMaximalHealthpoints()) {
                 teleportNextToPlayer(entity);
-            }
-            else {
+            } else {
                 teleportRandom(entity);
             }
         }
-            curFrames = curFrames < Integer.MAX_VALUE? ++curFrames: 0;
+        curFrames = curFrames < Integer.MAX_VALUE ? ++curFrames : 0;
     }
 
     private void spawnMonster() {
         Random rnd = new Random();
-        int anzMonster = rnd.nextInt(1,maxEntitiesPerSpawn+1);
+        int anzMonster = rnd.nextInt(1, maxEntitiesPerSpawn + 1);
         int monsterKind = rnd.nextInt(2);
         for (int i = 0; i < anzMonster; i++) {
-            if(monsterKind == 0) {
+            if (monsterKind == 0) {
                 new SlimeGuard();
-            }
-            else
-                new PillowOfBadDreams();
+            } else new PillowOfBadDreams();
         }
     }
 
     private void spawnTraps() {
-        for(Entity e: Game.getEntities()) {
+        for (Entity e : Game.getEntities()) {
             if (e.getFaction().equals(Faction.TRAP)) {
                 HealthComponent hc = (HealthComponent) e.getComponent(HealthComponent.class).get();
                 hc.setCurrentHealthpoints(0);
             }
         }
-            Random rnd = new Random();
-            int anzTrap = rnd.nextInt(1,maxTrapsPerSpawn+1);
-            int trapKind = rnd.nextInt(2);
-            for (int i = 0; i < anzTrap; i++) {
-                if(trapKind == 0) {
-                    new SpikeTrap();
-                }
-                else
-                    new ExplosionTrap();
-            }
-
+        Random rnd = new Random();
+        int anzTrap = rnd.nextInt(1, maxTrapsPerSpawn + 1);
+        int trapKind = rnd.nextInt(2);
+        for (int i = 0; i < anzTrap; i++) {
+            if (trapKind == 0) {
+                new SpikeTrap();
+            } else new ExplosionTrap();
+        }
     }
 
     private void teleportRandom(Entity entity) {
         boolean fLoop = true;
-        PositionComponent pc = (PositionComponent) entity.getComponent(PositionComponent.class).get();
-        PositionComponent pcH = (PositionComponent)Game.getHero().get().getComponent(PositionComponent.class).get();
-        while(fLoop) {
+        PositionComponent pc =
+                (PositionComponent) entity.getComponent(PositionComponent.class).get();
+        PositionComponent pcH =
+                (PositionComponent)
+                        Game.getHero().get().getComponent(PositionComponent.class).get();
+        while (fLoop) {
             Point newPos = Game.currentLevel.getRandomFloorTile().getCoordinateAsPoint();
-            if(!newPos.equals(pcH.getPosition()) || Game.currentLevel.getFloorTiles().size()<5) {
+            if (!newPos.equals(pcH.getPosition()) || Game.currentLevel.getFloorTiles().size() < 5) {
                 pc.setPosition(newPos);
                 fLoop = false;
             }
@@ -129,25 +124,41 @@ public class TelepeterOutOfRangeWalk implements IIdleAI {
     }
 
     private void teleportNextToPlayer(Entity entity) {
-        PositionComponent pc = (PositionComponent) entity.getComponent(PositionComponent.class).get();
-        PositionComponent pcH = (PositionComponent)Game.getHero().get().getComponent(PositionComponent.class).get();
-        ArrayList<Tile> nextToPlayer = (ArrayList) AITools.getAccessibleTilesInRange(pcH.getPosition(),3f);
+        PositionComponent pc =
+                (PositionComponent) entity.getComponent(PositionComponent.class).get();
+        PositionComponent pcH =
+                (PositionComponent)
+                        Game.getHero().get().getComponent(PositionComponent.class).get();
+        ArrayList<Tile> nextToPlayer =
+                (ArrayList) AITools.getAccessibleTilesInRange(pcH.getPosition(), 3f);
         Random rn = new Random();
-        pc.setPosition(nextToPlayer.get(rn.nextInt(0,nextToPlayer.size()))
-            .getCoordinateAsPoint());
-
+        pc.setPosition(nextToPlayer.get(rn.nextInt(0, nextToPlayer.size())).getCoordinateAsPoint());
     }
 
     private void setupSecondStage(Entity entity) {
-        Animation secondStageIdleLeft = AnimationBuilder.buildAnimation("character/monster/Telepeter/TelepeterStageTwo/idleLeft");
-        Animation secondStageIdleRight = AnimationBuilder.buildAnimation("character/monster/Telepeter/TelepeterStageTwo/idleRight");
-        Animation secondStageRunLeft = AnimationBuilder.buildAnimation("character/monster/Telepeter/TelepeterStageTwo/runLeft");
-        Animation secondStageRunRight = AnimationBuilder.buildAnimation("character/monster/Telepeter/TelepeterStageTwo/runRight");
+        Animation secondStageIdleLeft =
+                AnimationBuilder.buildAnimation(
+                        "character/monster/Telepeter/TelepeterStageTwo/idleLeft");
+        Animation secondStageIdleRight =
+                AnimationBuilder.buildAnimation(
+                        "character/monster/Telepeter/TelepeterStageTwo/idleRight");
+        Animation secondStageRunLeft =
+                AnimationBuilder.buildAnimation(
+                        "character/monster/Telepeter/TelepeterStageTwo/runLeft");
+        Animation secondStageRunRight =
+                AnimationBuilder.buildAnimation(
+                        "character/monster/Telepeter/TelepeterStageTwo/runRight");
 
-        entity.addComponent(new AnimationComponent(entity,secondStageIdleLeft,secondStageIdleRight));
-        entity.addComponent(new VelocityComponent(entity,xSpeed, ySpeed,secondStageRunLeft,secondStageRunRight));
+        entity.addComponent(
+                new AnimationComponent(entity, secondStageIdleLeft, secondStageIdleRight));
+        entity.addComponent(
+                new VelocityComponent(
+                        entity, xSpeed, ySpeed, secondStageRunLeft, secondStageRunRight));
         Logger bossLogger = Logger.getLogger("Boss");
-        bossLogger.info("The " + entity.getClass().getSimpleName() + " is now in Stage two and more aggresive");
+        bossLogger.info(
+                "The "
+                        + entity.getClass().getSimpleName()
+                        + " is now in Stage two and more aggresive");
         secondStage = false;
     }
 }

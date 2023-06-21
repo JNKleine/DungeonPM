@@ -2,11 +2,10 @@ package ecs.components;
 
 import ecs.entities.Entity;
 import ecs.items.ItemData;
+import ecs.items.ItemType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import ecs.items.ItemType;
 import logging.CustomLogLevel;
 
 /** Allows an Entity to carry Items */
@@ -15,20 +14,21 @@ public class InventoryComponent extends Component {
     private List<ItemData> inventory;
 
     private ItemData curMainItem;
-    /**Size from backpack and regular inventory**/
+    /** Size from backpack and regular inventory* */
     public int maxSize;
 
-    /**Size from backpack**/
+    /** Size from backpack* */
     public int extraSpaceBackPack;
 
-    /**Size from inventory**/
+    /** Size from inventory* */
     public int defaultSpace;
 
-/**Determines if a backpack has already been picked up**/
+    /** Determines if a backpack has already been picked up* */
     public boolean backpackIsCollected = false;
 
-    /**Determines, what Items can be stored at the current backpack**/
+    /** Determines, what Items can be stored at the current backpack* */
     public static ItemType backpackItemTypeStorage;
+
     private final Logger inventoryLogger = Logger.getLogger(this.getClass().getName());
 
     /**
@@ -53,8 +53,9 @@ public class InventoryComponent extends Component {
      * @return true if the item was added, otherwise false
      */
     public boolean addItem(ItemData itemData) {
-        if ((inventory.size() >= defaultSpace && !itemData.getItemType().equals(backpackItemTypeStorage)) ||
-            inventory.size() >= maxSize) return false;
+        if ((inventory.size() >= defaultSpace
+                        && !itemData.getItemType().equals(backpackItemTypeStorage))
+                || inventory.size() >= maxSize) return false;
         inventoryLogger.log(
                 CustomLogLevel.DEBUG,
                 "Item '"
@@ -66,20 +67,19 @@ public class InventoryComponent extends Component {
     }
 
     /**
-     When a backpack is picked up, the properties of the backpack are set
-     @param size: size from the backpack
-     @param type: ItemType which can be stored in backpack
-     **/
+     * When a backpack is picked up, the properties of the backpack are set
+     *
+     * @param size: size from the backpack
+     * @param type: ItemType which can be stored in backpack
+     */
     public void addBackpack(int size, ItemType type) {
         extraSpaceBackPack = size;
-        maxSize = defaultSpace+extraSpaceBackPack;
+        maxSize = defaultSpace + extraSpaceBackPack;
         backpackItemTypeStorage = type;
         backpackIsCollected = true;
     }
 
-    /**
-     When a backpack is removed, the properties of the backpack are set to default
-     **/
+    /** When a backpack is removed, the properties of the backpack are set to default */
     public void removeBackpack() {
         extraSpaceBackPack = 0;
         maxSize = defaultSpace;
@@ -127,12 +127,16 @@ public class InventoryComponent extends Component {
     /**
      * @return the size of the regular inventory
      */
-    public int getDefaultSize() {return defaultSpace;}
+    public int getDefaultSize() {
+        return defaultSpace;
+    }
 
     /**
      * @return the size of the backpack
      */
-    public int getBackpackSize() {return extraSpaceBackPack;}
+    public int getBackpackSize() {
+        return extraSpaceBackPack;
+    }
 
     /**
      * @return a copy of the inventory
@@ -141,19 +145,17 @@ public class InventoryComponent extends Component {
         return new ArrayList<>(inventory);
     }
 
-    /** Set the current main item (the item, which is currently in use) **/
+    /** Set the current main item (the item, which is currently in use) * */
     public void setCurMainItem(ItemData item) {
         curMainItem = item;
     }
 
     public void setCurMainItemToFirstItemInInventory() {
-        if(inventory.size() > 0)
-            curMainItem = getItems().get(0);
+        if (inventory.size() > 0) curMainItem = getItems().get(0);
     }
 
-    /** Get the current main item (the item, which is currently in use) **/
-    public ItemData getCurMainItem(){
+    /** Get the current main item (the item, which is currently in use) * */
+    public ItemData getCurMainItem() {
         return curMainItem;
     }
-
 }

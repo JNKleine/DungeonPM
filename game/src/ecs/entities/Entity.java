@@ -1,11 +1,10 @@
 package ecs.entities;
 
 import ecs.components.Component;
+import ecs.components.HitboxComponent;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.logging.Logger;
-
-import ecs.components.HitboxComponent;
 import semanticAnalysis.types.DSLContextPush;
 import semanticAnalysis.types.DSLType;
 import starter.Game;
@@ -22,9 +21,7 @@ public class Entity {
     private HashMap<Class, Component> components;
     public final Logger entityLogger;
 
-    /**
-     * Initialize an object of type entity
-     */
+    /** Initialize an object of type entity */
     public Entity() {
         this.initDamage = 0;
         components = new HashMap<>();
@@ -36,12 +33,12 @@ public class Entity {
     /**
      * Initialize an object of type entity
      *
-     * <p>Create an object with defined damage and faction</p>
+     * <p>Create an object with defined damage and faction
      *
      * @param initDamage int amount of damage, this entity make
      * @param faction faction from Faction
      */
-    public Entity(int initDamage,Faction faction) {
+    public Entity(int initDamage, Faction faction) {
         this.faction = faction;
         this.initDamage = initDamage;
         components = new HashMap<>();
@@ -77,28 +74,31 @@ public class Entity {
     public Optional<Component> getComponent(Class klass) {
         return Optional.ofNullable(components.get(klass));
     }
+
     public int getDamage() {
         return initDamage;
     }
 
-    public Faction getFaction() {return faction;}
+    public Faction getFaction() {
+        return faction;
+    }
 
     /**
-     *Regulates what this specific entity should do when it collides with another entity
+     * Regulates what this specific entity should do when it collides with another entity
      *
      * @param hb HitboxComponent from the other entity
-     * */
-    public void onHit(HitboxComponent hb) {};
+     */
+    public void onHit(HitboxComponent hb) {}
+    ;
 
     /**
-     * Is useful for entities, with InteractionComponent
-     * and for building OnInteractionBehavior
+     * Is useful for entities, with InteractionComponent and for building OnInteractionBehavior
      *
-     * <p>Here, depending on the parameters passed,
-     * it should be decided what is said in the DialogHUD or which functions are activated based on
-     * the input of the player.</p>
-     * @param text Entered input from the player in the dialogHUD
-     * **/
+     * <p>Here, depending on the parameters passed, it should be decided what is said in the
+     * DialogHUD or which functions are activated based on the input of the player.
+     *
+     * @param text Entered input from the player in the dialogHUD *
+     */
     public String getAnswer(String text) {
         return "";
     }

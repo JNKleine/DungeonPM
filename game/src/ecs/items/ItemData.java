@@ -8,7 +8,6 @@ import ecs.components.ItemComponent;
 import ecs.components.PositionComponent;
 import ecs.components.stats.DamageModifier;
 import ecs.entities.Entity;
-import ecs.items.item.Item;
 import graphic.Animation;
 import java.util.List;
 import starter.Game;
@@ -82,7 +81,8 @@ public class ItemData {
             Animation inventoryTexture,
             Animation worldTexture,
             String itemName,
-            String description,int value) {
+            String description,
+            int value) {
         this(
                 itemType,
                 inventoryTexture,
@@ -102,7 +102,8 @@ public class ItemData {
                 new Animation(List.of(ItemConfig.TEXTURE.get()), 1),
                 new Animation(List.of(ItemConfig.TEXTURE.get()), 1),
                 ItemConfig.NAME.get(),
-                ItemConfig.DESCRIPTION.get(), 0);
+                ItemConfig.DESCRIPTION.get(),
+                0);
     }
 
     /**

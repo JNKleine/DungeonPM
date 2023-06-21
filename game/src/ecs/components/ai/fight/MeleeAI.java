@@ -5,7 +5,6 @@ import ecs.components.ai.AITools;
 import ecs.components.skill.Skill;
 import ecs.entities.Entity;
 import level.elements.tile.Tile;
-import tools.Constants;
 
 public class MeleeAI implements IFightAI {
     private final float attackRange;
@@ -30,8 +29,8 @@ public class MeleeAI implements IFightAI {
         if (AITools.playerInRange(entity, attackRange)) {
             fightSkill.execute(entity);
         } else {
-                path = AITools.calculatePathToHero(entity);
-                AITools.move(entity, path);
+            path = AITools.calculatePathToHero(entity);
+            AITools.move(entity, path);
         }
     }
 }

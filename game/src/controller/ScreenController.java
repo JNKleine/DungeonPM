@@ -31,7 +31,6 @@ public class ScreenController<T extends Actor> extends AbstractController<T> {
                                 Scaling.stretch, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT),
                         batch);
 
-
         Game.inputMultiplexer.addProcessor(stage);
     }
 

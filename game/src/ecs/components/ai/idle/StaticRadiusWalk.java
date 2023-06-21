@@ -3,11 +3,8 @@ package ecs.components.ai.idle;
 import static ecs.components.ai.AITools.getRandomAccessibleTileCoordinateInRange;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import ecs.components.HealthComponent;
 import ecs.components.PositionComponent;
 import ecs.components.ai.AITools;
-import ecs.damage.Damage;
-import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import level.elements.tile.Tile;
 import tools.Constants;

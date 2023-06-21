@@ -1,12 +1,11 @@
 package ecs.components;
 
 import ecs.entities.Entity;
-
 import java.util.logging.Logger;
 
 public class InteractionComponent extends Component {
 
-    private Logger  interactionLogger = Logger.getLogger(this.getClass().getName());
+    private Logger interactionLogger = Logger.getLogger(this.getClass().getName());
     public static final int DEFAULT_RADIUS = 5;
     public static final boolean DEFAULT_REPEATABLE = true;
     private float radius;
@@ -40,7 +39,8 @@ public class InteractionComponent extends Component {
 
     /** triggers the interaction between hero and the Entity of the component */
     public void triggerInteraction() {
-        interactionLogger.info("interaction with "+entity.getClass().getSimpleName()+" is registered");
+        interactionLogger.info(
+                "interaction with " + entity.getClass().getSimpleName() + " is registered");
         onInteraction.onInteraction(entity);
         if (!repeatable) entity.removeComponent(InteractionComponent.class);
     }
@@ -60,5 +60,4 @@ public class InteractionComponent extends Component {
     public float getRadius() {
         return radius;
     }
-
 }

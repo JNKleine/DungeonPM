@@ -68,7 +68,6 @@ public class HealthComponent extends Component {
                 new Animation(missingTexture, 100));
     }
 
-
     /**
      * Adds damage, which is accounted for by the system
      *
@@ -79,11 +78,18 @@ public class HealthComponent extends Component {
         this.lastCause = damage.cause() != null ? damage.cause() : this.lastCause;
     }
 
-    /** Triggers the onDeath Function, and, if a quest is in the questLog, increase their progress */
+    /**
+     * Triggers the onDeath Function, and, if a quest is in the questLog, increase their progress
+     */
     public void triggerOnDeath() {
-        if(Game.getHero().get().getComponent(QuestLogComponent.class).isPresent() && entity.getComponent(QuestObjectiveComponent.class).isPresent()) {
-            QuestLogComponent qLC = (QuestLogComponent) Game.getHero().get().getComponent(QuestLogComponent.class).get();
-            QuestObjectiveComponent qOC = (QuestObjectiveComponent)entity.getComponent(QuestObjectiveComponent.class).get();
+        if (Game.getHero().get().getComponent(QuestLogComponent.class).isPresent()
+                && entity.getComponent(QuestObjectiveComponent.class).isPresent()) {
+            QuestLogComponent qLC =
+                    (QuestLogComponent)
+                            Game.getHero().get().getComponent(QuestLogComponent.class).get();
+            QuestObjectiveComponent qOC =
+                    (QuestObjectiveComponent)
+                            entity.getComponent(QuestObjectiveComponent.class).get();
             qLC.increaseProgress(qOC.getPartOfQuests());
         }
         onDeath.onDeath(entity);

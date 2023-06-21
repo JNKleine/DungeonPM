@@ -6,11 +6,7 @@ import ecs.components.xp.XPComponent;
 import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import java.util.stream.Stream;
-
-import ecs.items.ItemData;
-import ecs.items.item.Item;
 import starter.Game;
-import tools.Point;
 
 /**
  * The HealthSystem offsets the damage to be done to all entities with the HealthComponent. Triggers
@@ -95,24 +91,24 @@ public class HealthSystem extends ECS_System {
         // Entity appears to be dead, so let's clean up the mess
         hsd.hc.triggerOnDeath();
         hsd.ac.setCurrentAnimation(hsd.hc.getDieAnimation());
-        if(hsd.ac.getCurrentAnimation().isFinished()) {
+        if (hsd.ac.getCurrentAnimation().isFinished()) {
             Game.removeEntity(hsd.hc.getEntity());
             // Add XP
             hsd.e
-                .getComponent(XPComponent.class)
-                .ifPresent(
-                    component -> {
-                        XPComponent deadXPComponent = (XPComponent) component;
-                        hsd.hc
-                            .getLastDamageCause()
-                            .flatMap(entity -> entity.getComponent(XPComponent.class))
-                            .ifPresent(
-                                c -> {
-                                    XPComponent killerXPComponent = (XPComponent) c;
-                                    killerXPComponent.addXP(
-                                        deadXPComponent.getLootXP());
-                                });
-                    });
+                    .getComponent(XPComponent.class)
+                    .ifPresent(
+                            component -> {
+                                XPComponent deadXPComponent = (XPComponent) component;
+                                hsd.hc
+                                        .getLastDamageCause()
+                                        .flatMap(entity -> entity.getComponent(XPComponent.class))
+                                        .ifPresent(
+                                                c -> {
+                                                    XPComponent killerXPComponent = (XPComponent) c;
+                                                    killerXPComponent.addXP(
+                                                            deadXPComponent.getLootXP());
+                                                });
+                            });
         }
     }
 

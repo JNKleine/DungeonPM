@@ -1,7 +1,6 @@
 package ecs.items;
 
 import ecs.items.item.*;
-
 import java.util.List;
 import java.util.Random;
 
@@ -14,35 +13,32 @@ public class ItemDataGenerator {
                     new Telestone().getItemData(),
                     new Damagestone().getItemData(),
                     new PotionOfHealing().getItemData(),
-                    new Backpack(4,ItemType.Active).getItemData()
-            );
+                    new Backpack(4, ItemType.Active).getItemData());
 
     private List<ItemData> loot =
-        List.of(
-            new Telestone().getItemData(),
-            new Damagestone().getItemData(),
-            new PotionOfHealing().getItemData(),
-            new PotionOfTrapDestroying().getItemData()
-        );
-
+            List.of(
+                    new Telestone().getItemData(),
+                    new Damagestone().getItemData(),
+                    new PotionOfHealing().getItemData(),
+                    new PotionOfTrapDestroying().getItemData());
 
     private List<ItemData> questLoot =
-        List.of(
-            new Telestone().getItemData(),
-            new Damagestone().getItemData(),
-            new PotionOfHealing().getItemData(),
-            new PotionOfTrapDestroying().getItemData(),
-            new Key().getItemData()
-        );
+            List.of(
+                    new Telestone().getItemData(),
+                    new Damagestone().getItemData(),
+                    new PotionOfHealing().getItemData(),
+                    new PotionOfTrapDestroying().getItemData(),
+                    new Key().getItemData());
     private Random rand = new Random();
 
     /**
      * Get a random ItemData to 30% probability, else get null
+     *
      * @return a new randomItemData
      */
     public ItemData generateItemData() {
         Random rd = new Random();
-        if(rd.nextInt(0,100) <= 30) {
+        if (rd.nextInt(0, 100) <= 30) {
             return templates.get(rand.nextInt(templates.size()));
         } else {
             return null;
@@ -51,18 +47,19 @@ public class ItemDataGenerator {
 
     /**
      * Get a random ItemData from questLoot List
+     *
      * @return a new randomItemData
      */
     public ItemData generateQuestLootItemData() {
-        return questLoot.get(rand.nextInt(0,questLoot.size()));
+        return questLoot.get(rand.nextInt(0, questLoot.size()));
     }
-
 
     /**
      * Get a random ItemData
+     *
      * @return a new randomItemData
      */
     public ItemData generateSafeItemData() {
-            return loot.get(rand.nextInt(0,loot.size()));
-        }
+        return loot.get(rand.nextInt(0, loot.size()));
     }
+}

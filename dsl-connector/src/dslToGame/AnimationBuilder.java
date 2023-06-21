@@ -13,6 +13,6 @@ public class AnimationBuilder {
     }
 
     public static Animation buildAnimationNotRepeatable(String path) {
-        return new Animation(TextureHandler.getInstance().getTexturePaths(path), frameTime,false);
+        return new Animation(TextureHandler.getInstance().getTexturePaths(path), frameTime, false);
     }
 }

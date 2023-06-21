@@ -10,14 +10,12 @@ import ecs.tools.interaction.InteractionTool;
 import starter.Game;
 import tools.Point;
 
-
 /** Used to control the player */
 public class PlayerSystem extends ECS_System {
 
-    /**
-     * Use for SwordOnUse, key = 0 is left, key = 1 is up, key = 2 is right, key = 3 is down.
-     */
+    /** Use for SwordOnUse, key = 0 is left, key = 1 is up, key = 2 is right, key = 3 is down. */
     private static int key;
+
     private record KSData(Entity e, PlayableComponent pc, VelocityComponent vc) {}
 
     @Override
@@ -29,7 +27,11 @@ public class PlayerSystem extends ECS_System {
     }
 
     private void checkKeystroke(KSData ksd) {
-        if (!Game.isPaused && !Game.dialogueIsOn && !Game.inventoryIsOn && !Game.questHUDIsOn && !Game.lockPickHUDisOn) {
+        if (!Game.isPaused
+                && !Game.dialogueIsOn
+                && !Game.inventoryIsOn
+                && !Game.questHUDIsOn
+                && !Game.lockPickHUDisOn) {
             if (Gdx.input.isKeyPressed(KeyboardConfig.LOOK_UP.get())) {
                 key = 1;
             } else if (Gdx.input.isKeyPressed(KeyboardConfig.LOOK_DOWN.get())) {
@@ -52,17 +54,23 @@ public class PlayerSystem extends ECS_System {
 
             if (Gdx.input.isKeyJustPressed(KeyboardConfig.SPACE.get())) {
                 Hero curHero = (Hero) Game.getHero().get();
-                InventoryComponent ic = (InventoryComponent) curHero.getComponent(InventoryComponent.class).get();
-                if (ic.getCurMainItem() != null)
-                    ic.getCurMainItem().triggerUse(curHero);
+                InventoryComponent ic =
+                        (InventoryComponent) curHero.getComponent(InventoryComponent.class).get();
+                if (ic.getCurMainItem() != null) ic.getCurMainItem().triggerUse(curHero);
             }
             if (Gdx.input.isKeyJustPressed(KeyboardConfig.DROP_ITEM.get())) {
                 for (Entity e : Game.getEntities()) {
                     if (e.getFaction().equals(Faction.PLAYER)) {
-                        InventoryComponent ic = (InventoryComponent) e.getComponent(InventoryComponent.class).get();
+                        InventoryComponent ic =
+                                (InventoryComponent) e.getComponent(InventoryComponent.class).get();
                         if (ic.getCurMainItem() != null) {
-                            PositionComponent pc = (PositionComponent) e.getComponent(PositionComponent.class).get();
-                            ic.getCurMainItem().triggerDrop(e, new Point(pc.getPosition().x+1,pc.getPosition().y));
+                            PositionComponent pc =
+                                    (PositionComponent)
+                                            e.getComponent(PositionComponent.class).get();
+                            ic.getCurMainItem()
+                                    .triggerDrop(
+                                            e,
+                                            new Point(pc.getPosition().x + 1, pc.getPosition().y));
                         }
                     }
                 }
@@ -71,7 +79,7 @@ public class PlayerSystem extends ECS_System {
             if (Gdx.input.isKeyJustPressed(KeyboardConfig.INTERACT_WORLD.get()))
                 InteractionTool.interactWithClosestInteractable(ksd.e);
 
-                // check skills
+            // check skills
             else if (Gdx.input.isKeyPressed(KeyboardConfig.FIRST_SKILL.get()))
                 ksd.pc.getSkillSlot1().ifPresent(skill -> skill.execute(ksd.e));
             else if (Gdx.input.isKeyPressed(KeyboardConfig.SECOND_SKILL.get()))
@@ -94,5 +102,7 @@ public class PlayerSystem extends ECS_System {
         return new MissingComponentException("VelocityComponent");
     }
 
-    public static int getKey() { return key;}
+    public static int getKey() {
+        return key;
+    }
 }

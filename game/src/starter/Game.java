@@ -15,17 +15,14 @@ import ecs.components.*;
 import ecs.entities.*;
 import ecs.items.ItemData;
 import ecs.items.ItemDataGenerator;
-
 import ecs.items.WorldItemBuilder;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
 import graphic.hud.*;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
-
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -44,14 +41,11 @@ import level.tools.LevelSize;
 import tools.Constants;
 import tools.Point;
 
-/**
- * The heart of the framework. From here all strings are pulled.
- */
+/** The heart of the framework. From here all strings are pulled. */
 public class Game extends ScreenAdapter implements IOnLevelLoader {
 
-    /** boolean to check if the next ladder gets you to the boss*/
+    /** boolean to check if the next ladder gets you to the boss */
     public static boolean bossRoom = false;
-
 
     private final LevelSize LEVELSIZE = LevelSize.SMALL;
 
@@ -61,25 +55,18 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     protected SpriteBatch batch;
 
-    /**
-     * Contains all Controller of the Dungeon
-     */
+    /** Contains all Controller of the Dungeon */
     public static List<AbstractController<?>> controller;
 
     public static DungeonCamera camera;
-    /**
-     * Draws objects
-     */
+    /** Draws objects */
     protected Painter painter;
 
-
     protected LevelAPI levelAPI;
-    /**
-     * Generates the level
-     */
+    /** Generates the level */
     protected IGenerator generator;
-    public static InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
+    public static InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
     private boolean doSetup = true;
     public static boolean paused = false;
@@ -98,25 +85,18 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static ArrayList<ScreenController> listOfCurWindows = new ArrayList<>();
 
     private static final Set<Entity> entities = new HashSet<>();
-    /**
-     * All entities to be removed from the dungeon in the next frame
-     */
+    /** All entities to be removed from the dungeon in the next frame */
     private static final Set<Entity> entitiesToRemove = new HashSet<>();
-    /**
-     * All entities to be added from the dungeon in the next frame
-     */
+    /** All entities to be added from the dungeon in the next frame */
     private static final Set<Entity> entitiesToAdd = new HashSet<>();
 
-    /**
-     * List of all Systems in the ECS
-     */
+    /** List of all Systems in the ECS */
     public static SystemController systems;
 
     public static ILevel currentLevel;
-    /**
-     * Get the value, in which level the hero is
-     */
+    /** Get the value, in which level the hero is */
     public static int currentLevelNumber = 0;
+
     private static PauseMenu<Actor> pauseMenu;
 
     public static InventoryMenu<Actor> inventory;
@@ -129,10 +109,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static QuestHUD<Actor> questHUD;
 
-    /**
-     * obejct from type LockPickHUD
-     * **/
+    /** obejct from type LockPickHUD * */
     public static LockPickHUD<Actor> lockPickHUD;
+
     private static Entity hero;
 
     private Logger gameLogger;
@@ -142,7 +121,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static ILevel bossLevel;
 
     public static boolean restarted;
-
 
     public static void main(String[] args) {
         // start the game
@@ -163,17 +141,15 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     @Override
     public void render(float delta) {
         if (doSetup) setup();
-            batch.setProjectionMatrix(camera.combined);
-            frame();
-            clearScreen();
-            levelAPI.update();
-            controller.forEach(AbstractController::update);
-            camera.update();
+        batch.setProjectionMatrix(camera.combined);
+        frame();
+        clearScreen();
+        levelAPI.update();
+        controller.forEach(AbstractController::update);
+        camera.update();
     }
 
-    /**
-     * Called once at the beginning of the game.
-     */
+    /** Called once at the beginning of the game. */
     protected void setup() {
         doSetup = false;
         controller = new ArrayList<>();
@@ -206,21 +182,32 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         createSystems();
     }
 
-    /**
-     * Called at the beginning of each frame. Before the controllers call <code>update</code>.
-     */
+    /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
     protected void frame() {
         setCameraFocus();
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P) && !inventoryIsOn && !dialogueIsOn && !questHUDIsOn && !lockPickHUDisOn) togglePause();
-        if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isPaused && !dialogueIsOn && !questHUDIsOn  && !lockPickHUDisOn) callInventory(getHero().get());
-        if(Gdx.input.isKeyJustPressed(Input.Keys.PERIOD) && !isPaused && !dialogueIsOn && !inventoryIsOn  && !lockPickHUDisOn) callQuestHUD();
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) closeRecentWindow();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)
+                && !inventoryIsOn
+                && !dialogueIsOn
+                && !questHUDIsOn
+                && !lockPickHUDisOn) togglePause();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)
+                && !isPaused
+                && !dialogueIsOn
+                && !questHUDIsOn
+                && !lockPickHUDisOn) callInventory(getHero().get());
+        if (Gdx.input.isKeyJustPressed(Input.Keys.PERIOD)
+                && !isPaused
+                && !dialogueIsOn
+                && !inventoryIsOn
+                && !lockPickHUDisOn) callQuestHUD();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) closeRecentWindow();
 
-        if ( restarted ) {
-            if ( telepeter != null) {
-                HealthComponent hcOfBoss = (HealthComponent) telepeter.getComponent(HealthComponent.class).get();
+        if (restarted) {
+            if (telepeter != null) {
+                HealthComponent hcOfBoss =
+                        (HealthComponent) telepeter.getComponent(HealthComponent.class).get();
                 hcOfBoss.setCurrentHealthpoints(0);
                 addExitToBossLevel();
             }
@@ -233,7 +220,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     @Override
     public void onLevelLoad() {
         currentLevel = levelAPI.getCurrentLevel();
-        if ( bossRoom == false) {
+        if (bossRoom == false) {
             currentLevelNumber++;
             EntitySpawnRateSetter entitySpawner = new EntitySpawnRateSetter();
             entities.clear();
@@ -269,23 +256,24 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private void setCameraFocus() {
         if (getHero().isPresent()) {
             PositionComponent pc =
-                (PositionComponent)
-                    getHero()
-                        .get()
-                        .getComponent(PositionComponent.class)
-                        .orElseThrow(
-                            () ->
-                                new MissingComponentException(
-                                    "PositionComponent"));
+                    (PositionComponent)
+                            getHero()
+                                    .get()
+                                    .getComponent(PositionComponent.class)
+                                    .orElseThrow(
+                                            () ->
+                                                    new MissingComponentException(
+                                                            "PositionComponent"));
             camera.setFocusPoint(pc.getPosition());
 
         } else camera.setFocusPoint(new Point(0, 0));
     }
 
     private void loadNextLevelIfEntityIsOnEndTile(Entity hero) {
-        if ( telepeter != null && bossRoom == true) {
-            HealthComponent hC = (HealthComponent) telepeter.getComponent(HealthComponent.class).get();
-            if ( hC.getCurrentHealthpoints() <= 0) {
+        if (telepeter != null && bossRoom == true) {
+            HealthComponent hC =
+                    (HealthComponent) telepeter.getComponent(HealthComponent.class).get();
+            if (hC.getCurrentHealthpoints() <= 0) {
                 addExitToBossLevel();
                 bossRoom = false;
             }
@@ -297,10 +285,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private boolean isOnEndTile(Entity entity) {
         PositionComponent pc =
-            (PositionComponent)
-                entity.getComponent(PositionComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("PositionComponent"));
+                (PositionComponent)
+                        entity.getComponent(PositionComponent.class)
+                                .orElseThrow(
+                                        () -> new MissingComponentException("PositionComponent"));
         Tile currentTile = currentLevel.getTileAt(pc.getPosition().toCoordinate());
         return currentTile.equals(currentLevel.getEndTile());
     }
@@ -308,39 +296,37 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private void placeOnLevelStart(Entity hero) {
         entities.add(hero);
         PositionComponent pc =
-            (PositionComponent)
-                hero.getComponent(PositionComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("PositionComponent"));
+                (PositionComponent)
+                        hero.getComponent(PositionComponent.class)
+                                .orElseThrow(
+                                        () -> new MissingComponentException("PositionComponent"));
         pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
     }
 
-    /**
-     * Toggle between pause and run
-     */
+    /** Toggle between pause and run */
     public static void togglePause() {
-            isPaused = !isPaused;
-            paused = !paused;
-            if (systems != null) {
-                systems.forEach(ECS_System::toggleRun);
-            }
-            if (pauseMenu != null) {
-                if (paused) {
-                    pauseMenu.showMenu();
-                    listOfCurWindows.add(pauseMenu);
-                } else {
-                    pauseMenu.hideMenu();
-                    listOfCurWindows.remove(pauseMenu);
-                }
+        isPaused = !isPaused;
+        paused = !paused;
+        if (systems != null) {
+            systems.forEach(ECS_System::toggleRun);
+        }
+        if (pauseMenu != null) {
+            if (paused) {
+                pauseMenu.showMenu();
+                listOfCurWindows.add(pauseMenu);
+            } else {
+                pauseMenu.hideMenu();
+                listOfCurWindows.remove(pauseMenu);
             }
         }
+    }
 
-    /**Call the LockPickHUD and show it**/
+    /** Call the LockPickHUD and show it* */
     public static void callLockPickHUD(boolean firstTimeOn) {
-        lockPickHUDisOn = !   lockPickHUDisOn;
+        lockPickHUDisOn = !lockPickHUDisOn;
 
         if (lockPickHUD != null) {
-            if (   lockPickHUDisOn) {
+            if (lockPickHUDisOn) {
 
                 lockPickHUD.createLockPickHUD(firstTimeOn);
                 lockPickHUD.showMenu();
@@ -348,12 +334,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             } else {
                 lockPickHUD.removeHUD();
                 listOfCurWindows.remove(lockPickHUD);
-
             }
         }
     }
 
-    /**Call the inventoryHUD and show it**/
+    /** Call the inventoryHUD and show it* */
     public static void callQuestHUD() {
         questHUDIsOn = !questHUDIsOn;
 
@@ -366,36 +351,29 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             } else {
                 questHUD.removeHUD();
                 listOfCurWindows.remove(questHUD);
-
             }
         }
     }
 
-
-
-
-    /**Call the inventoryHUD and show it**/
+    /** Call the inventoryHUD and show it* */
     public static void callInventory(Entity e) {
-            inventoryIsOn = !inventoryIsOn;
+        inventoryIsOn = !inventoryIsOn;
 
-            if (inventory != null) {
-                if (inventoryIsOn) {
+        if (inventory != null) {
+            if (inventoryIsOn) {
 
-                    inventory.createInventory(e);
-                    inventory.showMenu();
-                    listOfCurWindows.add(inventory);
-                } else {
-                    inventory.removeInventory();
-                    inventory.hideMenu();
-                    listOfCurWindows.remove(inventory);
-
-                }
+                inventory.createInventory(e);
+                inventory.showMenu();
+                listOfCurWindows.add(inventory);
+            } else {
+                inventory.removeInventory();
+                inventory.hideMenu();
+                listOfCurWindows.remove(inventory);
             }
+        }
     }
 
-    /**
-     * Call the DialogueHUD and show it
-     **/
+    /** Call the DialogueHUD and show it */
     public static void callDialogue(String stringText, boolean inputTextAfterFirstShownIsOn) {
 
         if (dialogueMenu != null) {
@@ -409,45 +387,38 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 listOfCurWindows.remove(dialogueMenu);
             }
             dialogueIsOn = !dialogueIsOn;
-
         }
     }
 
-    /**Add a window to the currently open windows
-     * @param window: ScreenController, that is closable
-     * **/
+    /**
+     * Add a window to the currently open windows
+     *
+     * @param window: ScreenController, that is closable *
+     */
     public static void addRecentWindow(ScreenController window) {
         listOfCurWindows.add(window);
     }
 
-    /**
-     * Close the last window that was opened
-     * **/
+    /** Close the last window that was opened * */
     public static void closeRecentWindow() {
-        if(listOfCurWindows.size() > 0) {
-            ScreenController curWindow = listOfCurWindows.get(listOfCurWindows.size()-1);
+        if (listOfCurWindows.size() > 0) {
+            ScreenController curWindow = listOfCurWindows.get(listOfCurWindows.size() - 1);
             listOfCurWindows.remove(curWindow);
-            if(curWindow.equals(inventory)) {
+            if (curWindow.equals(inventory)) {
                 callInventory(getHero().get());
-            }
-            else if(curWindow.equals(dialogueMenu)) {
-                callDialogue("",true);
-            }
-            else if(curWindow.equals(pauseMenu)) {
+            } else if (curWindow.equals(dialogueMenu)) {
+                callDialogue("", true);
+            } else if (curWindow.equals(pauseMenu)) {
                 togglePause();
-            }
-            else if(curWindow.equals(gameOverHUD)) {
+            } else if (curWindow.equals(gameOverHUD)) {
                 gameOverHUD.hideMenu();
-            }
-            else if(curWindow.equals(questHUD)) {
+            } else if (curWindow.equals(questHUD)) {
                 callQuestHUD();
-            }
-            else if(curWindow.equals(lockPickHUD)) {
+            } else if (curWindow.equals(lockPickHUD)) {
                 callLockPickHUD(false);
             }
         }
     }
-
 
     private void addItem() {
         ItemDataGenerator ig = new ItemDataGenerator();
@@ -484,11 +455,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     public static void removeEntity(Entity entity) {
         entitiesToRemove.add(entity);
-        try {InventoryComponent inv = (InventoryComponent) entity.getComponent(InventoryComponent.class).get();
+        try {
+            InventoryComponent inv =
+                    (InventoryComponent) entity.getComponent(InventoryComponent.class).get();
             DropLoot drop = new DropLoot();
-            if ( inv.getCurMainItem() != null)
-                drop.onDeath(entity);}
-        catch ( NoSuchElementException e ) {
+            if (inv.getCurMainItem() != null) drop.onDeath(entity);
+        } catch (NoSuchElementException e) {
         }
     }
 
@@ -566,10 +538,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     /**
-     * Restarts the Game.
-     * Called when clicking the restart-Button when the game is over (-> GameOverHUD).
-     * Deletes the whole inventory of Hero, beside the start items and gives the hero full life
-     * Places Hero on another Tile in the same Level
+     * Restarts the Game. Called when clicking the restart-Button when the game is over (->
+     * GameOverHUD). Deletes the whole inventory of Hero, beside the start items and gives the hero
+     * full life Places Hero on another Tile in the same Level
      */
     public static void restart() {
         currentLevelNumber = 1;
@@ -577,11 +548,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         Ghost.setName();
         gameOverHUD.hideMenu();
         getHero().get().removeComponent(InventoryComponent.class);
-        ((Hero)hero).setupInventoryComponent();
+        ((Hero) hero).setupInventoryComponent();
         restarted = true;
         bossRoom = false;
         telepeter = null;
-        QuestLogComponent qlC = (QuestLogComponent)getHero().get().getComponent(QuestLogComponent.class).get();
+        QuestLogComponent qlC =
+                (QuestLogComponent) getHero().get().getComponent(QuestLogComponent.class).get();
         qlC.resetToStartValue();
         Ghost.questIsAccepted = false;
         Shopkeeper.specialQuestIsAccepted = false;
@@ -589,43 +561,91 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         hc.setCurrentHealthpoints(hc.getMaximalHealthpoints());
     }
 
-    /**
-     * Starts the bossmonster level and creates a bossmonster
-     */
+    /** Starts the bossmonster level and creates a bossmonster */
     public void startBossMonsterLevel() {
         Tile[][] tiles = createTiles();
-        bossLevel = new TileLevel(tiles,"BossMonsterLevel");
+        bossLevel = new TileLevel(tiles, "BossMonsterLevel");
         levelAPI.setLevel(bossLevel);
         this.telepeter = new Telepeter();
-      }
+    }
 
     private Tile[][] createTiles() {
         Tile[][] tiles = new Tile[32][32];
-        for ( int i = 0; i < 32; i++) {
-            for ( int j = 0; j < 32; j++) {
-                tiles[i][j] = TileFactory.createTile("dungeon/default/floor/empty.png", new Coordinate(i,j), LevelElement.SKIP, null);
+        for (int i = 0; i < 32; i++) {
+            for (int j = 0; j < 32; j++) {
+                tiles[i][j] =
+                        TileFactory.createTile(
+                                "dungeon/default/floor/empty.png",
+                                new Coordinate(i, j),
+                                LevelElement.SKIP,
+                                null);
             }
         }
-        for ( int i = 8; i < 24;i++) {
-            for ( int j = 8; j < 24; j++) {
+        for (int i = 8; i < 24; i++) {
+            for (int j = 8; j < 24; j++) {
                 if (i == 8 && j == 8) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_outerCorner_bottomLeft.png", new Coordinate(j, i), LevelElement.WALL, null);
+                    tiles[i][j] =
+                            TileFactory.createTile(
+                                    "dungeon/special/wall_spec_outerCorner_bottomLeft.png",
+                                    new Coordinate(j, i),
+                                    LevelElement.WALL,
+                                    null);
                 } else if (i == 8 && j == 23) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_outerCorner_bottomRight.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] =
+                            TileFactory.createTile(
+                                    "dungeon/special/wall_spec_outerCorner_bottomRight.png",
+                                    new Coordinate(j, i),
+                                    LevelElement.WALL,
+                                    DesignLabel.randomDesign());
                 } else if (i == 23 && j == 8) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_outerCorner_upperLeft.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] =
+                            TileFactory.createTile(
+                                    "dungeon/special/wall_spec_outerCorner_upperLeft.png",
+                                    new Coordinate(j, i),
+                                    LevelElement.WALL,
+                                    DesignLabel.randomDesign());
                 } else if (i == 23 && j == 23) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_outerCorner_upperRight.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] =
+                            TileFactory.createTile(
+                                    "dungeon/special/wall_spec_outerCorner_upperRight.png",
+                                    new Coordinate(j, i),
+                                    LevelElement.WALL,
+                                    DesignLabel.randomDesign());
                 } else if (i == 8 && j > 8 && j < 23) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_bottom.png", new Coordinate(j,i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] =
+                            TileFactory.createTile(
+                                    "dungeon/special/wall_spec_bottom.png",
+                                    new Coordinate(j, i),
+                                    LevelElement.WALL,
+                                    DesignLabel.randomDesign());
                 } else if (i > 8 && i < 23 && j == 8) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_left.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] =
+                            TileFactory.createTile(
+                                    "dungeon/special/wall_spec_left.png",
+                                    new Coordinate(j, i),
+                                    LevelElement.WALL,
+                                    DesignLabel.randomDesign());
                 } else if (i == 23 && j > 8 && j < 23) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_top.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] =
+                            TileFactory.createTile(
+                                    "dungeon/special/wall_spec_top.png",
+                                    new Coordinate(j, i),
+                                    LevelElement.WALL,
+                                    DesignLabel.randomDesign());
                 } else if (i > 8 && i < 23 && j == 23) {
-                    tiles[i][j] = TileFactory.createTile("dungeon/special/wall_spec_right.png", new Coordinate(j, i), LevelElement.WALL, DesignLabel.randomDesign());
+                    tiles[i][j] =
+                            TileFactory.createTile(
+                                    "dungeon/special/wall_spec_right.png",
+                                    new Coordinate(j, i),
+                                    LevelElement.WALL,
+                                    DesignLabel.randomDesign());
                 } else {
-                    tiles[i][j] = TileFactory.createTile("dungeon/default/floor/floor_1.png", new Coordinate(j, i), LevelElement.FLOOR, DesignLabel.randomDesign());
+                    tiles[i][j] =
+                            TileFactory.createTile(
+                                    "dungeon/default/floor/floor_1.png",
+                                    new Coordinate(j, i),
+                                    LevelElement.FLOOR,
+                                    DesignLabel.randomDesign());
                 }
             }
         }
@@ -634,9 +654,15 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     private void addExitToBossLevel() {
-        PositionComponent pC = (PositionComponent) telepeter.getComponent(PositionComponent.class).get();
+        PositionComponent pC =
+                (PositionComponent) telepeter.getComponent(PositionComponent.class).get();
         Coordinate cordOfBoss = pC.getPosition().toCoordinate();
-        ExitTile exit = new ExitTile("dungeon/default/floor/floor_ladder.png",cordOfBoss,DesignLabel.DEFAULT, bossLevel);
+        ExitTile exit =
+                new ExitTile(
+                        "dungeon/default/floor/floor_ladder.png",
+                        cordOfBoss,
+                        DesignLabel.DEFAULT,
+                        bossLevel);
         bossLevel.setRandomEnd();
         levelAPI.update();
     }

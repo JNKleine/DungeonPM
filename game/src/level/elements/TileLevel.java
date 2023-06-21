@@ -55,7 +55,6 @@ public class TileLevel implements ILevel {
         if (startTile == null) startTile = layout[16][16];
     }
 
-
     /**
      * Create a new Level
      *

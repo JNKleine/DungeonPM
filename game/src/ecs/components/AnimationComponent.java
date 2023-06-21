@@ -108,6 +108,4 @@ public class AnimationComponent extends Component {
     public Animation getIdleRight() {
         return idleRight;
     }
-
 }
-

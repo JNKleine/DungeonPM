@@ -1,4 +1,3 @@
-
 package ecs.entities;
 
 import dslToGame.AnimationBuilder;
@@ -9,41 +8,38 @@ import ecs.damage.DamageType;
 import ecs.items.item.Coin;
 import ecs.items.item.Emerald;
 import graphic.Animation;
-
 import java.util.Random;
 
 /**
  * Monster represents the superclass of all monsters. Every monster shall inherit from this class
  *
- * <p>
- * The monster class defines which characteristics
- * a monster must have in any case.</p>
- * */
- public class Monster extends Entity {
+ * <p>The monster class defines which characteristics a monster must have in any case.
+ */
+public class Monster extends Entity {
 
     private final float SPAWN_PROBABILITY;
     private final int MAXIMUM_MONSTER_IN_LEVEL;
 
-    /**String to Folder for idle right animation*/
+    /** String to Folder for idle right animation */
     protected String pathToIdleRight;
-     /**String to Folder for idle left animation*/
+    /** String to Folder for idle left animation */
     protected String pathToIdleLeft;
-     /**String to Folder for run right animation*/
+    /** String to Folder for run right animation */
     protected String pathToRunRight;
-     /**String to Folder for run left animation*/
+    /** String to Folder for run left animation */
     protected String pathToRunLeft;
-     /**float with xSpeed per Frame*/
+    /** float with xSpeed per Frame */
     protected float xSpeed;
-     /**float with ySpeed per Frame*/
+    /** float with ySpeed per Frame */
     protected float ySpeed;
-     /**int with the initial amount of hitpoints*/
+    /** int with the initial amount of hitpoints */
     protected int initHitpoints;
-    /**int with the initial amount of damage, this monster make */
+    /** int with the initial amount of damage, this monster make */
     protected int initDamage;
-
 
     /**
      * Constructor for any given Monster
+     *
      * @param xSpeed: float Value for speed per frame in x-direction
      * @param ySpeed: float value for speed per frame in y-direction
      * @param initDamage: initial int value for damage per hit
@@ -54,12 +50,20 @@ import java.util.Random;
      * @param pathToIdleRight: String path idle right animation
      * @param pathToRunLeft: String path run left animation
      * @param pathToRunRight: String path run left animation
-     *
-     **/
-    public Monster(float xSpeed, float ySpeed, int initHitpoints,
-                   int initDamage, float spawnProbability, int maximumMonsterInLevel,
-                   String pathToIdleRight, String pathToIdleLeft, String pathToRunRight, String pathToRunLeft,Faction faction) {
-        super(initDamage,faction);
+     */
+    public Monster(
+            float xSpeed,
+            float ySpeed,
+            int initHitpoints,
+            int initDamage,
+            float spawnProbability,
+            int maximumMonsterInLevel,
+            String pathToIdleRight,
+            String pathToIdleLeft,
+            String pathToRunRight,
+            String pathToRunLeft,
+            Faction faction) {
+        super(initDamage, faction);
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         this.initHitpoints = initHitpoints;
@@ -78,32 +82,32 @@ import java.util.Random;
     }
 
     // add InventoryComponent
-    private void addInventoryComponent(){
+    private void addInventoryComponent() {
         InventoryComponent inv = new InventoryComponent(this, 1);
-        if (this.getFaction().equals(Faction.BOSSMONSTER)){
+        if (this.getFaction().equals(Faction.BOSSMONSTER)) {
             addEmerald();
-        } else{
+        } else {
             // Add one Coin to the Inventory of a Monster
             addCoin();
         }
     }
 
-    //add PositionComponent
+    // add PositionComponent
     private void addPositionComponent() {
         new PositionComponent(this);
     }
 
-    //add AnimationComponent
+    // add AnimationComponent
     private void addAnimationComponent() {
         Animation idleRight = AnimationBuilder.buildAnimation(this.pathToIdleRight);
         Animation idleLeft = AnimationBuilder.buildAnimation(this.pathToIdleLeft);
-        new AnimationComponent(this,idleRight,idleLeft);
+        new AnimationComponent(this, idleRight, idleLeft);
     }
-    //add VelocityComponent
+    // add VelocityComponent
     private void addVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(this.pathToRunRight);
         Animation moveLeft = AnimationBuilder.buildAnimation(this.pathToRunLeft);
-        new VelocityComponent(this, xSpeed,ySpeed,moveLeft,moveRight);
+        new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
     }
 
     // Adds a Coin to the inventory of a monster
@@ -111,26 +115,27 @@ import java.util.Random;
         java.util.Random rdm = new Random();
         Coin coin = null;
         int rdmNm = rdm.nextInt(11);
-        if ( rdmNm < 6) {
+        if (rdmNm < 6) {
             coin = new Coin(1, "items/coins/coinI", "items/coins/coinI");
-        } else if (rdmNm >= 6 && rdmNm <= 9 ) {
-            coin = new Coin(5,"items/coins/coinV","items/coins/coinV");
+        } else if (rdmNm >= 6 && rdmNm <= 9) {
+            coin = new Coin(5, "items/coins/coinV", "items/coins/coinV");
         } else {
-            coin = new Coin(10,"items/coins/coinX","items/coins/coinX");
+            coin = new Coin(10, "items/coins/coinX", "items/coins/coinX");
         }
-        InventoryComponent inv = (InventoryComponent) this.getComponent(InventoryComponent.class).get();
+        InventoryComponent inv =
+                (InventoryComponent) this.getComponent(InventoryComponent.class).get();
         inv.addItem(coin.getItemData());
         inv.setCurMainItem(coin.getItemData());
     }
-
 
     private void addQuestObjectiveComponent() {
         QuestObjectiveComponent e = new QuestObjectiveComponent(this, QuestTag.KILL_MONSTER);
     }
 
     private void addEmerald() {
-        Emerald emerald = new Emerald(500,"items/emerald","items/emerald");
-        InventoryComponent inv = (InventoryComponent) this.getComponent(InventoryComponent.class).get();
+        Emerald emerald = new Emerald(500, "items/emerald", "items/emerald");
+        InventoryComponent inv =
+                (InventoryComponent) this.getComponent(InventoryComponent.class).get();
         inv.addItem(emerald.getItemData());
         inv.setCurMainItem(emerald.getItemData());
     }
@@ -139,16 +144,16 @@ import java.util.Random;
      * Gives the spawn probability of the monster
      *
      * @return float value of the spawn probability
-     * */
+     */
     public float getSpawnProbability() {
         return SPAWN_PROBABILITY;
     }
 
-     /**
-      * Gives the maximum possible amount of monsters
-      *
-      * @return int value of maximum possible amount of monsters
-      * */
+    /**
+     * Gives the maximum possible amount of monsters
+     *
+     * @return int value of maximum possible amount of monsters
+     */
     public int getMaximumOfMonster() {
         return MAXIMUM_MONSTER_IN_LEVEL;
     }
@@ -162,14 +167,8 @@ import java.util.Random;
     public void onHit(HitboxComponent hb) {
         Entity e = hb.getEntity();
         if (e.getFaction().equals(Faction.PLAYER)) {
-        HealthComponent hc = (HealthComponent)e.getComponent(HealthComponent.class).get();
-            hc.receiveHit(new Damage(getDamage(),
-                DamageType.PHYSICAL,this));
+            HealthComponent hc = (HealthComponent) e.getComponent(HealthComponent.class).get();
+            hc.receiveHit(new Damage(getDamage(), DamageType.PHYSICAL, this));
         }
     }
-
-
-
-
-
 }

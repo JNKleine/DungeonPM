@@ -4,38 +4,35 @@ import ecs.entities.*;
 import ecs.entities.Trap.ExplosionTrap;
 import ecs.entities.Trap.SpikeTrap;
 import ecs.entities.Trap.Trap;
-import starter.Game;
-import tools.Point;
-
 import java.util.ArrayList;
 import java.util.Random;
+import starter.Game;
+
 /**
  * Used to determine the spawn rate of known entities
  *
- * <p>By using the spawn-methods,
- * lists of entities to spawn can be obtained,
- * which can then be used further</p>
- * */
+ * <p>By using the spawn-methods, lists of entities to spawn can be obtained, which can then be used
+ * further
+ */
 public class EntitySpawnRateSetter {
-    //Lists of all types of certain entities that are allowed to spawn
-    private final Monster[] monsters = new Monster[]{new SlimeGuard(), new PillowOfBadDreams(), new WallWalker()};
+    // Lists of all types of certain entities that are allowed to spawn
+    private final Monster[] monsters =
+            new Monster[] {new SlimeGuard(), new PillowOfBadDreams(), new WallWalker()};
 
     private final Trap[] traps = new Trap[] {new ExplosionTrap(), new SpikeTrap()};
-    private final Entity[] ghostAndGrave = new Entity[]{new Ghost(), new Gravestone()};
+    private final Entity[] ghostAndGrave = new Entity[] {new Ghost(), new Gravestone()};
 
-    private final Monster[] mimic = new Monster[]{new Mimic()};
+    private final Monster[] mimic = new Monster[] {new Mimic()};
 
     private final Entity shop = new Shopkeeper();
-    //Object from type Random
+    // Object from type Random
     private final Random random = new Random();
-
 
     /**
      * Returns a list of entities to spawn
      *
      * <p>calculates the amount of monsters that will be spawned based on the spawn probabilities,
-     * the current Level
-     * and the maximum number of every single monster type</p>
+     * the current Level and the maximum number of every single monster type
      *
      * @return Returns a ArrayList from Entities
      */
@@ -64,8 +61,8 @@ public class EntitySpawnRateSetter {
     /**
      * Returns a list of entities from type trap to spawn
      *
-     * <p>calculates the amount of traps that will be spawned based on the spawn probabilities
-     * and the maximum number of every single trap type</p>
+     * <p>calculates the amount of traps that will be spawned based on the spawn probabilities and
+     * the maximum number of every single trap type
      *
      * @return Returns a ArrayList from Entities
      */
@@ -92,11 +89,9 @@ public class EntitySpawnRateSetter {
         return toSpawn;
     }
 
-
     /**
-     *
-     * 100% spawn the gravestone and ghost at the specified level.
-     * Otherwise, a ghost will appear with the given probability.
+     * 100% spawn the gravestone and ghost at the specified level. Otherwise, a ghost will appear
+     * with the given probability.
      *
      * @param levelOnSpawn Level in which the entity spawn
      * @return ArrayList, type Entity
@@ -131,20 +126,15 @@ public class EntitySpawnRateSetter {
                 } catch (IllegalAccessException e) {
                     System.out.println(e.getMessage());
                 }
-
             }
-
         }
         return toSpawn;
     }
 
-    /**
-     * A shopkeeper spawns every x levels.
-     * x is defined in the Shopkeeper class.
-     */
+    /** A shopkeeper spawns every x levels. x is defined in the Shopkeeper class. */
     public Entity spawnShop() {
         Entity toSpawn = null;
-        if(Game.currentLevelNumber%Shopkeeper.moduloForLevelSpawn == 0) {
+        if (Game.currentLevelNumber % Shopkeeper.moduloForLevelSpawn == 0) {
             try {
                 Class klass = Class.forName(shop.getClass().getName());
                 toSpawn = (Entity) klass.newInstance();
@@ -162,10 +152,9 @@ public class EntitySpawnRateSetter {
     /**
      * Spawns a Mimic or Chest.
      *
-     * The decision whether one of the two spawns depends on the probability
-     * that is written in the mimic. In the other case, a distinction is made
-     * between mimic and chest
-     * **/
+     * <p>The decision whether one of the two spawns depends on the probability that is written in
+     * the mimic. In the other case, a distinction is made between mimic and chest *
+     */
     public ArrayList<Entity> getChestOrMimicToSpawnProbability() {
         ArrayList<Entity> toSpawn = new ArrayList<>();
         for (Monster m : mimic) {
@@ -193,4 +182,3 @@ public class EntitySpawnRateSetter {
         return toSpawn;
     }
 }
-

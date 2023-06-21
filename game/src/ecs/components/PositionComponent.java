@@ -1,9 +1,8 @@
 package ecs.components;
 
 import ecs.entities.Entity;
-import java.util.logging.Logger;
-
 import ecs.entities.Faction;
+import java.util.logging.Logger;
 import logging.CustomLogLevel;
 import semanticAnalysis.types.DSLContextMember;
 import semanticAnalysis.types.DSLType;
@@ -66,16 +65,22 @@ public class PositionComponent extends Component {
         super(entity);
 
         if (Game.currentLevel != null) {
-            if(entity.getFaction() != Faction.PLAYER && Game.currentLevel.getFloorTiles().size() > 1) {
+            if (entity.getFaction() != Faction.PLAYER
+                    && Game.currentLevel.getFloorTiles().size() > 1) {
                 boolean fLoop = true;
                 while (fLoop) {
                     position = Game.currentLevel.getRandomFloorTile().getCoordinateAsPoint();
-                    PositionComponent pcH = (PositionComponent) Game.getHero().get().getComponent(PositionComponent.class).get();
-                    if(pcH.getPosition().x != position.x && pcH.getPosition().y != position.y) {
+                    PositionComponent pcH =
+                            (PositionComponent)
+                                    Game.getHero()
+                                            .get()
+                                            .getComponent(PositionComponent.class)
+                                            .get();
+                    if (pcH.getPosition().x != position.x && pcH.getPosition().y != position.y) {
                         fLoop = false;
                     }
                 }
-            }else {
+            } else {
                 position = Game.currentLevel.getRandomFloorTile().getCoordinateAsPoint();
             }
         } else {

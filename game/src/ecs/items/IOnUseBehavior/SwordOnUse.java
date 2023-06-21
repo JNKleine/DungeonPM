@@ -13,31 +13,21 @@ import ecs.items.IOnUse;
 import ecs.items.ItemData;
 import ecs.systems.PlayerSystem;
 import graphic.Animation;
-import starter.Game;
-import tools.Point;
-
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.logging.Logger;
+import starter.Game;
+import tools.Point;
 
-
-/**
- * Does the complete hit of the hero to an entity
- */
+/** Does the complete hit of the hero to an entity */
 public class SwordOnUse implements IOnUse {
 
-    /**
-     * Entity that uses the sowrd
-     */
+    /** Entity that uses the sowrd */
     private Hero hero;
 
-    /**
-     * hitRange to hit enemy entities in range
-     */
+    /** hitRange to hit enemy entities in range */
     private int hitRange;
-    /**
-     * initial damage used for the current "normal" sword
-     */
+    /** initial damage used for the current "normal" sword */
     private int damage;
 
     private Logger hitLogger;
@@ -61,25 +51,28 @@ public class SwordOnUse implements IOnUse {
         for (Entity entity : entities) {
             HealthComponent hc = (HealthComponent) entity.getComponent(HealthComponent.class).get();
             hc.receiveHit(new Damage(damage, DamageType.PHYSICAL, e));
-            VelocityComponent vp = (VelocityComponent) entity.getComponent(VelocityComponent.class).get();
+            VelocityComponent vp =
+                    (VelocityComponent) entity.getComponent(VelocityComponent.class).get();
             vp.setCurrentXVelocity(0f);
             vp.setCurrentXVelocity(0f);
-            hitLogger.info(this.damage + " Damage was given to " + entity.getClass().getSimpleName() + " current health of the attacked entity is " + hc.getCurrentHealthpoints() );
+            hitLogger.info(
+                    this.damage
+                            + " Damage was given to "
+                            + entity.getClass().getSimpleName()
+                            + " current health of the attacked entity is "
+                            + hc.getCurrentHealthpoints());
         }
-        AnimationComponent ac = (AnimationComponent) this.hero.getComponent(AnimationComponent.class).get();
-        if (PlayerSystem.getKey() == 0)
-            ac.setCurrentAnimation(fillArrListForAnimation(0));
-        else if (PlayerSystem.getKey() == 1)
-            ac.setCurrentAnimation(fillArrListForAnimation(1));
-        else if (PlayerSystem.getKey() == 2)
-            ac.setCurrentAnimation(fillArrListForAnimation(2));
-        else if (PlayerSystem.getKey() == 3)
-            ac.setCurrentAnimation(fillArrListForAnimation(3));
+        AnimationComponent ac =
+                (AnimationComponent) this.hero.getComponent(AnimationComponent.class).get();
+        if (PlayerSystem.getKey() == 0) ac.setCurrentAnimation(fillArrListForAnimation(0));
+        else if (PlayerSystem.getKey() == 1) ac.setCurrentAnimation(fillArrListForAnimation(1));
+        else if (PlayerSystem.getKey() == 2) ac.setCurrentAnimation(fillArrListForAnimation(2));
+        else if (PlayerSystem.getKey() == 3) ac.setCurrentAnimation(fillArrListForAnimation(3));
     }
 
     /*
-        Method to sort out friendly enemies and give the direction key for the hit to the hitInDirection method
-     */
+       Method to sort out friendly enemies and give the direction key for the hit to the hitInDirection method
+    */
     private ArrayList<Entity> getEntitiesToHit() {
         Set<Entity> entities = Game.getEntities();
         ArrayList<Entity> listOfEntities = new ArrayList<>();
@@ -89,17 +82,13 @@ public class SwordOnUse implements IOnUse {
                 listOfEntities.add(e);
         }
         // Hit left
-        if (PlayerSystem.getKey() == 0)
-            entsToHit = hitInDirection(0, listOfEntities);
-            // Hit up
-        else if (PlayerSystem.getKey() == 1)
-            entsToHit = hitInDirection(1, listOfEntities);
-            // Hit right
-        else if (PlayerSystem.getKey() == 2)
-            entsToHit = hitInDirection(2, listOfEntities);
-            // Hit down
-        else if (PlayerSystem.getKey() == 3)
-            entsToHit = hitInDirection(3, listOfEntities);
+        if (PlayerSystem.getKey() == 0) entsToHit = hitInDirection(0, listOfEntities);
+        // Hit up
+        else if (PlayerSystem.getKey() == 1) entsToHit = hitInDirection(1, listOfEntities);
+        // Hit right
+        else if (PlayerSystem.getKey() == 2) entsToHit = hitInDirection(2, listOfEntities);
+        // Hit down
+        else if (PlayerSystem.getKey() == 3) entsToHit = hitInDirection(3, listOfEntities);
         return entsToHit;
     }
 
@@ -107,22 +96,31 @@ public class SwordOnUse implements IOnUse {
     Method to get all entitiies that are in the hitRange of the Hero
      */
     private ArrayList<Entity> hitInDirection(int key, ArrayList<Entity> entities) {
-        PositionComponent pos = (PositionComponent) hero.getComponent(PositionComponent.class).get();
+        PositionComponent pos =
+                (PositionComponent) hero.getComponent(PositionComponent.class).get();
         Point heroPoint = pos.getPosition();
         ArrayList<Entity> entitiesToHit = new ArrayList<>();
         for (Entity e : entities) {
-            PositionComponent posOfEntity = (PositionComponent) e.getComponent(PositionComponent.class).get();
+            PositionComponent posOfEntity =
+                    (PositionComponent) e.getComponent(PositionComponent.class).get();
             Point pointOfEntity = posOfEntity.getPosition();
-            boolean checkRight = (heroPoint.toCoordinate().x >= pointOfEntity.toCoordinate().x - this.hitRange && heroPoint.toCoordinate().y == pointOfEntity.toCoordinate().y);
-            boolean checkLeft = (heroPoint.toCoordinate().x <= pointOfEntity.toCoordinate().x + this.hitRange && heroPoint.toCoordinate().y == pointOfEntity.toCoordinate().y);
-            boolean checkUpper = (heroPoint.toCoordinate().y <= pointOfEntity.toCoordinate().y - this.hitRange && heroPoint.toCoordinate().x == pointOfEntity.toCoordinate().x);
-            boolean checkDown = (heroPoint.toCoordinate().y >= pointOfEntity.toCoordinate().y + this.hitRange && heroPoint.toCoordinate().x == pointOfEntity.toCoordinate().x);
+            boolean checkRight =
+                    (heroPoint.toCoordinate().x >= pointOfEntity.toCoordinate().x - this.hitRange
+                            && heroPoint.toCoordinate().y == pointOfEntity.toCoordinate().y);
+            boolean checkLeft =
+                    (heroPoint.toCoordinate().x <= pointOfEntity.toCoordinate().x + this.hitRange
+                            && heroPoint.toCoordinate().y == pointOfEntity.toCoordinate().y);
+            boolean checkUpper =
+                    (heroPoint.toCoordinate().y <= pointOfEntity.toCoordinate().y - this.hitRange
+                            && heroPoint.toCoordinate().x == pointOfEntity.toCoordinate().x);
+            boolean checkDown =
+                    (heroPoint.toCoordinate().y >= pointOfEntity.toCoordinate().y + this.hitRange
+                            && heroPoint.toCoordinate().x == pointOfEntity.toCoordinate().x);
             boolean checkUpperRight = (checkRight && checkUpper);
             boolean checkUpperLeft = (checkLeft && checkUpper);
             boolean checkDownRight = (checkRight && checkDown);
             boolean checkDownLeft = (checkLeft && checkDown);
-            if (key == 0 && (checkLeft || checkUpperLeft || checkDownLeft))
-                entitiesToHit.add(e);
+            if (key == 0 && (checkLeft || checkUpperLeft || checkDownLeft)) entitiesToHit.add(e);
             else if (key == 1 && (checkUpper || checkUpperLeft || checkUpperRight))
                 entitiesToHit.add(e);
             else if (key == 2 && (checkRight || checkUpperRight || checkDownRight))

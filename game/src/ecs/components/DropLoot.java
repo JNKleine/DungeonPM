@@ -1,7 +1,6 @@
 package ecs.components;
 
 import ecs.entities.Entity;
-import ecs.entities.Faction;
 import ecs.items.ItemData;
 import tools.Point;
 
@@ -18,7 +17,8 @@ public class DropLoot implements IOnDeathFunction {
      */
     @Override
     public void onDeath(Entity entity) {
-        InventoryComponent inv = (InventoryComponent) entity.getComponent(InventoryComponent.class).get();
+        InventoryComponent inv =
+                (InventoryComponent) entity.getComponent(InventoryComponent.class).get();
         Components dlc = prepareComponent(entity);
         dlc.ic.getItems().stream().map(x -> new DLData(entity, dlc, x)).forEach(this::dropItem);
     }
