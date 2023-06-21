@@ -5,9 +5,9 @@ import java.util.logging.Logger;
 import starter.Game;
 
 /**
- * LockPickSystem controls whether the desired shifts in the LockPick minigame are possible. If so, they
- * will be executed. This is done by checking whether the victory condition has been met. If so, the
- * minigame will end and the chest will open *
+ * LockPickSystem controls whether the desired shifts in the LockPick minigame are possible. If so,
+ * they will be executed. This is done by checking whether the victory condition has been met. If
+ * so, the minigame will end and the chest will open *
  */
 public class LockPickSystem extends ECS_System {
 

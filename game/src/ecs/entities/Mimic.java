@@ -18,9 +18,10 @@ public class Mimic extends Monster {
 
     /** Shows whether the crate has been interacted with */
     public boolean interacted = false;
-    /** Create an object of type Mimic.
-    * The defined values are passed to the Monster superclass and the required Components are added.
-    */
+    /**
+     * Create an object of type Mimic. The defined values are passed to the Monster superclass and
+     * the required Components are added.
+     */
     public Mimic() {
 
         super(
