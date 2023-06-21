@@ -13,15 +13,22 @@ import ecs.damage.DamageType;
 import graphic.Animation;
 import starter.Game;
 
+/**
+ * Mimic is a Monster chest, they will attack,
+ * if, and only if, the hero interact with them.
+ * */
 public class Mimic extends Monster {
 
+    /**
+     * Shows whether the crate has been interacted with
+     * **/
     public boolean interacted = false;
     /**
      * Constructor for any given Monster
      **/
     public Mimic() {
 
-        super(0.2f, 0.2f, 60, 4, 1f, 1,
+        super(0.2f, 0.2f, 60, 4, 0.05f, 1,
             "character/monster/mimic/idleRight", "character/monster/mimic/idleLeft",
             "character/monster/mimic/runRight","character/monster/mimic/runLeft", Faction.FOE);
         addHealthComponent();
@@ -42,6 +49,11 @@ public class Mimic extends Monster {
 
     }
 
+    /**
+     * Adds an AIComponent to the mimic
+     * @param attackRange : Range, within the Mimic attack
+     * @param transitionRange: Range, within the Mimic transition
+     * **/
     public void addAIComponent(float attackRange, float transitionRange ) {
         HealthComponent hcH =  (HealthComponent) Game.getHero().get().getComponent(HealthComponent.class).get();
         MeleeAI fightAI = new MeleeAI(attackRange,new Skill(entity -> hcH.receiveHit(new Damage(getDamage(), DamageType.PHYSICAL,entity)),3f));
@@ -52,5 +64,6 @@ public class Mimic extends Monster {
 
     private void addInteractionComponent() {
         new InteractionComponent(this, 1, false, entity -> interacted = true);
+
     }
 }

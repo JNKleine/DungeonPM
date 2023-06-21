@@ -6,6 +6,7 @@ import ecs.items.ItemDataGenerator;
 import graphic.Animation;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import level.tools.LevelElement;
 import starter.Game;
@@ -14,6 +15,8 @@ import tools.Point;
  * Chest holds all information about a chest and their stored items
  * **/
 public class Chest extends Entity {
+
+    Logger chestLogger =  Logger.getLogger(this.getClass().getName());
 
     public static final float defaultInteractionRadius = 1f;
     public static final List<String> DEFAULT_CLOSED_ANIMATION_FRAMES =
@@ -85,6 +88,10 @@ public class Chest extends Entity {
                 new Animation(DEFAULT_OPENING_ANIMATION_FRAMES, 3, false));
     }
 
+    /**
+     * Drop the items, that are in the chest
+     * @param entity : Entity that drops the items
+     * **/
     public void dropItems(Entity entity) {
         InventoryComponent inventoryComponent =
             entity.getComponent(InventoryComponent.class)
@@ -146,8 +153,15 @@ public class Chest extends Entity {
                 + e.getClass().getName());
     }
 
+
+    /**
+     * Add interactionComponent
+     * **/
     public void addInteractionComponent() {
         new InteractionComponent(this, 1f, false, new IInteraction() {
+            /**
+             * determines, what happens, if the player interact with the chest
+             * **/
             @Override
             public void onInteraction(Entity entity) {
                 Hero hero = (Hero)Game.getHero().get();
@@ -157,10 +171,12 @@ public class Chest extends Entity {
                  ic.removeItem(mainItem);
                  ic.setCurMainItem(null);
                  dropItems(entity);
+                 chestLogger.info("Chest was opened with key");
                 }
                 else {
                     Game.lockPickHUD.toOpen = entity;
                     Game.callLockPickHUD(true);
+                    chestLogger.info("Minigame in Chest is started");
                 }
             }
         });

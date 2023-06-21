@@ -129,6 +129,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static QuestHUD<Actor> questHUD;
 
+    /**
+     * obejct from type LockPickHUD
+     * **/
     public static LockPickHUD<Actor> lockPickHUD;
     private static Entity hero;
 

@@ -29,7 +29,7 @@ public class PlayerSystem extends ECS_System {
     }
 
     private void checkKeystroke(KSData ksd) {
-        if (!Game.isPaused && !Game.dialogueIsOn && !Game.inventoryIsOn && !Game.questHUDIsOn) {
+        if (!Game.isPaused && !Game.dialogueIsOn && !Game.inventoryIsOn && !Game.questHUDIsOn && !Game.lockPickHUDisOn) {
             if (Gdx.input.isKeyPressed(KeyboardConfig.LOOK_UP.get())) {
                 key = 1;
             } else if (Gdx.input.isKeyPressed(KeyboardConfig.LOOK_DOWN.get())) {

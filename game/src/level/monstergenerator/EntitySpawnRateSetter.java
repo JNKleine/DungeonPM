@@ -159,6 +159,13 @@ public class EntitySpawnRateSetter {
         return toSpawn;
     }
 
+    /**
+     * Spawns a Mimic or Chest.
+     *
+     * The decision whether one of the two spawns depends on the probability
+     * that is written in the mimic. In the other case, a distinction is made
+     * between mimic and chest
+     * **/
     public ArrayList<Entity> getChestOrMimicToSpawnProbability() {
         ArrayList<Entity> toSpawn = new ArrayList<>();
         for (Monster m : mimic) {

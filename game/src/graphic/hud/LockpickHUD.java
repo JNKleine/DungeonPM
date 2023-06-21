@@ -11,19 +11,27 @@ import tools.Point;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * LockPickHUD is for creating a HUD for lockpicking
+ * **/
 public class LockPickHUD <T extends Actor> extends ScreenController<T> {
+    /**Index from the clicked empty field**/
     public int indexEmptyFieldClicked = -1;
+    /**Index from the clicked number**/
     public int indexNumberClicked = -1;
-
-    public boolean finished = false;
-
+    /** Entity, with this lockPickingHUD**/
     public Entity toOpen = null;
 
 
+    /**
+     * Determines, what happen, if a button is clicked
+     * **/
     public TextButtonListener tb = new TextButtonListener() {
+        /**
+         * Check, which button is clicked
+         * **/
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            System.out.println(event.getListenerActor().getName());
             if(event.getListenerActor().getName().equals("-1")) {
                 indexEmptyFieldClicked = buttons.get(event.getListenerActor().getName());
             }
@@ -34,7 +42,7 @@ public class LockPickHUD <T extends Actor> extends ScreenController<T> {
     };
 
     private HashMap<String,Integer> buttons = new HashMap<>();
-    int[] intArr = new int[]{1,2,3,4,5,6,7,8,-1};
+    int[] numbers = new int[]{1,2,3,4,5,6,7,8,-1};
 
     /**
      * Creates a Screencontroller with a ScalingViewport which stretches the ScreenElements on
@@ -46,12 +54,19 @@ public class LockPickHUD <T extends Actor> extends ScreenController<T> {
         super(batch);
     }
 
+    /**
+     * Create a new Object from type lockPickHUD
+     * **/
     public LockPickHUD() {
         this(new SpriteBatch());
     }
 
+    /**
+     * Create the LockPickHUD and determines where the numbers are
+     * @param newHUDToShow: when true: HUD with a new set of numbers will be created
+     *                    when false: HUD with existing set of numbers will be created
+     * **/
     public void createLockPickHUD(boolean newHUDToShow) {
-        finished = false;
         if(newHUDToShow)changeValues();
         for(int i = 0; i < 9; i++) {
             int xPos = i%3;
@@ -63,7 +78,7 @@ public class LockPickHUD <T extends Actor> extends ScreenController<T> {
                 Align.center | Align.bottom);
             add((T)img);
 
-            ScreenImage nImg = new ScreenImage("hud/lockpickHud/numbers/"+intArr[i]+".png",new Point(0,0));
+            ScreenImage nImg = new ScreenImage("hud/lockpickHud/numbers/"+numbers[i]+".png",new Point(0,0));
             nImg.setPosition(
                 ((Constants.WINDOW_WIDTH) / 2.6f - img.getWidth()+xPos*64),
                 ((Constants.WINDOW_HEIGHT) / 1.25f + img.getHeight()-yPos*64),
@@ -72,7 +87,7 @@ public class LockPickHUD <T extends Actor> extends ScreenController<T> {
 
             ScreenButton bt = new ScreenButton("",new Point(img.getX(),img.getY()),tb);
             bt.setPosition(img.getX(),img.getY(),Align.center | Align.bottom);
-            bt.setName(intArr[i]+"");
+            bt.setName(numbers[i]+"");
             bt.setWidth(32f);
             bt.setHeight(32f);
             add((T)bt);
@@ -85,38 +100,45 @@ public class LockPickHUD <T extends Actor> extends ScreenController<T> {
         this.forEach((Actor s) -> s.setVisible(true));
     }
 
-    /** hides the Menu */
-    public void hideMenu() {
-        this.forEach((Actor s) -> s.setVisible(false));
-    }
-
     /** Remove the current LockpickHUD **/
     public void removeHUD() {
         forEach(this::remove);
     }
 
+    /**
+     * Randomly shifting the numbers 1 to 8 and -1 in
+     * the instance variable of type Int Array
+     * **/
     private void changeValues() {
         int value;
         int index;
         Random rd = new Random();
-        for (int i = 0; i < intArr.length; i++) {
-            index = rd.nextInt(intArr.length);
-            value = intArr[i];
-            intArr[i] = intArr[index];
-            intArr[index] = value;
+        for (int i = 0; i < numbers.length; i++) {
+            index = rd.nextInt(numbers.length);
+            value = numbers[i];
+            numbers[i] = numbers[index];
+            numbers[index] = value;
     }
 
 }
 
+/**
+ * Swap the value at index position a with the value at position b
+ * @param a: Index from Value one
+ * @param b: Index from Value two
+ * **/
 public void swapValues(int a, int b) {
-        int valueAtIndexA = intArr[a];
-        intArr[a] = intArr[b];
-        intArr[b] = valueAtIndexA;
+        int valueAtIndexA = numbers[a];
+        numbers[a] = numbers[b];
+        numbers[b] = valueAtIndexA;
 }
 
+/**
+ * When the puzzle is solved, return true, else false
+ * **/
 public boolean checkCondition() {
-        for(int i = 0; i < intArr.length-1; i++) {
-            if(!(intArr[i] == i+1)) {
+        for(int i = 0; i < numbers.length-1; i++) {
+            if(!(numbers[i] == i+1)) {
                 return false;
             }
         }

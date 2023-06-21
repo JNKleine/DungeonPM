@@ -24,7 +24,7 @@ public class Shopkeeper extends Entity {
 
     private ItemData[] possibleItemsInShop = new ItemData[]{new Telestone().getItemData(), new Damagestone().getItemData(),
         new PotionOfHealing().getItemData(), new PotionOfTrapDestroying().getItemData(), new Key().getItemData()};
-    public static int moduloForLevelSpawn = 1;
+    public static int moduloForLevelSpawn = 15;
     private boolean haggle;
     private int dice;
     private float currentPriceFactor;

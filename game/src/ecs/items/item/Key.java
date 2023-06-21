@@ -6,8 +6,14 @@ import ecs.items.IOnDropBehavior.DeleteOnDropAndSpawnInWorld;
 import ecs.items.IOnUseBehavior.NothingOnUse;
 import ecs.items.ItemType;
 
+/**
+ * Creates an Item from type Key
+ * **/
 public class Key extends Item{
 
+    /**
+     * Construct a Key object
+     * */
     public Key() {
         super(ItemType.Passive, "items/key/keyInventoryAnimation/key.png","items/key/keyWorldAnimation/key.png", "Key",
             "This Key can open ANY chest",
