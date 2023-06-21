@@ -21,7 +21,7 @@ public class Mimic extends Monster {
      **/
     public Mimic() {
 
-        super(0.2f, 0.2f, 60, 4, 0.05f, 1,
+        super(0.2f, 0.2f, 60, 4, 1f, 1,
             "character/monster/mimic/idleRight", "character/monster/mimic/idleLeft",
             "character/monster/mimic/runRight","character/monster/mimic/runLeft", Faction.FOE);
         addHealthComponent();

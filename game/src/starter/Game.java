@@ -129,7 +129,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static QuestHUD<Actor> questHUD;
 
-    private static LockpickHUD<Actor> lockPickHUD;
+    public static LockPickHUD<Actor> lockPickHUD;
     private static Entity hero;
 
     private Logger gameLogger;
@@ -188,7 +188,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         inventory = new InventoryMenu<>();
         playerHUD = new PlayerHUD<>();
         questHUD = new QuestHUD<>();
-        lockPickHUD = new LockpickHUD<>();
+        lockPickHUD = new LockPickHUD<>();
         controller.add(pauseMenu);
         controller.add(inventory);
         controller.add(dialogueMenu);
@@ -332,14 +332,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             }
         }
 
-    /**Call the LockpickHUD and show it**/
-    public static void callLockpickHUD() {
+    /**Call the LockPickHUD and show it**/
+    public static void callLockPickHUD(boolean firstTimeOn) {
         lockPickHUDisOn = !   lockPickHUDisOn;
 
         if (lockPickHUD != null) {
             if (   lockPickHUDisOn) {
 
-                lockPickHUD.createLockpickHUD(9);
+                lockPickHUD.createLockPickHUD(firstTimeOn);
                 lockPickHUD.showMenu();
                 listOfCurWindows.add(lockPickHUD);
             } else {
@@ -440,7 +440,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 callQuestHUD();
             }
             else if(curWindow.equals(lockPickHUD)) {
-                callLockpickHUD();
+                callLockPickHUD(false);
             }
         }
     }
@@ -559,6 +559,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new DialogueSystem();
         new PlayerHUDSystem();
         new QuestSystem();
+        new LockPickSystem();
     }
 
     /**

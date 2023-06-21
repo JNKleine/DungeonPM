@@ -85,7 +85,7 @@ public class Chest extends Entity {
                 new Animation(DEFAULT_OPENING_ANIMATION_FRAMES, 3, false));
     }
 
-    private void dropItems(Entity entity) {
+    public void dropItems(Entity entity) {
         InventoryComponent inventoryComponent =
             entity.getComponent(InventoryComponent.class)
                 .map(InventoryComponent.class::cast)
@@ -150,7 +150,8 @@ public class Chest extends Entity {
         new InteractionComponent(this, 1f, false, new IInteraction() {
             @Override
             public void onInteraction(Entity entity) {
-                ((Chest)entity).dropItems(entity);
+                Game.lockPickHUD.toOpen = entity;
+                Game.callLockPickHUD(true);
             }
         });
     }
