@@ -5,14 +5,14 @@ import java.util.logging.Logger;
 import starter.Game;
 
 /**
- * LockPickSystem controls whether desired shifts in the LockPick minigame are possible. If so, they
+ * LockPickSystem controls whether the desired shifts in the LockPick minigame are possible. If so, they
  * will be executed. This is done by checking whether the victory condition has been met. If so, the
  * minigame will end and the chest will open *
  */
 public class LockPickSystem extends ECS_System {
 
     private final Logger lockLogger = Logger.getLogger(this.getClass().getName());
-    /** update-Methode is called every frame * */
+    /** Determines what happens every frame */
     @Override
     public void update() {
         if (Game.lockPickHUDisOn) {

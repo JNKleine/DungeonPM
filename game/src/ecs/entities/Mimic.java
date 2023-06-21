@@ -13,12 +13,14 @@ import ecs.damage.DamageType;
 import graphic.Animation;
 import starter.Game;
 
-/** Mimic is a Monster chest, they will attack, if, and only if, the hero interact with them. */
+/** Mimic is a Monster chest, they will attack, if, and only if, the hero interacts with them. */
 public class Mimic extends Monster {
 
-    /** Shows whether the crate has been interacted with * */
+    /** Shows whether the crate has been interacted with */
     public boolean interacted = false;
-    /** Constructor for any given Monster */
+    /** Create an object of type Mimic.
+    * The defined values are passed to the Monster superclass and the required Components are added.
+    */
     public Mimic() {
 
         super(
@@ -38,6 +40,7 @@ public class Mimic extends Monster {
         addInteractionComponent();
     }
 
+    // add HealthComponent
     private void addHealthComponent() {
         Animation animation = AnimationBuilder.buildAnimation("objects/treasurechest");
         new HealthComponent(
@@ -61,7 +64,7 @@ public class Mimic extends Monster {
      * Adds an AIComponent to the mimic
      *
      * @param attackRange : Range, within the Mimic attack
-     * @param transitionRange: Range, within the Mimic transition *
+     * @param transitionRange: Range, within the Mimic transition
      */
     public void addAIComponent(float attackRange, float transitionRange) {
         HealthComponent hcH =
@@ -80,6 +83,7 @@ public class Mimic extends Monster {
         new AIComponent(this, fightAI, idleAI, transitionAI);
     }
 
+    // add InteractionComponent
     private void addInteractionComponent() {
         new InteractionComponent(this, 1, false, entity -> interacted = true);
     }

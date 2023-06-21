@@ -17,9 +17,12 @@ public class Chest extends Entity {
 
     Logger chestLogger = Logger.getLogger(this.getClass().getName());
 
+    /** initialize the default radius of Interaction */
     public static final float defaultInteractionRadius = 1f;
+    /** picture for the closed animation */
     public static final List<String> DEFAULT_CLOSED_ANIMATION_FRAMES =
             List.of("objects/treasurechest/chest_full_open_anim_f0.png");
+    /** list of pictures for the opening animation for when the chest is opened */
     public static final List<String> DEFAULT_OPENING_ANIMATION_FRAMES =
             List.of(
                     "objects/treasurechest/chest_full_open_anim_f0.png",
@@ -93,7 +96,7 @@ public class Chest extends Entity {
     /**
      * Drop the items, that are in the chest
      *
-     * @param entity : Entity that drops the items *
+     * @param entity : Entity that drops the items
      */
     public void dropItems(Entity entity) {
         InventoryComponent inventoryComponent =

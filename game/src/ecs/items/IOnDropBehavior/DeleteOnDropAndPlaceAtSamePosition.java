@@ -10,7 +10,7 @@ import tools.Point;
 /** Drop an item at the given position */
 public class DeleteOnDropAndPlaceAtSamePosition implements IOnDrop {
 
-    /** What happens onDrop */
+    /** Determines what happens onDrop */
     @Override
     public void onDrop(Entity user, ItemData which, Point position) {
         InventoryComponent ic =
