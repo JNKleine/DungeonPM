@@ -22,17 +22,17 @@ public class LockPickHUD<T extends Actor> extends ScreenController<T> {
 
     /** Determines, what happen, if a button is clicked * */
     public TextButtonListener tb =
-            new TextButtonListener() {
-                /** Check, which button is clicked * */
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    if (event.getListenerActor().getName().equals("-1")) {
-                        indexEmptyFieldClicked = buttons.get(event.getListenerActor().getName());
-                    } else {
-                        indexNumberClicked = buttons.get(event.getListenerActor().getName());
-                    }
+        new TextButtonListener() {
+            /** Check, which button is clicked * */
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (event.getListenerActor().getName().equals("-1")) {
+                    indexEmptyFieldClicked = buttons.get(event.getListenerActor().getName());
+                } else {
+                    indexNumberClicked = buttons.get(event.getListenerActor().getName());
                 }
-            };
+            }
+        };
 
     private HashMap<String, Integer> buttons = new HashMap<>();
     int[] numbers = new int[] {1, 2, 3, 4, 5, 6, 7, 8, -1};
@@ -65,18 +65,18 @@ public class LockPickHUD<T extends Actor> extends ScreenController<T> {
             int yPos = i / 3;
             ScreenImage img = new ScreenImage("hud/lockpickHud/puzzleButton.png", new Point(0, 0));
             img.setPosition(
-                    ((Constants.WINDOW_WIDTH) / 2.6f - img.getWidth() + xPos * 64),
-                    ((Constants.WINDOW_HEIGHT) / 1.25f + img.getHeight() - yPos * 64),
-                    Align.center | Align.bottom);
+                ((Constants.WINDOW_WIDTH) / 2.6f - img.getWidth() + xPos * 64),
+                ((Constants.WINDOW_HEIGHT) / 1.25f + img.getHeight() - yPos * 64),
+                Align.center | Align.bottom);
             add((T) img);
 
             ScreenImage nImg =
-                    new ScreenImage(
-                            "hud/lockpickHud/numbers/" + numbers[i] + ".png", new Point(0, 0));
+                new ScreenImage(
+                    "hud/lockpickHud/numbers/" + numbers[i] + ".png", new Point(0, 0));
             nImg.setPosition(
-                    ((Constants.WINDOW_WIDTH) / 2.6f - img.getWidth() + xPos * 64),
-                    ((Constants.WINDOW_HEIGHT) / 1.25f + img.getHeight() - yPos * 64),
-                    Align.center | Align.bottom);
+                ((Constants.WINDOW_WIDTH) / 2.6f - img.getWidth() + xPos * 64),
+                ((Constants.WINDOW_HEIGHT) / 1.25f + img.getHeight() - yPos * 64),
+                Align.center | Align.bottom);
             add((T) nImg);
 
             ScreenButton bt = new ScreenButton("", new Point(img.getX(), img.getY()), tb);
