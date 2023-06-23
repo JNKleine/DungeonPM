@@ -7,6 +7,7 @@ import ecs.entities.Entity;
 import ecs.entities.Mimic;
 import graphic.Animation;
 
+/** IdleAI of the Mimic. Checks if the hero has interacted with the mimic */
 public class MimicIdle implements IIdleAI {
 
     int healthPoints = -1;
